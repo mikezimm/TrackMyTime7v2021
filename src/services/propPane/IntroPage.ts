@@ -11,7 +11,7 @@ import { pivotOptionsGroup} from './index';
 
 import * as links from '../../webparts/trackMyTime7/components/HelpInfo/AllLinks';   //              { links.gitRepoTrackMyTime.issues }
 
-import { ITrackMyTimeWebPartProps } from '../../webparts/trackMyTime7/TrackMyTime7WebPart';
+import { ITrackMyTime7WebPartProps } from '../../webparts/trackMyTime7/TrackMyTime7WebPart';
 
 /*
 
@@ -65,7 +65,7 @@ import { ITrackMyTimeWebPartProps } from '../../webparts/trackMyTime7/TrackMyTim
     */
 
 export class IntroPage {
-  public getPropertyPanePage(webPartProps: ITrackMyTimeWebPartProps, _onClickCreateTime, _onClickCreateProject, _onClickUpdateTitles ): IPropertyPanePage {
+  public getPropertyPanePage(webPartProps: ITrackMyTime7WebPartProps, _onClickCreateTime, _onClickCreateProject, _onClickUpdateTitles ): IPropertyPanePage {
     return <IPropertyPanePage>
     { // <page1>
       header: {

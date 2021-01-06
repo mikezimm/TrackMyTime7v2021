@@ -71,3 +71,26 @@ This extension illustrates the following concepts:
 - [Use Microsoft Graph in your solution](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/web-parts/get-started/using-microsoft-graph-apis)
 - [Publish SharePoint Framework applications to the Marketplace](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/publish-to-marketplace-overview)
 - [Microsoft 365 Patterns and Practices](https://aka.ms/m365pnp) - Guidance, tooling, samples and open-source controls for your Microsoft 365 development
+
+
+### npm installations
+npm installs
+```bash
+npm install webpack-bundle-analyzer --save-dev
+npm install @pnp/sp
+npm install @pnp/spfx-controls-react --save --save-exact
+npm install @mikezimm/npmfunctions@0.0.3
+npm install @pnp/spfx-property-controls
+
+```
+
+Original npm installations
+```bash
+npm install @pnp/sp @pnp/graph --save
+npm install @pnp/spfx-controls-react --save --save-exact
+npm install --save @pnp/polyfill-ie11
+npm install @pnp/spfx-property-controls
+npm install --save office-ui-fabric-react
+npm install webpack-bundle-analyzer --save-dev  (2020-02-04:  To analyze web pack size)
+npm install @mikezimm/npmfunctions@0.0.3
+```

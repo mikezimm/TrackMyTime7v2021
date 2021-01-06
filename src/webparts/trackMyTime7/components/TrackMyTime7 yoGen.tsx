@@ -1,12 +1,12 @@
 import * as React from 'react';
-import styles from './TrackMyTimeV7.module.scss';
-import { ITrackMyTimeV7Props } from './ITrackMyTimeV7Props';
+import styles from './TrackMyTime7.module.scss';
+import { ITrackMyTime7Props } from './ITrackMyTime7Props';
 import { escape } from '@microsoft/sp-lodash-subset';
 
-export default class TrackMyTimeV7 extends React.Component<ITrackMyTimeV7Props, {}> {
-  public render(): React.ReactElement<ITrackMyTimeV7Props> {
+export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, {}> {
+  public render(): React.ReactElement<ITrackMyTime7Props> {
     return (
-      <div className={ styles.trackMyTimeV7 }>
+      <div className={ styles.trackMyTime7 }>
         <div className={ styles.container }>
           <div className={ styles.row }>
             <div className={ styles.column }>

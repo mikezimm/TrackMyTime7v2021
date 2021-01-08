@@ -7,19 +7,19 @@ import {
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
-import * as strings from 'TrackMyTimeV7WebPartStrings';
-import TrackMyTimeV7 from './components/TrackMyTimeV7';
-import { ITrackMyTimeV7Props } from './components/ITrackMyTimeV7Props';
+import * as strings from 'TrackMyTime7WebPartStrings';
+import TrackMyTime7 from './components/TrackMyTime7';
+import { ITrackMyTime7Props } from './components/ITrackMyTime7Props';
 
-export interface ITrackMyTimeV7WebPartProps {
+export interface ITrackMyTime7WebPartProps {
   description: string;
 }
 
-export default class TrackMyTimeV7WebPart extends BaseClientSideWebPart<ITrackMyTimeV7WebPartProps> {
+export default class TrackMyTime7WebPart extends BaseClientSideWebPart<ITrackMyTime7WebPartProps> {
 
   public render(): void {
-    const element: React.ReactElement<ITrackMyTimeV7Props> = React.createElement(
-      TrackMyTimeV7,
+    const element: React.ReactElement<ITrackMyTime7Props> = React.createElement(
+      TrackMyTime7,
       {
         description: this.properties.description
       }

@@ -1,7 +1,7 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
-  "id": "dbc351e9-6c1c-49f8-913d-c2600f5f0334",
-  "alias": "TrackMyTimeV7WebPart",
+  "id": "e65563ae-942f-4994-bf8b-606eaa2ad82d",
+  "alias": "TrackMyTime7WebPart",
   "componentType": "WebPart",
 
   // The "*" signifies that the version should be taken from the package.json
@@ -17,11 +17,11 @@
   "preconfiguredEntries": [{
     "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Other
     "group": { "default": "Other" },
-    "title": { "default": "TrackMyTimeV7" },
-    "description": { "default": "TrackMyTimeV7 description" },
+    "title": { "default": "TrackMyTime7" },
+    "description": { "default": "TrackMyTime7 description" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "TrackMyTimeV7"
+      "description": "TrackMyTime7"
     }
   }]
 }

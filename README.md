@@ -48,21 +48,19 @@ Version|Date|Comments
   - **npm install**
   - **gulp serve**
 
-> Include any additional steps as needed.
+### additional npm installations
+npm installs
+```bash
+npm install webpack-bundle-analyzer --save-dev
+npm install @pnp/sp
+npm install @pnp/spfx-controls-react --save --save-exact
+npm install @mikezimm/npmfunctions@0.0.3
+npm install @pnp/spfx-property-controls
+
+```
 
 ## Features
 
-Description of the extension that expands upon high-level summary above.
-
-This extension illustrates the following concepts:
-
-- topic 1
-- topic 2
-- topic 3
-
-> Notice that better pictures and documentation will increase the sample usage and the value you are providing for others. Thanks for your submissions advance.
-
-> Share your web part with others through Microsoft 365 Patterns and Practices program to get visibility and exposure. More details on the community, open-source projects and other activities from http://aka.ms/m365pnp.
 
 ## References
 
@@ -73,16 +71,6 @@ This extension illustrates the following concepts:
 - [Microsoft 365 Patterns and Practices](https://aka.ms/m365pnp) - Guidance, tooling, samples and open-source controls for your Microsoft 365 development
 
 
-### npm installations
-npm installs
-```bash
-npm install webpack-bundle-analyzer --save-dev
-npm install @pnp/sp
-npm install @pnp/spfx-controls-react --save --save-exact
-npm install @mikezimm/npmfunctions@0.0.3
-npm install @pnp/spfx-property-controls
-
-```
 
 Original npm installations
 ```bash

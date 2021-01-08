@@ -19,7 +19,7 @@
     "group": { "default": "Other" },
     "title": { "default": "TrackMyTime7" },
     "description": { "default": "TrackMyTime web part 7" },
-    "officeFabricIconFontName": "Page",
+    "officeFabricIconFontName": "Help",
     "properties": {
       "description": "TrackMyTime",
 

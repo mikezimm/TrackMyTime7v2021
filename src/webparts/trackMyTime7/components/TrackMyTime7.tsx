@@ -1508,11 +1508,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
               viewFields={ [ fields.projectWide2 ] }
               compact={true}
               selectionMode={SelectionMode.single}
-              selection={ this._getSelectedProject.bind(this) }
-              showFilter={false}
-              filterPlaceHolder="Search..."
-              //defaultSelection={ this.state.selectedProjectIndex ? [this.state.selectedProjectIndex] : [] }
-              defaultSelection={ this.state.selectedProjectIndexArr }
+              selection={ this._getSelectedProject }
             />
           //</div>;
           /*     

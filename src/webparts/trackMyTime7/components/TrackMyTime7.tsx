@@ -67,6 +67,8 @@ import { IButtonProps,ISingleButtonProps,IButtonState } from "./createButtons/IC
 import { createIconButton } from "./createButtons/IconButton";
 import { CompoundButton, Stack, IStackTokens, elementContains } from 'office-ui-fabric-react';
 
+import { ListCommandBar } from './CommandBar/ListCommandBar';
+
 
 import * as listBuilders from './ListView/ListView';
 import * as formBuilders from './fields/textFieldBuilder';
@@ -1650,6 +1652,13 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
         ></MyCommandBar>
       </div> : <div></div>;
 
+      let HugoCommandBar = <ListCommandBar
+            onSearch={ null }
+            onActionSelected={ this._onActionSelected }
+            selectedItem={ this.state.selectedProjectIndex }
+          ></ListCommandBar>
+
+
       let makeDialog = null;
       if ( this.state.dialogMode === TMTDialogMode.False ) {
       } else if ( this.state.dialogMode === TMTDialogMode.Review ) {
@@ -1762,6 +1771,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
                 <Stack horizontal={false} horizontalAlign={"start"} tokens={stackFormRowsTokens}>{/* Stack for Pivot Help and Projects */}
                   { this.getPivotHelpText(this.state, this.props)}
                   { hasProject === true ? projCommands : projCommandsNewOnly }
+                  { HugoCommandBar }
                   { listProjects }
                 </Stack>  {/* Stack for Pivot Help and Projects */}
                 { centerPane }
@@ -1804,6 +1814,55 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
     }
 
   }
+
+
+
+
+/***
+ *    d8888b. d8888b.  .d88b.     d88b       .o88b.  .d88b.  .88b  d88. .88b  d88.  .d8b.  d8b   db d8888b. .d8888. 
+ *    88  `8D 88  `8D .8P  Y8.    `8P'      d8P  Y8 .8P  Y8. 88'YbdP`88 88'YbdP`88 d8' `8b 888o  88 88  `8D 88'  YP 
+ *    88oodD' 88oobY' 88    88     88       8P      88    88 88  88  88 88  88  88 88ooo88 88V8o 88 88   88 `8bo.   
+ *    88~~~   88`8b   88    88     88       8b      88    88 88  88  88 88  88  88 88~~~88 88 V8o88 88   88   `Y8b. 
+ *    88      88 `88. `8b  d8' db. 88       Y8b  d8 `8b  d8' 88  88  88 88  88  88 88   88 88  V888 88  .8D db   8D 
+ *    88      88   YD  `Y88P'  Y8888P        `Y88P'  `Y88P'  YP  YP  YP YP  YP  YP YP   YP VP   V8P Y8888D' `8888Y' 
+ *                
+ * FROM HUGO's example                                                                                                  
+ *                                                                                                                  
+ */
+
+
+
+  // Callback from ListCommand
+  private _onActionSelected = (option: string) => {
+    console.log('Action clicked!!!!!!!!!!', option );
+    switch (option) {
+      case "New":
+        this.setState({
+          showProjectScreen: ProjectMode.New,
+        });
+        break;
+      case "Edit":
+        this.setState({
+          showProjectScreen: ProjectMode.Edit,
+        });
+        break;
+      case "Delete":
+        this.setState({
+          showProjectScreen: ProjectMode.Edit,
+        });
+        break;
+      case "Refresh":
+        //this._onRefresh();
+        break;
+      default:
+        break;
+    }
+  }
+
+
+
+
+
 
 /***
  *    d8888b. d8888b.  .d88b.     d88b       .o88b.  .d88b.  .88b  d88. .88b  d88.  .d8b.  d8b   db d8888b. .d8888. 

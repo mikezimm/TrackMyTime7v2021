@@ -8,7 +8,7 @@ import {
   CommandBar,
   ICommandBarItemProps,
 } from "office-ui-fabric-react/lib/CommandBar";
-import { IButtonProps } from "office-ui-fabric-react/lib/Button";
+import { IButtonProps, CommandBarButton } from "office-ui-fabric-react/lib/Button";
 import { IListCommandBarProps } from "./IListCommandBarProps";
 import { AppContext } from "../../../../Common/AppContextProps";
 import { useState, useEffect } from "react";
@@ -17,6 +17,27 @@ import { SearchBox, ISearchBoxStyles, Label } from "office-ui-fabric-react";
 const searchtyles: ISearchBoxStyles = {
   root: { width: 320, marginRight: 15, marginTop: 5, marginBottom: 5 },
 };
+
+export const customButton = (props: IButtonProps) => {
+
+    return (
+      <CommandBarButton
+        {...props}
+        styles={{
+          ...props.styles,
+          root: {backgroundColor: 'white'  ,padding:'10px 20px 10px 10px !important', height: 32, borderColor: 'white'},
+          textContainer: { fontSize: 16, color: '#00457E' },
+          icon: { 
+            fontSize: 18,
+            fontWeight: "bolder",
+            margin: '0px 2px',
+         },
+         
+        }}
+      />
+    );
+  };
+
 
 export const ListCommandBar: React.FunctionComponent<IListCommandBarProps> = (
   props: IListCommandBarProps
@@ -59,6 +80,7 @@ export const ListCommandBar: React.FunctionComponent<IListCommandBarProps> = (
       cacheKey: "myCacheKey", // changing this key will invalidate this item's cache
       iconProps: { iconName: "Add" },
       disabled: _disableNew,
+      commandBarButtonAs: customButton, //2021-01-08:  Added my styles to Hugo's example
       onClick: () => props.onActionSelected("New"),
     },
     {
@@ -66,6 +88,7 @@ export const ListCommandBar: React.FunctionComponent<IListCommandBarProps> = (
       text: "Edit",
       iconProps: { iconName: "Edit" },
       disabled: _disableEdit,
+      commandBarButtonAs: customButton, //2021-01-08:  Added my styles to Hugo's example
       onClick: () => props.onActionSelected("Edit"),
     },
     /* {
@@ -73,6 +96,7 @@ export const ListCommandBar: React.FunctionComponent<IListCommandBarProps> = (
       text: "View",
       iconProps: { iconName: "View" },
       disabled: _disableView,
+        commandBarButtonAs: customButton, //2021-01-08:  Added my styles to Hugo's example
       onClick: () => props.onActionSelected("View"),
     }, */
     {
@@ -80,6 +104,7 @@ export const ListCommandBar: React.FunctionComponent<IListCommandBarProps> = (
       text: "Delete",
       disabled: _disableDelete,
       iconProps: { iconName: "Delete" },
+      commandBarButtonAs: customButton, //2021-01-08:  Added my styles to Hugo's example
       onClick: () => props.onActionSelected("Delete"),
     },
   ];
@@ -92,13 +117,26 @@ export const ListCommandBar: React.FunctionComponent<IListCommandBarProps> = (
       ariaLabel: "refresh list",
       iconOnly: true,
       iconProps: { iconName: "Refresh" },
+      disabled: _disableDelete,
+      commandBarButtonAs: customButton, //2021-01-08:  Added my styles to Hugo's example
       onClick: () => props.onActionSelected("Refresh"),
     },
   ];
 
+  /**
+   * Added my custom styles to make buttons the way I want (no border and white)
+   */
+  let myStyles = {
+        root: { background: 'white', paddingLeft: '0px', height: '32px' }, // - removed backgroundColor: 'white'  
+        primarySet: { height: '32px' }, //This sets the main _items - removed backgroundColor: 'white'  
+        secondarySet:  { height: '32px' }, //This sets the _farRightItems
+    }
+
   return (
     <div>
-      <CommandBar items={_items} overflowItems={_overflowItems} />
+      <CommandBar items={_items} overflowItems={ _overflowItems} 
+        styles={myStyles}
+      />
     </div>
   );
 };

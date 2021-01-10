@@ -1511,7 +1511,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
               compact={true}
               selectionMode={SelectionMode.single}
               selection={ this._getSelectedProject }
-            />
+            />;
           //</div>;
           /*     
           listProjects = listBuilders.projectBuilder(this.props,this.state,this.state.projects.newFiltered, this._getSelectedProject.bind(this));
@@ -1612,51 +1612,11 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
  *                                                                                                                                       
  *                                                                                                                                       
  */
-
-      console.log('MYCOMMANDBAR Testing: testUpdate', testUpdate );
-      console.log('MYCOMMANDBAR Testing: hasProject', hasProject );
-
-      const projCommands = this.state.allLoaded === true ? <div>
-        <MyCommandBar
-          testUpdate= { '' }
-          hasProject={ true }
-          newProject={ this._newProject.bind(this) }
-          editProject={ this._editProject.bind(this) }
-          copyProject={ this._copyProject.bind(this) }
-          parkProject={ this._parkProjectDialog.bind(this) }
-          cancelProject={ this._cancelProjectDialog.bind(this) }
-          completeProject={ this._completeProjectDialog.bind(this) }
-
-          reviewProject={ this._reviewProjectDialog.bind(this) }
-          planProject={ this._planProjectDialog.bind(this) }
-          processProject={ this._processProjectDialog.bind(this) }
-
-        ></MyCommandBar>
-      </div> : <div></div>;
-
-      const projCommandsNewOnly = this.state.allLoaded === true ? <div>
-        <MyCommandBar
-          testUpdate= { '' }
-          hasProject={ false }
-          newProject={ this._newProject.bind(this) }
-          editProject={ this._editProject.bind(this) }
-          copyProject={ this._copyProject.bind(this) }
-          parkProject={ this._parkProjectDialog.bind(this) }
-          cancelProject={ this._cancelProjectDialog.bind(this) }
-          completeProject={ this._completeProjectDialog.bind(this) }
-
-          reviewProject={ this._reviewProjectDialog.bind(this) }
-          planProject={ this._planProjectDialog.bind(this) }
-          processProject={ this._processProjectDialog.bind(this) }
-
-        ></MyCommandBar>
-      </div> : <div></div>;
-
       let HugoCommandBar = <ListCommandBar
             onSearch={ null }
             onActionSelected={ this._onActionSelected }
             selectedItem={ this.state.selectedProjectIndex }
-          ></ListCommandBar>
+          ></ListCommandBar>;
 
 
       let makeDialog = null;
@@ -1770,7 +1730,6 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
                 { /* this.createProjectChoices(this.state) */ }
                 <Stack horizontal={false} horizontalAlign={"start"} tokens={stackFormRowsTokens}>{/* Stack for Pivot Help and Projects */}
                   { this.getPivotHelpText(this.state, this.props)}
-                  { hasProject === true ? projCommands : projCommandsNewOnly }
                   { HugoCommandBar }
                   { listProjects }
                 </Stack>  {/* Stack for Pivot Help and Projects */}

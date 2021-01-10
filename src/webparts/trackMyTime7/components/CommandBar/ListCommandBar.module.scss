@@ -1,0 +1,23 @@
+@import '../../../../../node_modules/office-ui-fabric-react/dist/sass/_References';
+
+.tmtCommandBarActive {
+    //:global {
+        *[class*="ms-CommandBar-overflowButton"] {
+            //padding-left: 0px;
+            //background-color: rgb(243, 242, 241);
+            background-color: transparent;
+            border-width: 0px;
+            border-color: transparent;
+        }
+    //} 
+}
+.tmtCommandBarInActive {
+    //:global {
+        *[class*="ms-CommandBar-overflowButton"] {
+            //padding-left: 0px;
+            //background-color: rgb(243, 242, 241);
+            border-width: 0px;
+            border-color: transparent;
+        }
+    //} 
+}

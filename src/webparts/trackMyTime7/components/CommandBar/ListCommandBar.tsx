@@ -14,6 +14,12 @@ import { AppContext } from "../../../../Common/AppContextProps";
 import { useState, useEffect } from "react";
 import { SearchBox, ISearchBoxStyles, Label } from "office-ui-fabric-react";
 
+import { ITrackMyTime7State, IProjectOptions, IProjectAction  } from '../ITrackMyTime7State';
+import { MyCons, projActions } from '../TrackMyTime7';
+
+import styles from './ListCommandBar.module.scss';
+
+
 const searchtyles: ISearchBoxStyles = {
   root: { width: 320, marginRight: 15, marginTop: 5, marginBottom: 5 },
 };
@@ -38,26 +44,22 @@ export const customButton = (props: IButtonProps) => {
     );
   };
 
+  
 
-export const ListCommandBar: React.FunctionComponent<IListCommandBarProps> = (
-  props: IListCommandBarProps
-) => {
 
-  const _applicationContext = React.useContext(AppContext);
-  const {} = _applicationContext;
-  const { selectedItem } = props;
+export const ListCommandBar: React.FunctionComponent<IListCommandBarProps> = ( props: IListCommandBarProps ) => {
+    
+    const _applicationContext = React.useContext(AppContext);
+    const {} = _applicationContext;
+    const { selectedItem } = props;
 
-  let _disableNew: boolean = false;
-  let _disableEdit: boolean = true;
-  let _disableDelete: boolean = true;
-  let _disableView: boolean = true;
+    let _disableNew: boolean = false;
+    let _disableUpdates: boolean = true;
 
-  //Added this check for selectedItem because zero is first item in array of items
-  if (selectedItem || selectedItem === 0 ) {
-    _disableEdit = false;
-    _disableDelete = false;
-    _disableView = false;
-  }
+    //Added this check for selectedItem because zero is first item in array of items
+    if (selectedItem || selectedItem === 0 ) {
+        _disableUpdates = false;
+    }
 
   //
   useEffect(() => {});
@@ -74,66 +76,108 @@ export const ListCommandBar: React.FunctionComponent<IListCommandBarProps> = (
 
   // CommandBar Options
   const _items: ICommandBarItemProps[] = [
-    {
-      key: "newItem",
-      text: "New",
-      cacheKey: "myCacheKey", // changing this key will invalidate this item's cache
-      iconProps: { iconName: "Add" },
-      disabled: _disableNew,
-      commandBarButtonAs: customButton, //2021-01-08:  Added my styles to Hugo's example
-      onClick: () => props.onActionSelected("New"),
-    },
-    {
-      key: "edit",
-      text: "Edit",
-      iconProps: { iconName: "Edit" },
-      disabled: _disableEdit,
-      commandBarButtonAs: customButton, //2021-01-08:  Added my styles to Hugo's example
-      onClick: () => props.onActionSelected("Edit"),
-    },
-    /* {
-      key: "view",
-      text: "View",
-      iconProps: { iconName: "View" },
-      disabled: _disableView,
+      {
+        key: projActions.new.status, 
+        text: projActions.new.status,  
+        name: '',
+        disabled: _disableNew,
+        ariaLabel: projActions.new.status, 
         commandBarButtonAs: customButton, //2021-01-08:  Added my styles to Hugo's example
-      onClick: () => props.onActionSelected("View"),
-    }, */
-    {
-      key: "delete",
-      text: "Delete",
-      disabled: _disableDelete,
-      iconProps: { iconName: "Delete" },
-      commandBarButtonAs: customButton, //2021-01-08:  Added my styles to Hugo's example
-      onClick: () => props.onActionSelected("Delete"),
-    },
+        onClick: () => props.onActionSelected(projActions.new.status),
+        iconProps: {  iconName: projActions.new.icon, },
+      },
+      {
+        key: projActions.edit.status, 
+        text: projActions.edit.status,  
+        name: '',
+        disabled: _disableUpdates,
+        ariaLabel: projActions.edit.status, 
+        commandBarButtonAs: customButton, //2021-01-08:  Added my styles to Hugo's example
+        onClick: () => props.onActionSelected(projActions.edit.status),
+        iconProps: {  iconName: projActions.edit.icon, },
+      },
+      {
+        key: projActions.copy.status, 
+        text: projActions.copy.status,  
+        name: '',
+        disabled: _disableUpdates,
+        ariaLabel: projActions.copy.status, 
+        commandBarButtonAs: customButton, //2021-01-08:  Added my styles to Hugo's example
+        onClick: () => props.onActionSelected(projActions.copy.status),
+        iconProps: {  iconName: projActions.copy.icon, },
+      }
+
   ];
 // FarItems
   const _overflowItems: ICommandBarItemProps[] = [
     {
-      key: "refresh",
-      text: "refresh",
-      // This needs an ariaLabel since it's icon-only
-      ariaLabel: "refresh list",
-      iconOnly: true,
-      iconProps: { iconName: "Refresh" },
-      disabled: _disableDelete,
-      commandBarButtonAs: customButton, //2021-01-08:  Added my styles to Hugo's example
-      onClick: () => props.onActionSelected("Refresh"),
-    },
+        key: projActions.review.status, 
+        text: projActions.review.status,  
+        name: '',
+        disabled: _disableUpdates,
+        ariaLabel: projActions.review.status, 
+        commandBarButtonAs: customButton, //2021-01-08:  Added my styles to Hugo's example
+        onClick: () => props.onActionSelected(projActions.review.status),
+        iconProps: {  iconName: projActions.review.icon, },
+      },{
+        key: projActions.plan.status, 
+        text: projActions.plan.status,  
+        name: '',
+        disabled: _disableUpdates,
+        ariaLabel: projActions.plan.status, 
+        commandBarButtonAs: customButton, //2021-01-08:  Added my styles to Hugo's example
+        onClick: () => props.onActionSelected(projActions.plan.status),
+        iconProps: {  iconName: projActions.plan.icon, },
+      },{
+        key: projActions.process.status, 
+        text: projActions.process.status,  
+        name: '',
+        disabled: _disableUpdates,
+        ariaLabel: projActions.process.status, 
+        commandBarButtonAs: customButton, //2021-01-08:  Added my styles to Hugo's example
+        onClick: () => props.onActionSelected(projActions.process.status),
+        iconProps: {  iconName: projActions.process.icon, },
+      },{
+        key: projActions.park.status, 
+        text: projActions.park.status,  
+        name: '',
+        disabled: _disableUpdates,
+        ariaLabel: projActions.park.status, 
+        commandBarButtonAs: customButton, //2021-01-08:  Added my styles to Hugo's example
+        onClick: () => props.onActionSelected(projActions.park.status),
+        iconProps: {  iconName: projActions.park.icon, },
+      },{
+        key: projActions.cancel.status, 
+        text: projActions.cancel.status,  
+        name: '',
+        disabled: _disableUpdates,
+        ariaLabel: projActions.cancel.status, 
+        commandBarButtonAs: customButton, //2021-01-08:  Added my styles to Hugo's example
+        onClick: () => props.onActionSelected(projActions.cancel.status),
+        iconProps: {  iconName: projActions.cancel.icon, },
+      },{
+        key: projActions.complete.status, 
+        text: projActions.complete.status,  
+        name: '',
+        disabled: _disableUpdates,
+        ariaLabel: projActions.complete.status, 
+        commandBarButtonAs: customButton, //2021-01-08:  Added my styles to Hugo's example
+        onClick: () => props.onActionSelected(projActions.complete.status),
+        iconProps: {  iconName: projActions.complete.icon, },
+      },
   ];
 
   /**
    * Added my custom styles to make buttons the way I want (no border and white)
    */
   let myStyles = {
-        root: { background: 'white', paddingLeft: '0px', height: '32px' }, // - removed backgroundColor: 'white'  
+        root: { background: 'white', paddingLeft: '0px', height: '32px', borderColor: 'white' }, // - removed backgroundColor: 'white'  
         primarySet: { height: '32px' }, //This sets the main _items - removed backgroundColor: 'white'  
         secondarySet:  { height: '32px' }, //This sets the _farRightItems
-    }
+    };
 
   return (
-    <div>
+    <div className={ _disableUpdates === true ? styles.tmtCommandBarInActive : styles.tmtCommandBarActive }>
       <CommandBar items={_items} overflowItems={ _overflowItems} 
         styles={myStyles}
       />

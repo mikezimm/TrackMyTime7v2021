@@ -1107,9 +1107,8 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       let setPivot = !this.state.projectType ? this.state.projectMasterPriorityChoice :this.state.projectUserPriorityChoice ;
       //console.log('render setPivot:', setPivot);
       //console.log('Public render props:', this.props);
-      console.log('TRACK MY TIME STATE:', this.state);
+      //console.log('TRACK MY TIME STATE:', this.state);
   
- 
 
 /***
  *     .o88b. db   db d88888b  .o88b. db   dD      d8888b. d888888b .d8888.  .d8b.  d8888b. db      d88888b      .d8888.  .d8b.  db    db d88888b 
@@ -1475,8 +1474,8 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       let testUpdate = '' + this.state.filteredCategory + this.state.selectedProjectIndex;
       let hasProject = false;
       
-      console.log('MYCOMMANDBAR Testing: selectedProjectIndex', this.state.selectedProjectIndex );
-      console.log('MYCOMMANDBAR Testing: selectedProject', this.state.selectedProject );
+      //console.log('MYCOMMANDBAR Testing: selectedProjectIndex', this.state.selectedProjectIndex );
+      //console.log('MYCOMMANDBAR Testing: selectedProject', this.state.selectedProject );
 
       if ( this.state.selectedProjectIndex !== null && this.state.selectedProjectIndex !== undefined ) { 
         if ( this.state.selectedProjectIndex > -1 ) { 
@@ -1504,13 +1503,25 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
         ></Spinner>;
       } else {
 
+        console.log('Should select this Project Index', this.state.selectedProjectIndex );
+
+        let viewFields = [ fields.projectWide2 ];
+        if ( this.props.statusCol.length > 0 )  { 
+          if ( this.props.statusCol.indexOf('after') > -1 ) {
+            viewFields = [ fields.projectWide2, fields.projectStatus ];
+          } else {
+            viewFields = [ fields.projectStatus, fields.projectWide2 ];
+          }        
+        } 
+
         listProjects = //<div className={ this.state.debugColors ? styles.projectListView : '' } >
             <ListView
               items={ this.state.projects.newFiltered }
-              viewFields={ [ fields.projectWide2 ] }
+              viewFields={ viewFields }
               compact={true}
               selectionMode={SelectionMode.single}
               selection={ this._getSelectedProject }
+              //defaultSelection={ [this.state.selectedProjectIndex ]}
             />;
           //</div>;
           /*     
@@ -1805,11 +1816,29 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
           showProjectScreen: ProjectMode.Edit,
         });
         break;
-      case "Delete":
+      case "Copy":
         this.setState({
-          showProjectScreen: ProjectMode.Edit,
+          showProjectScreen: ProjectMode.Copy,
         });
         break;
+      case projActions.review.status :
+        this._updateProject(projActions.review);
+        break;
+      case projActions.plan.status :
+        this._updateProject(projActions.plan);
+        break;
+      case projActions.process.status :
+        this._updateProject(projActions.process);
+        break;
+      case projActions.park.status :
+        this._updateProject(projActions.park);
+        break;
+      case projActions.cancel.status :
+        this._updateProject(projActions.cancel);
+        break;
+      case projActions.complete.status :
+        this._updateProject(projActions.complete);
+        break;        
       case "Refresh":
         //this._onRefresh();
         break;
@@ -2177,7 +2206,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
     for (let p of pivots){
       if ( p[pivProp] === propFindValue ) {
         returnValue = p[returnProp];
-        console.log('1233-get Pivot index:', p);
+        //console.log('1233-get Pivot index:', p);
       }
     }
 
@@ -2652,8 +2681,6 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       thisFilter.push(thisFilterString);
     }
 
-    console.log('thisFilter', thisFilter);
-
     let projects = this.state.projects;
     projects.lastFiltered = projects.newFiltered;
     let filterThese = newProjectType ? projects.user : projects.master ;
@@ -2678,8 +2705,22 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       selectedProject = JSON.parse(JSON.stringify(projects.newFiltered[selectedProjectIndex]));
     }
 
+    let formEntry = this.state.formEntry;
+
+    if ( selectedProject == null ) {
+      formEntry = this.createFormEntry();
+    } else {
+      formEntry = this.updateFormEntry(formEntry, selectedProject);
+    }
+
+    let statePivots = this.updateStatePivots( this.state.pivots, selectedProjectIndex, this.state.projectType);
+
+    console.log('thisFilter, selectedProjectIndex, selectedProject', thisFilter, selectedProjectIndex, selectedProject );
+
     //public updateProjectSelection
     this.setState({
+      pivots: statePivots,
+      formEntry:formEntry, 
       projectType: newProjectType,
       filteredCategory: filteredCategory,
       projectMasterPriorityChoice: newProjectMasterPriorityChoice,
@@ -3567,6 +3608,7 @@ public toggleTips = (item: any): void => {
           id: p.Id,
           editLink: null , //Link to view/edit item link
           titleProject: thisProjectTitle,
+          statusCol: this.props.statusCol,
 
           comments: this.buildSmartText(p.Comments, origComments),
           //2020-05-13:  Replace Active with StatusTMT  when Status = 9 then active = null, Status = 8 then active = false else true

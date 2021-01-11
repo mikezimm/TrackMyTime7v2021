@@ -37,7 +37,7 @@ define([], function() {
     "FieldLabel_AllowUserProjects": "Allow User Projects (direct from history)",  // Use to allow getting list of user write-in projects
     "FieldLabel_ProjectMasterPriority": "Master Project Priority", //Use to determine what projects float to top.... your most recent?  last day?
     "FieldLabel_ProjectUserPriority": "User Project Priority", //Use to determine what projects float to top.... your most recent?  last day?
-
+    "FieldLabel_StatusColumn": "Project Status Column settings",
 
     "FieldLabel_DefaultProjectsOrHistory": "Default projects:  Projects or History?", //Label to ask for default setting: Projects or User History?
     "FieldLabel_SyncProjectPivotsOnToggle": "Keep Projects and History pivots in sync", //always keep pivots in sync when toggling projects/history

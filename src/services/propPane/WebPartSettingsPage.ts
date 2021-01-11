@@ -137,6 +137,14 @@ import {
             isCollapsed: true ,
 
             groupFields: [
+
+              //statusCol
+
+              PropertyPaneTextField('statusCol', {
+                label: strings.FieldLabel_StatusColumn,
+                description: 'coma separted: icon,number,text,full'
+              }),
+
               PropertyPaneToggle('onlyActiveProjects', {
                 label: strings.FieldLabel_OnlyActiveProjects,
                 offText: strings.FieldLabel_ToggleTextOff,

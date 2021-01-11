@@ -114,7 +114,7 @@ public constructor(props:ICenterPaneProps){
  */
 
     public render(): React.ReactElement<ICenterPaneProps> {
-        console.log('centerPanes.tsx', this.props, this.state);
+        //console.log('centerPanes.tsx', this.props, this.state);
 
         //This checks for case where your projects are based on Time items, not the project list.
         //Time items do not have projOptions prop so it will cause a crash error.
@@ -234,7 +234,7 @@ public constructor(props:ICenterPaneProps){
         };
 
         itemID = item.title + '|Splitme|' + itemID;
-        console.log('ActivityButton item:', item);
+        //console.log('ActivityButton item:', item);
         let activityButton = createIconButton(item.icon.name, item.title, _onActivityClick, itemID, activityButtonStyles, false );
 
         return activityButton;

@@ -278,6 +278,7 @@ export interface IProject {
 
   //Task related fields:
   status?: string;
+  statusCol?: string[];
   dueDate?: Date;
   completedDate?: Date;
   completedBy?: IUser;

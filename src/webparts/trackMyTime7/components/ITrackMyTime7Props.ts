@@ -42,6 +42,8 @@ export interface ITrackMyTime7Props {
   projectKey: string[];
   syncProjectPivotsOnToggle; //always keep pivots in sync when toggling projects/history
 
+  statusCol: string[];
+  
   projectType:boolean; //Projects = 0 History = 1
 
   defProjEditOptions: string;  // Semi-colon separated edit options which determine default toggles in project edit screen... 

@@ -80,6 +80,7 @@ export interface ITrackMyTime7WebPartProps {
   onlyActiveProjects: boolean; //Only read in active projects.
   projectKey: string[]; // project props used to determine a unique user project in the choice list
   syncProjectPivotsOnToggle: boolean;  //always keep pivots in sync when toggling projects/history
+  statusCol: string;  //comma separated text to show status column for project. Options =  [icon,number,text,status]
 
   projectType?:boolean; //Projects = 0 History = 1
   defProjEditOptions?: string;
@@ -177,6 +178,12 @@ export default class TrackMyTime7WebPart extends BaseClientSideWebPart<ITrackMyT
 // ^^^ 2021-01-05 Copied to this point
 
   public render(): void {
+
+    let statusCol = [];
+    if ( this.properties.statusCol && this.properties.statusCol.length > 0 ) {
+      statusCol = this.properties.statusCol.toLowerCase().split(',');
+    }
+
     const element: React.ReactElement<ITrackMyTime7Props> = React.createElement(
       TrackMyTime7,
       {
@@ -218,6 +225,8 @@ export default class TrackMyTime7WebPart extends BaseClientSideWebPart<ITrackMyT
         onlyActiveProjects: this.properties.onlyActiveProjects, //Only read in active projects.
         projectKey: ['titleProject','projectID2'], // project props used to determine a unique user project in the choice list
         syncProjectPivotsOnToggle: this.properties.syncProjectPivotsOnToggle, //always keep pivots in sync when toggling projects/history
+
+        statusCol: statusCol,
 
         projectType: this.properties.projectType, //Projects = 0 History = 1
         defProjEditOptions : this.properties.defProjEditOptions ,

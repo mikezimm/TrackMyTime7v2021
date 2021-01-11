@@ -38,6 +38,8 @@ declare interface ITrackMyTime7WebPartStrings {
   FieldLabel_DefaultProjectsOrHistory: string; //Label to ask for default setting: Projects or User History?
   FieldLabel_SyncProjectPivotsOnToggle: string; //always keep pivots in sync when toggling projects/history
 
+  FieldLabel_StatusColumn: string;
+
   FieldLabel_Yours: string; //Heading and label for "Your" projects or history
   FieldLabel_YourTeam: string; //Heading and label for "Your Team's" projects or history
   FieldLabel_Others: string; //Heading and label for "Your Team's" projects or history

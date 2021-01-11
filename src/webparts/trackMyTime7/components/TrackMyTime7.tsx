@@ -1522,7 +1522,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
         let listFilterLabel : any = null;
         if ( this.state.filterStory != '' ) {
 
-          listFilterLabel = <div>
+          listFilterLabel = <div style={{ paddingBottom: '15px'}} >
               <span style={{ paddingLeft: '20px', paddingRight: '5px'}}>Filtering on Story:</span>
               <span style={{ paddingRight: '10px', color: 'darkgreen'}}><b> { this.state.filterStory } </b></span>
               <span><b>ALT-Click Item to clear</b></span>
@@ -1537,6 +1537,9 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
               compact={true}
               selectionMode={SelectionMode.single}
               selection={ this._getSelectedProject }
+              showFilter={true}
+              //defaultFilter="John"
+              filterPlaceHolder="Search..."
               //defaultSelection={ [this.state.selectedProjectIndex ]}
             /></div>;
           //</div>;

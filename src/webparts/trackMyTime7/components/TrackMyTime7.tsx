@@ -4021,10 +4021,11 @@ public toggleTips = (item: any): void => {
 
       if ( fromProject.active === null ) { 
         fromProject.filterFlags.push('closed') ; 
-        fromProject.filterFlags.push('closed') ; 
+        fromProject.filterFlags.push('Closed') ; 
         countThese = 'closed'; }
       else if ( fromProject.active === false ) { 
         fromProject.filterFlags.push('parkingLot') ; 
+        fromProject.filterFlags.push('Parking lot') ; 
         countThese = 'parkingLot'; }
       else if ( fromProject.everyone ) { 
         fromProject.filterFlags.push('everyone') ; 

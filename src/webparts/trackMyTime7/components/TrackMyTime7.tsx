@@ -1521,9 +1521,10 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
 
         let listFilterLabel : any = null;
         if ( this.state.filterStory != '' ) {
-          let filterLabelString = 'Filtering on Story: ' + this.state.filterStory;
+
           listFilterLabel = <div>
-              <span style={{ paddingLeft: '20px'}}> { filterLabelString } </span>
+              <span style={{ paddingLeft: '20px', paddingRight: '5px'}}>Filtering on Story:</span>
+              <span style={{ paddingRight: '10px', color: 'darkgreen'}}><b> { this.state.filterStory } </b></span>
               <span><b>ALT-Click Item to clear</b></span>
             </div> ; 
         } 
@@ -2009,18 +2010,41 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
     console.log('Selected items:', items);
 
         
-    let filterStory = this.state.filterStory;
+    let filterStory = this.state.filterStory ? this.state.filterStory : '';
     if (e.ctrlKey) {
       //Set clicked pivot as the hero pivot
-      filterStory = items[0].story ;
+      filterStory = items[0].story ? items[0].story : '' ;
     } else if (e.altKey) {
       //Enable-disable ChangePivots options
       filterStory = '' ;
     }
 
+    
+    /**
+     * VVVVVV  This section copied from onLinkClick.... VVVVVV
+     */
+    let thisFilter = [ ];
+
+    if (this.state.filteredCategory != null ) {
+      thisFilter.push(this.state.filteredCategory);
+    }
+
+    //get last index from pivot object... then set it to lastIndex here.
+
+    if ( filterStory && filterStory.length > 0 ) { thisFilter.push( filterStory ) ; }
+
+    let projects = this.state.projects;
+    projects.lastFiltered = projects.newFiltered;
+    let filterThese = this.state.projectType ? projects.user : projects.master ;
+    projects.newFiltered = this.getTheseProjects(filterThese, thisFilter, 'asc', 'titleProject');
+
+    /**
+     * ^^^^^  This section copied from onLinkClick.... ^^^^^
+     */
+
     let item : IProject; // = this.state.projects.newFiltered[0];
 
-    for (let p of this.state.projects.newFiltered ) {
+    for (let p of projects.newFiltered ) {
       if (p.id === items[0].id) {
         item = p;
       }
@@ -2036,15 +2060,15 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       console.log('_getSelectedProject error:');
       console.log('_getSelectedProject items:', items);
       console.log('_getSelectedProject item:', item);
-      console.log('_getSelectedProject this.state.projects:',this.state.projects);
+      console.log('_getSelectedProject projects:',projects);
       //item = this.createFormEntry();
     }
 
-    //2020-04-03:  let selectedProjectIndex = isItemNull ? this.state.selectedProjectIndex + 1 : this._getProjectIndexFromArray(item.id,'id',this.state.projects.newFiltered);
-    //2020-04-03:  let selectedProjectIndex = isItemNull ? 0 : this._getProjectIndexFromArray(item.id,'id',this.state.projects.newFiltered);
+    //2020-04-03:  let selectedProjectIndex = isItemNull ? this.state.selectedProjectIndex + 1 : this._getProjectIndexFromArray(item.id,'id',projects.newFiltered);
+    //2020-04-03:  let selectedProjectIndex = isItemNull ? 0 : this._getProjectIndexFromArray(item.id,'id',projects.newFiltered);
 
-//    let selectedProjectIndex = isItemNull ? this.state.selectedProjectIndex : this._getProjectIndexFromArray(item.id,'id',this.state.projects.newFiltered);
-    let selectedProjectIndexAny : any = isItemNull ? this.state.selectedProjectIndex : doesObjectExistInArray(this.state.projects.newFiltered,'id', item.id, true );
+//    let selectedProjectIndex = isItemNull ? this.state.selectedProjectIndex : this._getProjectIndexFromArray(item.id,'id',projects.newFiltered);
+    let selectedProjectIndexAny : any = isItemNull ? this.state.selectedProjectIndex : doesObjectExistInArray(projects.newFiltered,'id', item.id, true );
     if ( typeof selectedProjectIndexAny === 'string' ) { selectedProjectIndexAny = parseInt(selectedProjectIndexAny) ; }
     let selectedProjectIndex : number = selectedProjectIndexAny === false ? null : selectedProjectIndexAny ;
 
@@ -2079,6 +2103,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
   
       this.setState({ 
         filterStory: filterStory,
+        projects: projects,
         pivots: statePivots,
         formEntry:formEntry, 
         blinkOnProject: this.state.blinkOnProject === 1 ? 2 : 1,
@@ -2704,7 +2729,6 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
 
     let selectedProjectIndex = this.getSStatePivotProp( this.state.pivots, newProjectType, 'headerText' , filteredCategory, 'lastIndex' );
     let thisFilterString = this.getSStatePivotProp( this.state.pivots, newProjectType, 'headerText' , filteredCategory, 'filter' );
-    let filterPivots = thisFilterString;
 
     if (thisFilterString != null ) {
       thisFilter.push(thisFilterString);
@@ -3995,12 +4019,29 @@ public toggleTips = (item: any): void => {
       if (fromProject.leaderId === userId ) { yours = true; }
       
 
-      if ( fromProject.active === null ) { fromProject.filterFlags.push('closed') ; countThese = 'closed'; }
-      else if ( fromProject.active === false ) { fromProject.filterFlags.push('parkingLot') ; countThese = 'parkingLot'; }
-      else if ( fromProject.everyone ) { fromProject.filterFlags.push('everyone') ; countThese = 'everyone'; }
-      else if ( yours ) { fromProject.filterFlags.push('your') ; countThese = 'your'; }
-      else if ( team ) { fromProject.filterFlags.push('team') ; countThese = 'team'; }
-      else { fromProject.filterFlags.push('otherPeople' ) ; countThese = 'otherPeople'; }
+      if ( fromProject.active === null ) { 
+        fromProject.filterFlags.push('closed') ; 
+        fromProject.filterFlags.push('closed') ; 
+        countThese = 'closed'; }
+      else if ( fromProject.active === false ) { 
+        fromProject.filterFlags.push('parkingLot') ; 
+        countThese = 'parkingLot'; }
+      else if ( fromProject.everyone ) { 
+        fromProject.filterFlags.push('everyone') ; 
+        fromProject.filterFlags.push('Everyone') ; 
+        countThese = 'everyone'; }
+      else if ( yours ) { 
+        fromProject.filterFlags.push('your') ; 
+        fromProject.filterFlags.push('Yours') ; 
+        countThese = 'your'; }
+      else if ( team ) { 
+        fromProject.filterFlags.push('team') ; 
+        fromProject.filterFlags.push('Your Team') ; 
+        countThese = 'team'; }
+      else { 
+        fromProject.filterFlags.push('otherPeople' ) ; 
+        fromProject.filterFlags.push('Others' ) ; 
+        countThese = 'otherPeople'; }
 
       if ( fromProject.story != null ) { fromProject.filterFlags.push( fromProject.story ) ; }
       if ( fromProject.status != null ) { fromProject.filterFlags.push( fromProject.status ) ; }

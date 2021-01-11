@@ -123,8 +123,8 @@ export interface ITimeEntry extends ISaveEntry {
     listComments?: string;
     active?: boolean;  //Used to indicate inactive projects
 
-  
     filterFlags?: string[]; // what flags does this match?  yourRecent, allRecent etc...
+
     timeGroup?: string; //Used for grouping the list of entries
 
     coreTime?: string;
@@ -457,8 +457,13 @@ export interface ITrackMyTime7State {
   // 4 -Project options
   pivtTitles?:string[];
   filteredCategory?: string;
+  
+  filterStory?: string;
+  filterStatus?: string;
+  
   pivotDefSelKey?: string;
   onlyActiveProjects?: boolean; //Only read in active projects.
+
 
   userCounts?: any;  // user based (from trackTimeList) projects that are assigned to current user.
   projectCounts?: any;  // project based (from trackTimeList) projects that are assigned to current user.

@@ -745,6 +745,10 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
 
       pivtTitles:['Yours', 'Your Team','Everyone','Others'],
       filteredCategory: this.props.defaultProjectPicker,
+      
+      filterStory: '',
+      filterStatus: null,
+
       pivotDefSelKey:"",
       onlyActiveProjects: this.props.onlyActiveProjects,
       projectType: this.props.projectType,
@@ -1362,7 +1366,8 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
 
       const noProjectsFound = this.state.projectType !== false && this.state.projectsLoadStatus === 'Complete' ? '' :
       <div style={{ paddingTop: '0px' }}>
-        <h2>No Projects found in "{this.state.filteredCategory}" :(</h2>
+        <h2>No Projects found in "{this.state.filteredCategory}" </h2>
+        { this.state.filterStory.length > 0 ? <h3>With Story = { this.state.filterStory }</h3> : null }
         <h3>Get started by checking for other projects</h3>
         <ul>
         <li>Click on the other Project Categories like</li>
@@ -1514,7 +1519,17 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
           }        
         } 
 
+        let listFilterLabel : any = null;
+        if ( this.state.filterStory != '' ) {
+          let filterLabelString = 'Filtering on Story: ' + this.state.filterStory;
+          listFilterLabel = <div>
+              <span style={{ paddingLeft: '20px'}}> { filterLabelString } </span>
+              <span><b>ALT-Click Item to clear</b></span>
+            </div> ; 
+        } 
         listProjects = //<div className={ this.state.debugColors ? styles.projectListView : '' } >
+        <div className={ styles.projectListViewX } >
+            { listFilterLabel }
             <ListView
               items={ this.state.projects.newFiltered }
               viewFields={ viewFields }
@@ -1522,7 +1537,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
               selectionMode={SelectionMode.single}
               selection={ this._getSelectedProject }
               //defaultSelection={ [this.state.selectedProjectIndex ]}
-            />;
+            /></div>;
           //</div>;
           /*     
           listProjects = listBuilders.projectBuilder(this.props,this.state,this.state.projects.newFiltered, this._getSelectedProject.bind(this));
@@ -1973,6 +1988,8 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
     console.log( "_getSelectedProject items:", items );
     let selectedProject: IProject = null;
 
+    let e: any = event;
+
     if (this.state.userLoadStatus !== 'Complete') { return; }
     if (this.state.timeTrackerLoadStatus !== 'Complete') { return; }
     if (this.state.userLoadStatus !== 'Complete') { return; }
@@ -1990,7 +2007,17 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
     }
     console.log('_getSelectedProject:  ITEMS.LENGTH <> 0');
     console.log('Selected items:', items);
-    
+
+        
+    let filterStory = this.state.filterStory;
+    if (e.ctrlKey) {
+      //Set clicked pivot as the hero pivot
+      filterStory = items[0].story ;
+    } else if (e.altKey) {
+      //Enable-disable ChangePivots options
+      filterStory = '' ;
+    }
+
     let item : IProject; // = this.state.projects.newFiltered[0];
 
     for (let p of this.state.projects.newFiltered ) {
@@ -2051,6 +2078,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       clickHistory.push(lastTrackedClick);
   
       this.setState({ 
+        filterStory: filterStory,
         pivots: statePivots,
         formEntry:formEntry, 
         blinkOnProject: this.state.blinkOnProject === 1 ? 2 : 1,
@@ -2676,10 +2704,13 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
 
     let selectedProjectIndex = this.getSStatePivotProp( this.state.pivots, newProjectType, 'headerText' , filteredCategory, 'lastIndex' );
     let thisFilterString = this.getSStatePivotProp( this.state.pivots, newProjectType, 'headerText' , filteredCategory, 'filter' );
+    let filterPivots = thisFilterString;
 
     if (thisFilterString != null ) {
       thisFilter.push(thisFilterString);
     }
+
+    if ( this.state.filterStory && this.state.filterStory.length > 0 ) { thisFilter.push( this.state.filterStory ) ; }
 
     let projects = this.state.projects;
     projects.lastFiltered = projects.newFiltered;
@@ -3970,6 +4001,10 @@ public toggleTips = (item: any): void => {
       else if ( yours ) { fromProject.filterFlags.push('your') ; countThese = 'your'; }
       else if ( team ) { fromProject.filterFlags.push('team') ; countThese = 'team'; }
       else { fromProject.filterFlags.push('otherPeople' ) ; countThese = 'otherPeople'; }
+
+      if ( fromProject.story != null ) { fromProject.filterFlags.push( fromProject.story ) ; }
+      if ( fromProject.status != null ) { fromProject.filterFlags.push( fromProject.status ) ; }
+
       fromProject.key = this.getProjectKey(fromProject);
       if ( masterKeys.indexOf(fromProject.key) < 0 ) { 
         //This is a new project, add

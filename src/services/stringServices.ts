@@ -21,7 +21,7 @@ import * as React from 'react';
 
 import { sortStringArray , sortNumberArray } from '@mikezimm/npmfunctions/dist/arrayServices';
 //https://stackoverflow.com/a/2970667/4210807
-export function camelize(str,firstCap: boolean) {
+export function camelize(str : string ,firstCap: boolean) {
 
     if ( str == null ) { return ''; }
     else {
@@ -162,7 +162,7 @@ export function encodeDecodeString( str : string , doThis: 'encode' | 'decode') 
  * 
  * @param str
  */
-export function getStringArrayFromString ( str : string, delim: string, removeEmpty: boolean, sort: 'asc' | 'dec' | null ) : string[] {
+export function getStringArrayFromString ( str : string, delim: string, removeEmpty: boolean, sort: 'asc' | 'dec' | null ) : string[] | null {
 
     if (str == null ) { return null; }
     else if (  delim == null || delim == '' ) { return [ str ]; }
@@ -195,7 +195,7 @@ export function getStringArrayFromString ( str : string, delim: string, removeEm
 
 export function cleanEmptyElementsFromString ( str : string, delim: string, removeEmpty: boolean, sort: 'asc' | 'dec' | null ) : string {
 
-    let stringArray : string[] = getStringArrayFromString( str, delim, removeEmpty, sort );
+    let stringArray : string[] | any = getStringArrayFromString( str, delim, removeEmpty, sort );
     return stringArray.join(';');
   
 }

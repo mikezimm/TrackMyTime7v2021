@@ -119,8 +119,11 @@ export interface ITheTime {
 
 }
 
+const xxx = 'Sunshine';
+const zzz = 'Zimmerman';
+
 //https://stackoverflow.com/questions/4156434/javascript-get-the-first-day-of-the-week-from-current-date
-function getDayOfWeek(d,sunOrMon: string) {
+function getDayOfWeek( d : any ,sunOrMon: string ) {
 
   let d1 = new Date(d);
   let diff;
@@ -173,7 +176,7 @@ export function isStringValidDate( test: string, type : 'zulu' | 'us' | 'eu' | '
 
 
 //https://www.w3resource.com/javascript-exercises/javascript-date-exercise-24.php
-export function ISO8601_week_no(dt) 
+export function ISO8601_week_no( dt : any ) 
   {
     var tdt = new Date(dt.valueOf());
     var dayn = (dt.getDay() + 6) % 7;
@@ -189,7 +192,7 @@ export function ISO8601_week_no(dt)
 
 
   //This is a more detailed version of the time object for charting purposes
-export function makeTheTimeObject(timeString, coreStart = 8, coreEnd = 18, useHolidays = holidays) {
+export function makeTheTimeObject( timeString : string, coreStart = 8, coreEnd = 18, useHolidays = holidays ) {
 
   //console.log('makeTimeObject: ', timeString);
   let rightNow = new Date();
@@ -313,7 +316,7 @@ export function makeTheTimeObject(timeString, coreStart = 8, coreEnd = 18, useHo
 
 }
 
-export function makeSmallTimeObject(timeString) {
+export function makeSmallTimeObject( timeString : any ) {
 
   //console.log('makeTimeObject: ', timeString);
   let rightNow = new Date();
@@ -362,11 +365,11 @@ export function makeSmallTimeObject(timeString) {
 
 }
 
-export function getLocalMonths(local,format){
+export function getLocalMonths( local : string,format : string ){
 
     let months = [];
 
-    let getMonth = (idx) => {
+    let getMonth = (idx : any) => {
         var objDate = new Date();
         objDate.setDate(1);
         objDate.setMonth(idx-1);
@@ -384,7 +387,7 @@ export function getLocalMonths(local,format){
 }
 
 
-export function getDayTimeToMinutes (startTime){
+export function getDayTimeToMinutes ( startTime : any ){
 
   let thisYear = new Date().getUTCFullYear();
   let startYear = new Date(startTime).getUTCFullYear();
@@ -442,7 +445,7 @@ export function getBestTimeDelta(startTime: string,endTime: string){
 }
 
 
-export function getTimeDelta(time1, time2, inWhat : string){
+export function getTimeDelta( time1 : any, time2 : any, inWhat : string ){
   let date = new Date(time1).getTime();
   let now = new Date(time2).getTime();
   let age : number = (now - date);
@@ -466,7 +469,7 @@ export function getTimeDelta(time1, time2, inWhat : string){
 
 }
 
-export function getAge(time, inWhat : string){
+export function getAge( time : any, inWhat : string ){
   let now = new Date().getTime();
   let age = getTimeDelta(time, now, inWhat);
 
@@ -498,14 +501,14 @@ export function getGreeting(name: IUser){
   }
 
   //console.log('getGreeting:', name);
-  let userName = name;
+  let userName : any = name;
   if (userName ){
     if (userName.title.indexOf("Click") > -1 ) {
       message = message.replace('Afternoon partner',"Servus");
       message = message.replace('Top O the mornin to you',"Neata");
       message = message.replace('nick'," BK");
 
-    } else if (userName.title.indexOf("Zimmerman") > 0 ) {
+    } else if (userName.title.indexOf(zzz) > 0 ) {
       message = message.replace('nick'," BM");
     } else { 
       message = message.replace('nick', " " + userName.initials);
@@ -518,13 +521,13 @@ export function getGreeting(name: IUser){
 export function getNicks(name: IUser){
   let hour = new Date().getHours();
   //console.log('getNicks:', name);
-  let message = name;
+  let message  : any = name;
   let result = "";
   if ( message) {
-    if (message.title.indexOf('Click') === 0 ){
-      result = "Hey Sunshine!";
-    } else if (message.title == 'Mike Zimmerman'){
-      result = "Hey Zimmerman!";
+    if (message.title.indexOf('Clicky') === 0 ){
+      result = "Hey " + xxx + "!";
+    } else if (message.title == 'Mike ' + zzz ){
+      result = "Hey " + zzz + "!";
     } else {
       result = 'Hi ' + message.title.split(' ')[0];
     }
@@ -535,10 +538,27 @@ export function getNicks(name: IUser){
 }
 
 
+export interface IDeltaDaysArray {
+  years: {
+    daysAgo: number[],
+    daysAgoR: number[],
+    daysAgoNull: any[],
+    labelShort: string[],
+    labelLong: string[],
+  },
+  months: {        
+    daysAgo: number[],
+    daysAgoR: number[],
+    daysAgoNull: any[],
+    labelShort: string[],
+    labelLong: string[],
+}
+}
+
 export function createDeltaDateArrays(){
 
 
-        let result = {
+        let result : IDeltaDaysArray = {
         years: {
           daysAgo: [],
           daysAgoR: [],
@@ -567,7 +587,7 @@ export function createDeltaDateArrays(){
       for (let m = 11; m > -1 ; m--) {
 
         let thisDate = new Date(y,m,1);
-        let deltaDays = getTimeDelta(thisDate, todaysDate, 'days');
+        let deltaDays  : number = getTimeDelta(thisDate, todaysDate, 'days');
 
         if ( deltaDays > 0 ) {
           result.months.daysAgo.push(deltaDays);

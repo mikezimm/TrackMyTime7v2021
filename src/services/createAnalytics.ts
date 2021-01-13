@@ -1,6 +1,8 @@
 //Updated Jan 5, 2020 per https://pnp.github.io/pnpjs/getting-started/
 import { Web } from "@pnp/sp/presets/all";
 
+import { ITheTime } from './dateServices';
+
 export function getBrowser(validTypes,changeSiteIcon){
 
     let thisBrowser = "";
@@ -130,7 +132,7 @@ export function getTheCurrentTime () {
 
     const now = new Date();
     const theTime = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds() + "." + now.getMilliseconds();
-    let result : any = {
+    let result : ITheTime = {
         'now': now,
         'theTime' : theTime,
         'milliseconds' : now.getMilliseconds(),

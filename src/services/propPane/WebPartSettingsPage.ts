@@ -142,7 +142,7 @@ import {
 
               PropertyPaneTextField('statusCol', {
                 label: strings.FieldLabel_StatusColumn,
-                description: 'coma separted: icon,number,text,full'
+                description: 'coma separted: icon,number,text,full,right',
               }),
 
               PropertyPaneToggle('onlyActiveProjects', {

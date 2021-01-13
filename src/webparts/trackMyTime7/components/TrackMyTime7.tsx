@@ -746,7 +746,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       pivtTitles:['Yours', 'Your Team','Everyone','Others'],
       filteredCategory: this.props.defaultProjectPicker,
       
-      filterStory: '',
+      filterStory: 'None',
       filterStatus: null,
 
       pivotDefSelKey:"",
@@ -1131,6 +1131,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       const stackFormRowsTokens: IStackTokens = { childrenGap: 10 };
       const stackManualDateTokens: IStackTokens = { childrenGap: 20 };
       const stackChartTokens: IStackTokens = { childrenGap: 30 };
+      const stackProjFilterLabelTokens: IStackTokens = { childrenGap: 15 };
   
       let hoursSinceLastTime = 0;
       if ( this.state.timeTrackerLoadStatus === "Complete" ) {
@@ -1512,20 +1513,22 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
 
         let viewFields = [ fields.projectWide2 ];
         if ( this.props.statusCol.length > 0 )  { 
-          if ( this.props.statusCol.indexOf('after') > -1 ) {
+          if ( this.props.statusCol.indexOf('right') > -1 ) {
             viewFields = [ fields.projectWide2, fields.projectStatus ];
           } else {
             viewFields = [ fields.projectStatus, fields.projectWide2 ];
           }        
         } 
 
+        let clearProjFilter = createIconButton('ClearFilter','Clear filter',this.clearProjectFlagFilter.bind(this), null, null, false );
         let listFilterLabel : any = null;
-        if ( this.state.filterStory != '' ) {
+        if ( this.state.filterStory != 'None' ) {
 
-          listFilterLabel = <div style={{ paddingBottom: '15px'}} >
-              <span style={{ paddingLeft: '20px', paddingRight: '5px'}}>Filtering on Story:</span>
-              <span style={{ paddingRight: '10px', color: 'darkgreen'}}><b> { this.state.filterStory } </b></span>
-              <span><b>ALT-Click Item to clear</b></span>
+          listFilterLabel = <div style={{ paddingBottom: '15px', paddingLeft: '15px' }} ><Stack horizontal={true} horizontalAlign={'start'} verticalAlign={'center'} wrap={false} tokens={stackProjFilterLabelTokens}>
+              <span style={{ }}>Filtering on Story:</span>
+              <span style={{ color: 'darkgreen'}}><b> { this.state.filterStory } </b></span>
+              <span> { clearProjFilter } </span>
+              </Stack>
             </div> ; 
         } 
         listProjects = //<div className={ this.state.debugColors ? styles.projectListView : '' } >
@@ -1592,7 +1595,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
           showCharts={ this.state.showCharts }
           entries= { this.state.entries }
           entryCount={ this.state.allEntries.length }
-          defaultStory="None"
+          defaultStory= { this.state.filterStory ? this.state.filterStory : "None" }
           today={ this.props.today }
           selectedStory = { this.state.selectedStory }
           selectedUser = { this.state.selectedUser }
@@ -1991,6 +1994,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
 
     console.log( "_getSelectedProject items:", items );
     let selectedProject: IProject = null;
+    let selectedStory : ISelectedStory = defStory;
 
     let e: any = event;
 
@@ -2016,10 +2020,11 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
     let filterStory = this.state.filterStory ? this.state.filterStory : '';
     if (e.ctrlKey) {
       //Set clicked pivot as the hero pivot
-      filterStory = items[0].story ? items[0].story : '' ;
+      filterStory = items[0].story ? items[0].story : 'None' ;
+      selectedStory = { key: filterStory, text: filterStory };
     } else if (e.altKey) {
       //Enable-disable ChangePivots options
-      filterStory = '' ;
+      filterStory = 'None' ;
     }
 
     
@@ -2034,7 +2039,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
 
     //get last index from pivot object... then set it to lastIndex here.
 
-    if ( filterStory && filterStory.length > 0 ) { thisFilter.push( filterStory ) ; }
+    if ( filterStory && filterStory.length > 0 && filterStory !== "None" ) { thisFilter.push( filterStory ) ; }
 
     let projects = this.state.projects;
     projects.lastFiltered = projects.newFiltered;
@@ -2106,6 +2111,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
   
       this.setState({ 
         filterStory: filterStory,
+        selectedStory: selectedStory,
         projects: projects,
         pivots: statePivots,
         formEntry:formEntry, 
@@ -2722,22 +2728,39 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
 
   } //End onClick
 
+
+  private clearProjectFlagFilter = () : void => {
+    this.updateProjectSelection( this.state.filteredCategory , this.state.projectType,  'cleared: ' + this.state.filterStory + ' filter' , null ) ;
+
+  }
+
   private updateProjectSelection( filteredCategory: string, newProjectType : boolean, trackedClick: string, filterText : string ) {
 
     console.log('onLinkClick: this.state', this.state);
       
     let thisFilter = [];
-    
+    let filterStory = this.state.filterStory;
+    let selectedStory : ISelectedStory = this.state.selectedStory;
     //get last index from pivot object... then set it to lastIndex here.
 
     let selectedProjectIndex = this.getSStatePivotProp( this.state.pivots, newProjectType, 'headerText' , filteredCategory, 'lastIndex' );
     let thisFilterString = this.getSStatePivotProp( this.state.pivots, newProjectType, 'headerText' , filteredCategory, 'filter' );
 
+    if ( thisFilterString == null ) { thisFilterString = this.getSStatePivotProp( this.state.pivots, newProjectType, 'filter' , filteredCategory, 'filter' ); }
+    if ( thisFilterString == null ) { thisFilterString = this.getSStatePivotProp( this.state.pivots, newProjectType, 'itemKey' , filteredCategory, 'filter' ); }
+
     if (thisFilterString != null ) {
       thisFilter.push(thisFilterString);
     }
 
-    if ( this.state.filterStory && this.state.filterStory.length > 0 ) { thisFilter.push( this.state.filterStory ) ; }
+    if ( trackedClick.toLowerCase().indexOf('clear') === 0 ) {
+      //If this contains clear, then do not push the story/status/whatever flag to filter items on.
+      filterStory = "None";
+      selectedStory = defStory;
+    } else {
+      if ( filterStory && filterStory.length > 0 && filterStory !== 'None' ) { thisFilter.push( this.state.filterStory ) ; }
+    }
+
 
     let projects = this.state.projects;
     projects.lastFiltered = projects.newFiltered;
@@ -2781,12 +2804,17 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       formEntry:formEntry, 
       projectType: newProjectType,
       filteredCategory: filteredCategory,
+      filterStory: filterStory,
+      selectedStory: selectedStory,
+
       projectMasterPriorityChoice: newProjectMasterPriorityChoice,
       projectUserPriorityChoice: newProjectUserPriorityChoice,
       projects: projects,
       //searchCount: newFilteredProjects.length,
       searchType: '',
       searchWhere: ' in ' + filteredCategory,
+
+      
       //pivotDefSelKey: defaultSelectedKey,
       blinkOnProject: 0,
       selectedProject: selectedProject,

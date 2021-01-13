@@ -4,12 +4,12 @@ import { ITrackMyTime7State, IChartData, ITimeEntry, IStories, ICoreTimes, IEntr
 
 import { IUser, ILink, IChartSeries, ICharNote,  } from '../../../../services/IReUsableInterfaces';
 
-import { ITheTime } from '../../../../services/dateServices';
+import { ITheTime } from '@mikezimm/npmfunctions/dist/dateServices';
 
 import { getAge, getDayTimeToMinutes, getBestTimeDelta, getLocalMonths, getTimeSpan, getGreeting,
-    getNicks, makeTheTimeObject, getTimeDelta, monthStr3, weekday3, createDeltaDateArrays} from '../../../../services/dateServices';
+    getNicks, makeTheTimeObject, getTimeDelta, monthStr3, weekday3, createDeltaDateArrays} from '@mikezimm/npmfunctions/dist/dateServices';
 
-import { camelize, } from '../../../../services/stringServices';
+import { camelize, } from '@mikezimm/npmfunctions/dist/stringServices';
 
 import * as strings from 'TrackMyTime7WebPartStrings';
 

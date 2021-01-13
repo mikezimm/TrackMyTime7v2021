@@ -12,7 +12,7 @@ import { Pivot, PivotItem, PivotLinkSize, PivotLinkFormat, IPivotStyles, IPivotS
 import { Label, ILabelStyles } from 'office-ui-fabric-react/lib/Label';
 import { IStyleSet } from 'office-ui-fabric-react/lib/Styling';
 
-import * as cStyles from '../../../services/styleReact';
+import * as cStyles from '@mikezimm/npmfunctions/dist/styleReact';
 
 import { IChoiceGroupOption } from 'office-ui-fabric-react/lib/ChoiceGroup';
 
@@ -35,7 +35,7 @@ import Utils from './utils';
 
 import { saveTheTime, saveAnalytics, getTheCurrentTime } from '../../../services/createAnalytics';
 import { getAge, getDayTimeToMinutes, getBestTimeDelta, getLocalMonths, getTimeSpan, getGreeting,
-          getNicks, makeTheTimeObject, getTimeDelta, monthStr3, monthStr, weekday3} from '../../../services/dateServices';
+          getNicks, makeTheTimeObject, getTimeDelta, monthStr3, monthStr, weekday3} from '@mikezimm/npmfunctions/dist/dateServices';
 
 //import { sortObjectArrayByStringKey, doesObjectExistInArray } from '../../../services/arrayServices';
 
@@ -55,8 +55,8 @@ import {IProject, ISmartText, ITimeEntry, IProjectTarget, IProjectInfo,
         IPropsActivityURL, IProjectHistory, IProjectAction } from './ITrackMyTime7State';
 
 import { pivotOptionsGroup, } from '../../../services/propPane';
-import { getHelpfullError, } from '../../../services/ErrorHandler';
-import { camelize, cleanEmptyElementsFromString } from '../../../services/stringServices';
+import { getHelpfullError, } from '@mikezimm/npmfunctions/dist/ErrorHandler';
+import { camelize, cleanEmptyElementsFromString } from '@mikezimm/npmfunctions/dist/stringServices';
 
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 

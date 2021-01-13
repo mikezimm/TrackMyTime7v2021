@@ -15,7 +15,7 @@ import { IListInfo, IMyListInfo, IServiceLog, notify, getXMLObjectFromString } f
 
 import { doesObjectExistInArray } from '@mikezimm/npmfunctions/dist/arrayServices';
 
-import { getHelpfullError } from '../ErrorHandler';
+import { getHelpfullError } from '@mikezimm/npmfunctions/dist/ErrorHandler';
 
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";

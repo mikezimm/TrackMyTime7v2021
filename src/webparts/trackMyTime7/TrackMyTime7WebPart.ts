@@ -19,9 +19,9 @@ import { sp } from '@pnp/sp';
 
 import { propertyPaneBuilder } from '../../services/propPane/PropPaneBuilder';
 import { saveTheTime, getTheCurrentTime, saveAnalytics } from '../../services/createAnalytics';
-import { makeTheTimeObject } from '../../services/dateServices';
+import { makeTheTimeObject } from '@mikezimm/npmfunctions/dist/dateServices';
 
-import { getHelpfullError, } from '../../services/ErrorHandler';
+import { getHelpfullError, } from '@mikezimm/npmfunctions/dist/ErrorHandler';
 
 import { PageContext } from '@microsoft/sp-page-context';
 import { WebPartContext } from '@microsoft/sp-webpart-base';

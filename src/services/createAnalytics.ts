@@ -1,7 +1,7 @@
 //Updated Jan 5, 2020 per https://pnp.github.io/pnpjs/getting-started/
 import { Web } from "@pnp/sp/presets/all";
 
-import { ITheTime } from './dateServices';
+import { ITheTime } from '@mikezimm/npmfunctions/dist/dateServices';
 
 export function getBrowser(validTypes,changeSiteIcon){
 

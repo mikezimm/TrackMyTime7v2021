@@ -118,8 +118,9 @@ public constructor(props:IChartUsageProps){
             console.log('stacked2', stacked2);
             console.log('this.props.chartData.storyIndex', this.props.chartData.storyIndex);
             console.log('this.props.dataOptions', this.props.dataOptions);
+            //Labels for CoreTime chart must be zero because the labels are not indexed by story.
             let chartYearlyCoreTime = createMultiSeries1ScaleCharts('Core time', true, true, stacked2, 
-                    this.props.chartData.storyIndex, ChartType.Line, this.props.WebpartWidth, this.props.dataOptions);
+                    0, ChartType.Line, this.props.WebpartWidth, this.props.dataOptions);
 
             /**     this did not work... errors out chart completely.
              *      let chartYearlyCoreTime = createMultiSeries1ScaleCharts('Core time', true, true, stacked2, 

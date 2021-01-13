@@ -2,7 +2,7 @@
 import { ITrackMyTime7Props } from './ITrackMyTime7Props';
 
 import { IFormFields, IProjectFormFields } from './fields/fieldDefinitions';
-import { ITheTime } from '../../../services/dateServices';
+import { ITheTime } from '@mikezimm/npmfunctions/dist/dateServices';
 
 import { ProjectMode } from './Project/ProjectEditPage';
 

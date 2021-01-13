@@ -9,7 +9,7 @@ import { ListView, IViewField, SelectionMode, GroupOrder, IGrouping } from "@pnp
 import {ITimeEntry, IProject} from '../ITrackMyTime7State';
 import * as fields from './ViewFields';
 
-import * as cStyles from '../../../../services/styleReact';
+import * as cStyles from '@mikezimm/npmfunctions/dist/styleReact';
 import styles from '../TrackMyTime7.module.scss';
 
 /**

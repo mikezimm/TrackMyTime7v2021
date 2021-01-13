@@ -48,21 +48,19 @@ Version|Date|Comments
   - **npm install**
   - **gulp serve**
 
-> Include any additional steps as needed.
+### additional npm installations
+npm installs
+```bash
+npm install webpack-bundle-analyzer --save-dev
+npm install @pnp/sp
+npm install @pnp/spfx-controls-react --save --save-exact
+npm install @mikezimm/npmfunctions@0.0.3
+npm install @pnp/spfx-property-controls
+
+```
 
 ## Features
 
-Description of the extension that expands upon high-level summary above.
-
-This extension illustrates the following concepts:
-
-- topic 1
-- topic 2
-- topic 3
-
-> Notice that better pictures and documentation will increase the sample usage and the value you are providing for others. Thanks for your submissions advance.
-
-> Share your web part with others through Microsoft 365 Patterns and Practices program to get visibility and exposure. More details on the community, open-source projects and other activities from http://aka.ms/m365pnp.
 
 ## References
 
@@ -71,3 +69,16 @@ This extension illustrates the following concepts:
 - [Use Microsoft Graph in your solution](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/web-parts/get-started/using-microsoft-graph-apis)
 - [Publish SharePoint Framework applications to the Marketplace](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/publish-to-marketplace-overview)
 - [Microsoft 365 Patterns and Practices](https://aka.ms/m365pnp) - Guidance, tooling, samples and open-source controls for your Microsoft 365 development
+
+
+
+Original npm installations
+```bash
+npm install @pnp/sp @pnp/graph --save
+npm install @pnp/spfx-controls-react --save --save-exact
+npm install --save @pnp/polyfill-ie11
+npm install @pnp/spfx-property-controls
+npm install --save office-ui-fabric-react
+npm install webpack-bundle-analyzer --save-dev  (2020-02-04:  To analyze web pack size)
+npm install @mikezimm/npmfunctions@0.0.3
+```

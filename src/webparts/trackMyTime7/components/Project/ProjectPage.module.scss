@@ -1,0 +1,157 @@
+
+@import '../../../../../node_modules/office-ui-fabric-react/dist/sass/_References';
+
+//2020-05-19:  Copied from Socialiis7/Master CommandBar.tsx
+
+.projectPage {
+
+  // 2020-06-22:  Added per https://github.com/pnp/sp-dev-fx-controls-react/issues/568
+  // Makes label of dateTimePickers bold.
+  // See https://www.w3schools.com/cssref/css_selectors.asp for additional filters/selectors
+  .peopleFields {
+    font-size: inherit
+  }
+
+  :global {
+      [class^=dateTimePicker_] > .ms-Label {
+      font-weight: 700
+    }
+
+    [class^=ms-Dropdown-container] > .ms-Label {
+      font-weight: 700
+    }
+
+    [class^=ms-Toggle] > .ms-Label {
+      font-weight: 700
+    }
+
+    [class*=fieldWithIconButton_] > .ms-Label {
+      font-weight: 700
+    }
+
+    [class*=peopleFields] .ms-Label {
+      color: darkred
+    }
+
+    [style*=lavender] .ms-Label {
+      color: purple
+    }
+
+    [style*=lightgreen] .ms-Label {
+      color: darkgreen
+    }
+
+    [style*=wheat] .ms-Label {
+      color: #663500
+    }
+
+    [style*=powderblue] .ms-Label {
+      color: blue
+    }
+
+  }
+
+  .peopleBlock {
+    display: inline-block;
+  }
+
+  .dateBlock {
+    display: inline-block;
+  }
+  
+  .addMeButton {
+    width: 32px;
+    height: 32px;
+    position: relative;
+    float: right;
+    z-index: 10;
+  }
+
+  .fieldWithIconButton{
+    position: relative;
+  }
+
+  .hoverCard {
+    margin: 10px;
+    width: 200;
+    height: '100%';
+    display: 'flex';
+    align-items: 'center';
+    justify-content: 'center';
+    
+    .assignedTo {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+  }
+
+  .toggleRow {
+    label {
+      font-weight: bold;
+    }
+  }
+
+  .nowWrapping {
+    white-space: 'nowrap',
+  }
+  
+  .icon {
+    height: 18px;
+    line-height: 18px;
+  }
+
+  .dateTimePicker {
+
+    label {
+      font-weight: bold;
+    }
+
+    .root {
+      font-weight: bold;
+    }
+
+    input {
+      //height: 32px;
+      min-width: 80px;
+    }
+  }
+
+  .container {
+    max-width: 1200px;
+    //padding-left: 0px;
+    //background-color: white;
+    //display:inline-block;
+    //float: right;
+    //display:flex;
+    //align-items: center;
+    //top:  -50px;
+
+    //margin: 0px auto;
+    //box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .projectField {
+    label {
+      font-weight: bold;
+    }
+  }
+  
+  .reportField {
+    display: table-cell;
+    width: 100%;
+
+    .fieldGroup {
+      border-color: red;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input {
+      //height: 32px;
+      min-width: 80px;
+    }
+  }
+
+}

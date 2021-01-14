@@ -305,8 +305,8 @@ import {
 
           PropertyPaneToggle('showTimeSlider', {
             label: strings.FieldLabel_ShowTimeSlider,
-            offText: strings.FieldLabel_ToggleTextOff,
-            onText: strings.FieldLabel_ToggleTextOn
+            offText: 'Locked',
+            onText: 'Unlock',
           }),
 
           PropertyPaneDropdown('timeSliderInc', <IPropertyPaneDropdownProps>{

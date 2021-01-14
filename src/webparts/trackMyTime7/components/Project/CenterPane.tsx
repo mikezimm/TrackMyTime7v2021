@@ -122,6 +122,9 @@ public constructor(props:ICenterPaneProps){
         let validProject = this.props.parentState.projectType !== false ? null :
             this.props.parentState.projects.newFiltered[this.props.projectIndex];
 
+        let selectedProject = this.props.parentState.selectedProject;
+        let hasProject = selectedProject !== null && selectedProject !== undefined ? true : false;
+
         if ( this.props.allLoaded && this.props.showCenter && this.props.projectIndex > -1  && validProject != null ) {
 
             let projOptions = validProject.projOptions;
@@ -130,7 +133,8 @@ public constructor(props:ICenterPaneProps){
 
             let thisProjectElement : any[] = [];
 
-            if ( this.props.parentProps.centerPaneFields.length > 0 ) {
+            if ( this.props.parentProps.centerPaneFields.length > 0 && hasProject === true ) {
+
 
                 this.props.parentProps.centerPaneFields.map( field => {
                     //description: 'coma separted: title,projectID,category,story,task,team',
@@ -149,8 +153,20 @@ public constructor(props:ICenterPaneProps){
                         <div title='Task Status and Due Date'> { this.props.parentState.selectedProject.status + ' : Due ' + this.props.parentState.selectedProject.dueDate } </div>);  }
 
                     if ( field === 'team' ){   
-                        thisProjectElement.push( < div title='Leader'> { this.props.parentState.selectedProject.leader } </div> );
-                        thisProjectElement.push( < div title='Team'> { this.props.parentState.selectedProject.team.join(', ') } </div> );
+                        let selectedLeader = selectedProject.leader ? selectedProject.leader.Title : null;
+                        let selectedTeam : string[] = selectedProject.team && selectedProject.team.length > 0 ? 
+                            selectedProject.team.map( member => { return member.Title; } ) : [];
+                        let selectedTeamTitles : string[] = [];
+
+                        if ( selectedLeader ) { thisProjectElement.push( < div title='Leader'> { selectedLeader } </div> ); }
+                        if ( selectedTeam.length > 0 ) {
+                        
+                            selectedProject.team.map( member => {
+                                selectedTeamTitles.push( member.Title );
+                            });
+
+                            thisProjectElement.push( < div title='Team Members'> { selectedTeamTitles.join( ',' ) } </div> );
+                        }
                     }
 
                 });
@@ -166,7 +182,9 @@ public constructor(props:ICenterPaneProps){
                         { ActivityLinkElement }
                     </Stack>
                     { thisProjectElement.length === 0 ? null :
-                        null
+                        <Stack padding={20} horizontal={false} horizontalAlign={"space-between"} tokens={stackButtonTokensFields}> {/* Stack for Projects and body */}
+                            { thisProjectElement }
+                        </Stack>
 
                     }
                     <ColoredLine color="gray" height="1"/>

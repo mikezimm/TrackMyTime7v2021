@@ -80,6 +80,9 @@ export interface ITrackMyTime7Props {
   // 9 - Other web part options
   webPartScenario: string; //Choice used to create mutiple versions of the webpart.
 
+  centerPaneFields: string[];
+  centerPaneStyles: any;
+
   pivotSize: string;
   pivotFormat: string;
   pivotOptions: string;

@@ -128,18 +128,47 @@ public constructor(props:ICenterPaneProps){
 
             let ActivityLinkElement = projOptions.showLink == false ? null : this.ActivityLink(projOptions, this.props._onActivityClick);
 
-            let thisProjectElement = null;
+            let thisProjectElement : any[] = [];
+
+            if ( this.props.parentProps.centerPaneFields.length > 0 ) {
+
+                this.props.parentProps.centerPaneFields.map( field => {
+                    //description: 'coma separted: title,projectID,category,story,task,team',
+                    if ( field === 'title' ){   thisProjectElement.push( <div title='Selected Project'> { this.props.parentState.selectedProject.titleProject } </div>);  }
+
+                    if ( field === 'projectid' ){   thisProjectElement.push( 
+                        <div title='ProjectID1 and Project ID2'> { this.props.parentState.selectedProject.projectID1.projListValue + ' : ' + this.props.parentState.selectedProject.projectID2.projListValue } </div>);  }
+
+                    if ( field === 'category' ){   thisProjectElement.push( 
+                        <div title='Category1 and Category2'> { this.props.parentState.selectedProject.category1 + ' : ' + this.props.parentState.selectedProject.category2 } </div>);  }
+
+                    if ( field === 'story' ){   thisProjectElement.push( 
+                        <div title='Story and Chapter'> { this.props.parentState.selectedProject.story + ' : ' + this.props.parentState.selectedProject.chapter } </div>);  }
+
+                    if ( field === 'task' ){   thisProjectElement.push( 
+                        <div title='Task Status and Due Date'> { this.props.parentState.selectedProject.status + ' : Due ' + this.props.parentState.selectedProject.dueDate } </div>);  }
+
+                    if ( field === 'team' ){   
+                        thisProjectElement.push( < div title='Leader'> { this.props.parentState.selectedProject.leader } </div> );
+                        thisProjectElement.push( < div title='Team'> { this.props.parentState.selectedProject.team.join(', ') } </div> );
+                    }
+
+                });
+
+            }
 
             const stackButtonTokensBody: IStackTokens = { childrenGap: 40 };
-
+            const stackButtonTokensFields: IStackTokens = { childrenGap: 10 };
             //<div className={  }>
             return (
                 <div>
                     <Stack padding={20} horizontal={false} horizontalAlign={"space-between"} tokens={stackButtonTokensBody}> {/* Stack for Projects and body */}
                         { ActivityLinkElement }
-                        {  }
                     </Stack>
-                    { thisProjectElement }
+                    { thisProjectElement.length === 0 ? null :
+                        null
+
+                    }
                     <ColoredLine color="gray" height="1"/>
                 </div>
             );

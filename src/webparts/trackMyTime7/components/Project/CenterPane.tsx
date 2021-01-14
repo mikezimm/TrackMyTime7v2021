@@ -168,9 +168,7 @@ public constructor(props:ICenterPaneProps){
                             thisProjectElement.push( < div title='Team Members'> { selectedTeamTitles.join( ',' ) } </div> );
                         }
                     }
-
                 });
-
             }
 
             const stackButtonTokensBody: IStackTokens = { childrenGap: 40 };

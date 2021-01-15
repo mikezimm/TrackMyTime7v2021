@@ -157,19 +157,19 @@ public constructor(props:ICenterPaneProps){
                         thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['status','dueDate'] , false ) ; }
 
                     if ( field === 'team' ){ 
-                        let selectedLeader = selectedProject.leader ? selectedProject.leader.Title : null;
+                        thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['leader.Title'] , false ) ;
+
                         let selectedTeam : string[] = selectedProject.team && selectedProject.team.length > 0 ? 
                             selectedProject.team.map( member => { return member.Title; } ) : [];
                         let selectedTeamTitles : string[] = [];
 
-                        if ( selectedLeader ) { thisProjectElement.push( < div title='Leader'> { selectedLeader } </div> ); }
                         if ( selectedTeam.length > 0 ) {
-                        
+
                             selectedProject.team.map( member => {
                                 selectedTeamTitles.push( member.Title );
                             });
-
-                            thisProjectElement.push( < div title='Team Members'> { selectedTeamTitles.join( ',' ) } </div> );
+                            thisProjectElement.push( <div style={{fontSize: 'x-small'}} title={ 'Team' }> { 'Team' } </div> );
+                            thisProjectElement.push( < div title='Team Members'> { selectedTeamTitles.join( ', ' ) } </div> );
                         }
                     }
                 });
@@ -206,7 +206,7 @@ public constructor(props:ICenterPaneProps){
             //<div className={  }>
             return (
                 <div style={{ paddingTop: '20px' }}>
-                    <Stack padding={20} horizontal={false} horizontalAlign={"space-between"} tokens={stackButtonTokensBody}> {/* Stack for Projects and body */}
+                    <Stack padding={ 5 } horizontal={false} horizontalAlign={"space-between"} tokens={stackButtonTokensBody}> {/* Stack for Projects and body */}
                         { centerStack }
                     </Stack>
                     <ColoredLine color="gray" height="1"/>
@@ -226,9 +226,15 @@ public constructor(props:ICenterPaneProps){
         let scValue = [];
 
         addFields.map( field => { 
-            if ( item[ field ] && item[ field ].length > 0 || showEmpty === true ) {
+            let fieldVal = '';
+            if ( field.indexOf('.') > 0 ) { 
+                fieldVal = item[ field.split('.')[0] ][ field.split('.')[1] ];
+            } else { fieldVal = item[field] ; }
+            field = field.replace('.', ' ');
+
+            if ( fieldVal && fieldVal.length > 0 || showEmpty === true ) {
                 //Credit for TitleCase https://stackoverflow.com/a/196991
-                let fieldValue = item[ field ].length > 0 ? item[ field ] : 'Empty' ;
+                let fieldValue = fieldVal.length > 0 ? fieldVal : 'Empty' ;
                 scHeading.push( field.charAt(0).toUpperCase() + field.substr(1) );
                 scValue.push( fieldValue );
             }
@@ -239,7 +245,7 @@ public constructor(props:ICenterPaneProps){
 
         if ( scValue.length > 0 ) {
             elementArray.push( <div style={{fontSize: 'x-small'}} title={ headingLabel }> { headingLabel } </div> );
-            elementArray.push( <div style={{marginBottom: '10px'}} title= { valueLabel }> { valueLabel } </div>);
+            elementArray.push( <div style={{marginBottom: '13px'}} title= { valueLabel }> { valueLabel } </div>);
         }
 
         return elementArray;

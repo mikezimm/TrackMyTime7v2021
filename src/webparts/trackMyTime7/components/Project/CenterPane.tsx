@@ -5,7 +5,7 @@ import * as strings from 'TrackMyTime7WebPartStrings';
 //import * as links from './AllLinks';
 
 import { ChartControl, ChartType } from '@pnp/spfx-controls-react/lib/ChartControl';
-import { CompoundButton, Stack, IStackTokens, elementContains, Link, ILinkProps, DefaultButton } from 'office-ui-fabric-react';
+import { CompoundButton, Stack, IStackTokens, elementContains, Link, ILinkProps, DefaultButton, arraysEqual } from 'office-ui-fabric-react';
 import { IChoiceGroupOption } from 'office-ui-fabric-react/lib/ChoiceGroup';
 
 import { ITrackMyTime7Props } from '../ITrackMyTime7Props';
@@ -134,7 +134,7 @@ public constructor(props:ICenterPaneProps){
             let projOptions = validProject.projOptions;
 
             let ActivityLinkElement = projOptions.showLink == false ? null : this.ActivityLink(projOptions, this.props._onActivityClick);
-            if ( projOptions.activity.length === 0 ) { dangerouslyExpandIndex = 0 }
+            if ( projOptions.activity.length === 0 ) { dangerouslyExpandIndex = 0; }
 
             let thisProjectElement : any[] = [];
 
@@ -144,23 +144,19 @@ public constructor(props:ICenterPaneProps){
 
                 this.props.parentProps.centerPaneFields.map( field => {
                     //description: 'coma separted: title,projectID,category,story,task,team',
-                    if ( field === 'story' ){   
-                        let storyChapter = selectedProject.story + ' : ' + selectedProject.chapter;
-                        thisProjectElement.push( <div title='Story and Chapter'> { storyChapter } </div>);  }
+                    if ( field === 'story' ){  
+                        thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['story','chapter'] , false ) ; }
 
                     if ( field === 'projectid' ){ 
-                        let projectIDs = selectedProject.projectID1.projListValue + ' : ' + selectedProject.projectID2.projListValue;
-                        thisProjectElement.push( <div title='ProjectID1 and Project ID2'> { projectIDs } </div>);  }
+                        thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['projectID1','projectID2'] , false ) ; }
 
-                    if ( field === 'category' ){   thisProjectElement.push( 
-                        <div title='Category1 and Category2'> { selectedProject.category1 + ' : ' + selectedProject.category2 } </div>);  }
+                    if ( field === 'category' ){  
+                        thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['category1','category2'] , false ) ; }
 
+                    if ( field === 'task' ){
+                        thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['status','dueDate'] , false ) ; }
 
-
-                    if ( field === 'task' ){   thisProjectElement.push( 
-                        <div title='Task Status and Due Date'> { selectedProject.status + ' : Due ' + selectedProject.dueDate } </div>);  }
-
-                    if ( field === 'team' ){   
+                    if ( field === 'team' ){ 
                         let selectedLeader = selectedProject.leader ? selectedProject.leader.Title : null;
                         let selectedTeam : string[] = selectedProject.team && selectedProject.team.length > 0 ? 
                             selectedProject.team.map( member => { return member.Title; } ) : [];
@@ -179,13 +175,13 @@ public constructor(props:ICenterPaneProps){
                 });
             }
 
-            const stackButtonTokensFields: IStackTokens = { childrenGap: 10 };
+            const stackButtonTokensFields: IStackTokens = { childrenGap: 0 };
 
             let projectItemElement = <Stack padding={20} horizontal={false} horizontalAlign={"space-between"} tokens={stackButtonTokensFields}> {/* Stack for Projects and body */}
                     { thisProjectElement }
                 </Stack>;
 
-            let accordionItems = []
+            let accordionItems = [];
             accordionItems[0] = 
                 {   title: updateKey,
                     element: projectItemElement };
@@ -223,6 +219,32 @@ public constructor(props:ICenterPaneProps){
         }
 
     }   //End Public Render
+
+    private buildPropPairs( item: any, elementArray: any[], addFields: string[], showEmpty: boolean ) {
+
+        let scHeading = [];
+        let scValue = [];
+
+        addFields.map( field => { 
+            if ( item[ field ] && item[ field ].length > 0 || showEmpty === true ) {
+                //Credit for TitleCase https://stackoverflow.com/a/196991
+                let fieldValue = item[ field ].length > 0 ? item[ field ] : 'Empty' ;
+                scHeading.push( field.charAt(0).toUpperCase() + field.substr(1) );
+                scValue.push( fieldValue );
+            }
+        });
+
+        let headingLabel = scHeading.join(' | ');
+        let valueLabel = scValue.join(' | ');
+
+        if ( scValue.length > 0 ) {
+            elementArray.push( <div style={{fontSize: 'x-small'}} title={ headingLabel }> { headingLabel } </div> );
+            elementArray.push( <div style={{marginBottom: '10px'}} title= { valueLabel }> { valueLabel } </div>);
+        }
+
+        return elementArray;
+
+    }
 
     private ActivityLink(item: IProjectOptions, _onActivityClick: any) {
 

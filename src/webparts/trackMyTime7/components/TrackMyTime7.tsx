@@ -3858,6 +3858,11 @@ public toggleTips = (item: any): void => {
           listProjects += item.ProjectID2 + ' ';
         }   
 
+        let temp = [];
+        if ( item.Story !== null ) { temp.push( item.Story ) ; }
+        if ( item.Chapter !== null ) { temp.push( item.Chapter ) ; }
+        let listStoryChapter = temp.join(' | ');
+
         let keyChanges = [];
         let keyChange = 'No change';
         
@@ -3939,6 +3944,7 @@ public toggleTips = (item: any): void => {
           listCategory: listCategory,
           listTimeSpan: getTimeSpan(item.StartTime, item.EndTime),
           listProjects: listProjects,
+          listStoryChapter: listStoryChapter,
           listTracking: '',
           listComments: listComments,
 

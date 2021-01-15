@@ -6,6 +6,7 @@ import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import { defStatus, planStatus, processStatus, parkStatus, cancelStatus, completeStatus,  } from '../ListProvisioningTMT/columnsTMT';
 import { projActions } from '../TrackMyTime7';
 
+
 export const  initials : IViewField = {
     name: "userInitials",
     displayName: "User",
@@ -70,7 +71,17 @@ export const  projects : IViewField = {
   isResizable: true,
   sorting: true,
   minWidth: 20,
-  maxWidth: 100
+  maxWidth: 75
+};
+
+export const  storyChapter : IViewField = {
+  name: "listStoryChapter",
+  displayName: "Story|Chapter",
+  //linkPropertyName: "c",
+  isResizable: true,
+  sorting: true,
+  minWidth: 60,
+  maxWidth: 150
 };
 
 export const  comments : IViewField = {
@@ -90,7 +101,7 @@ export const  category : IViewField = {
   isResizable: true,
   sorting: true,
   minWidth: 30,
-  maxWidth: 100
+  maxWidth: 75
 };
 
 //This does not yet work because the component ends up showing the field anyway
@@ -107,7 +118,7 @@ export function testField(visible: boolean) {
     return test;
 }
 
-export function viewFieldsFull() {
+export function viewFieldsFull( focusStory : boolean ) {
 
     let viewFields: IViewField[]=[];
 
@@ -115,12 +126,30 @@ export function viewFieldsFull() {
     viewFields.push(id);
     viewFields.push(initials);
     viewFields.push(timeSpan);
-    viewFields.push(title);
-    //viewFields.push(description);
-    viewFields.push(projects);    
-    viewFields.push(category);
-    viewFields.push(comments);
 
+    let storyChapter1 = storyChapter;
+    let projects1 = projects;
+    let category1 = category;
+    let comments1 = comments;
+
+    //viewFields.push(description);
+    if ( focusStory === true ) {
+      viewFields.push(storyChapter1);
+      viewFields.push(title);
+      comments1.minWidth = comments1.minWidth * 2 ;
+
+    } else {
+      projects1.minWidth = projects1.minWidth / 2;
+      category1.minWidth = category1.minWidth / 2;
+
+      viewFields.push(storyChapter1);
+      viewFields.push(title);
+      viewFields.push(projects1);
+      viewFields.push(category1);
+
+    }
+
+    viewFields.push(comments1);
 
     return viewFields;
     

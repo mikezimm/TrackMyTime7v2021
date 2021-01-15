@@ -119,6 +119,7 @@ export interface ITimeEntry extends ISaveEntry {
     userInitials?: string;
     listCategory?: string; 
     listTimeSpan?: string;
+    listStoryChapter?: string;
     listProjects?: string;
     listTracking?: string; 
     listComments?: string;

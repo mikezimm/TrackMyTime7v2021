@@ -6,11 +6,13 @@ import { Link } from 'office-ui-fabric-react/lib/Link';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 
 import { ListView, IViewField, SelectionMode, GroupOrder, IGrouping } from "@pnp/spfx-controls-react/lib/ListView";
-import {ITimeEntry, IProject} from '../ITrackMyTime7State';
+import {ITimeEntry, IProject, ITrackMyTime7State} from '../ITrackMyTime7State';
 import * as fields from './ViewFields';
 
 import * as cStyles from '@mikezimm/npmfunctions/dist/styleReact';
 import styles from '../TrackMyTime7.module.scss';
+
+
 
 /**
  * 
@@ -19,11 +21,11 @@ import styles from '../TrackMyTime7.module.scss';
  * @param theseAreItems 
  */
 
-export function listViewBuilder(parentProps,parentState, theseAreItems: ITimeEntry[]){
+export function listViewBuilder(parentProps,parentState : ITrackMyTime7State, theseAreItems: ITimeEntry[]){
 
   let groupByFields: IGrouping[] = [  {   name: 'timeGroup',   order: 1,   }  ];
 
-  let viewFields = fields.viewFieldsFull();
+  let viewFields = fields.viewFieldsFull( parentState.selectedStory && parentState.selectedStory.key !== 'None' ? true : false );
 
   let listView = 
   <div className={ parentState.debugColors ? styles.timeListView : '' } >

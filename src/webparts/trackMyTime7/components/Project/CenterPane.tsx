@@ -229,6 +229,7 @@ public constructor(props:ICenterPaneProps){
         addFields.map( field => { 
             let fieldVal = '';
             if ( field.indexOf('.') > 0 ) { 
+                //First check if primary property exists before checking for subproperty
                 fieldVal = item[ field.split('.')[0] ] ? item[ field.split('.')[0] ][ field.split('.')[1] ] : '';
             } else { 
                 fieldVal = item[field] ;

@@ -69,6 +69,8 @@ import { CompoundButton, Stack, IStackTokens, elementContains } from 'office-ui-
 
 import { ListCommandBar } from './CommandBar/ListCommandBar';
 
+import ReactAccordion from './AccordionReact/ReactAccordion';
+import { IReactAccordionProps } from './AccordionReact/IReactAccordionProps';
 
 import * as listBuilders from './ListView/ListView';
 import * as formBuilders from './fields/textFieldBuilder';

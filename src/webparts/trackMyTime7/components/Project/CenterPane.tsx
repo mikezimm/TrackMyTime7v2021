@@ -16,6 +16,7 @@ import { ColoredLine, ProjectTitleElement, MyIcon } from '../../../../services/d
 import { createIconButton } from "../createButtons/IconButton";
 
 import styles from '../createButtons/CreateButtons.module.scss';
+import ReactAccordion from '../AccordionReact/ReactAccordion';
 
 //import styles from './InfoPane.module.scss';
 
@@ -123,34 +124,41 @@ public constructor(props:ICenterPaneProps){
             this.props.parentState.projects.newFiltered[this.props.projectIndex];
 
         let selectedProject = this.props.parentState.selectedProject;
+        let updateKey : string = 'ttpbm79';
+
         let hasProject = selectedProject !== null && selectedProject !== undefined ? true : false;
+        let dangerouslyExpandIndex = null;
 
         if ( this.props.allLoaded && this.props.showCenter && this.props.projectIndex > -1  && validProject != null ) {
 
             let projOptions = validProject.projOptions;
 
             let ActivityLinkElement = projOptions.showLink == false ? null : this.ActivityLink(projOptions, this.props._onActivityClick);
+            if ( projOptions.activity.length === 0 ) { dangerouslyExpandIndex = 0 }
 
             let thisProjectElement : any[] = [];
 
             if ( this.props.parentProps.centerPaneFields.length > 0 && hasProject === true ) {
 
+                updateKey = selectedProject.titleProject;
 
                 this.props.parentProps.centerPaneFields.map( field => {
                     //description: 'coma separted: title,projectID,category,story,task,team',
-                    if ( field === 'title' ){   thisProjectElement.push( <div title='Selected Project'> { this.props.parentState.selectedProject.titleProject } </div>);  }
+                    if ( field === 'story' ){   
+                        let storyChapter = selectedProject.story + ' : ' + selectedProject.chapter;
+                        thisProjectElement.push( <div title='Story and Chapter'> { storyChapter } </div>);  }
 
-                    if ( field === 'projectid' ){   thisProjectElement.push( 
-                        <div title='ProjectID1 and Project ID2'> { this.props.parentState.selectedProject.projectID1.projListValue + ' : ' + this.props.parentState.selectedProject.projectID2.projListValue } </div>);  }
+                    if ( field === 'projectid' ){ 
+                        let projectIDs = selectedProject.projectID1.projListValue + ' : ' + selectedProject.projectID2.projListValue;
+                        thisProjectElement.push( <div title='ProjectID1 and Project ID2'> { projectIDs } </div>);  }
 
                     if ( field === 'category' ){   thisProjectElement.push( 
-                        <div title='Category1 and Category2'> { this.props.parentState.selectedProject.category1 + ' : ' + this.props.parentState.selectedProject.category2 } </div>);  }
+                        <div title='Category1 and Category2'> { selectedProject.category1 + ' : ' + selectedProject.category2 } </div>);  }
 
-                    if ( field === 'story' ){   thisProjectElement.push( 
-                        <div title='Story and Chapter'> { this.props.parentState.selectedProject.story + ' : ' + this.props.parentState.selectedProject.chapter } </div>);  }
+
 
                     if ( field === 'task' ){   thisProjectElement.push( 
-                        <div title='Task Status and Due Date'> { this.props.parentState.selectedProject.status + ' : Due ' + this.props.parentState.selectedProject.dueDate } </div>);  }
+                        <div title='Task Status and Due Date'> { selectedProject.status + ' : Due ' + selectedProject.dueDate } </div>);  }
 
                     if ( field === 'team' ){   
                         let selectedLeader = selectedProject.leader ? selectedProject.leader.Title : null;
@@ -171,20 +179,40 @@ public constructor(props:ICenterPaneProps){
                 });
             }
 
-            const stackButtonTokensBody: IStackTokens = { childrenGap: 40 };
             const stackButtonTokensFields: IStackTokens = { childrenGap: 10 };
+
+            let projectItemElement = <Stack padding={20} horizontal={false} horizontalAlign={"space-between"} tokens={stackButtonTokensFields}> {/* Stack for Projects and body */}
+                    { thisProjectElement }
+                </Stack>;
+
+            let accordionItems = []
+            accordionItems[0] = 
+                {   title: updateKey,
+                    element: projectItemElement };
+
+            console.log('Making Center Pane:' , accordionItems );
+
+            let projectAccordion = thisProjectElement.length > 0 ?
+                <ReactAccordion 
+                    dangerouslyExpandIndex = { dangerouslyExpandIndex }
+                    updateKey = { updateKey }
+                    items={ accordionItems }
+                    accordionTitle={''}
+                    accordianTitleProp={'title'}
+                    accordianContentProp={'element'}
+                    allowMultipleExpanded={ false }
+                    allowZeroExpanded={ true }
+                ></ReactAccordion> : null ;
+
+            const stackButtonTokensBody: IStackTokens = { childrenGap: 40 };
+
+            let centerStack = [projectAccordion, ActivityLinkElement ];
             //<div className={  }>
             return (
-                <div>
+                <div style={{ paddingTop: '20px' }}>
                     <Stack padding={20} horizontal={false} horizontalAlign={"space-between"} tokens={stackButtonTokensBody}> {/* Stack for Projects and body */}
-                        { ActivityLinkElement }
+                        { centerStack }
                     </Stack>
-                    { thisProjectElement.length === 0 ? null :
-                        <Stack padding={20} horizontal={false} horizontalAlign={"space-between"} tokens={stackButtonTokensFields}> {/* Stack for Projects and body */}
-                            { thisProjectElement }
-                        </Stack>
-
-                    }
                     <ColoredLine color="gray" height="1"/>
                 </div>
             );

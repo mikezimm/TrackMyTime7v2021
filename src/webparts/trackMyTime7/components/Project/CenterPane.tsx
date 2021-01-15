@@ -229,7 +229,12 @@ public constructor(props:ICenterPaneProps){
             let fieldVal = '';
             if ( field.indexOf('.') > 0 ) { 
                 fieldVal = item[ field.split('.')[0] ][ field.split('.')[1] ];
-            } else { fieldVal = item[field] ; }
+            } else { 
+                fieldVal = item[field] ;
+                if ( field.toLowerCase().indexOf('date') > -1 ) {
+                    fieldVal = fieldVal != null ? new Date(fieldVal).toLocaleDateString() : fieldVal;
+                }
+            }
             field = field.replace('.', ' ');
 
             if ( fieldVal && fieldVal.length > 0 || showEmpty === true ) {

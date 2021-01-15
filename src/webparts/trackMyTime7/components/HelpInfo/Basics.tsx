@@ -144,10 +144,17 @@ public constructor(props:IBasicsProps){
                 <li><span className={styles.iColNam}>Team:</span>Multiple people are allowed in this column.  If your name is in this column, the project will under "Your Team" heading.</li>
                 <li><span className={styles.iColNam}>Comments:</span>The world is your canvas, just use it.</li>
               </ul>
-        
+                                
+            <h3>Using Projects as Tasks:  These may be used in the future for advanced functionality.</h3>
+              <ul>
+                <li><span className={styles.iColNamU}>Status:</span>Project column to be used as alternative to 'Active' column.</li>
+                <li><span className={styles.iColNamU}>Due Date:</span>Date Project/Task is due.</li>
+                <li><span className={styles.iColNamU}>Completed:</span>Date Project/Task was completed.</li>
+                <li><span className={styles.iColNamU}>Completed By:</span>Person who completed Project/Task.</li>
+              </ul>
+
             <h3>FUTURE Plans - See that page for more details</h3>
               <ul>
-                <li><span className={styles.iColNam}>Using Project list like a Task list:</span>See Future Plans for more details</li>
                 <li><span className={styles.iColNam}>CC (Carbon Copy) Time Entries</span>See Future Plans for more details</li>
               </ul>
 

@@ -488,6 +488,8 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       );
     }
 
+
+
     return pivots;
 
   }
@@ -1687,13 +1689,29 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
  *                                                                                                  
  */
 
+      let messages : any[] = [];
+      if ( this.state.WebpartWidth > 800 ) { 
+          messages.push( <div><span><b>{ 'Welcome to ALV Webpart Early Access!!!' }</b></span></div> ) ;
+          messages.push( <div><span><b>{ 'Get more info here -->' }</b></span></div> ) ;
+      }
+      else if ( this.state.WebpartWidth > 700 ) {
+          messages.push( <div><span><b>{ 'Webpart Early Access!' }</b></span></div> ) ;
+          messages.push( <div><span><b>{ 'More info ->' }</b></span></div> ) ;
+      } else if ( this.state.WebpartWidth > 600 ) {
+          messages.push( <div><span><b>{ 'info ->' }</b></span></div> ) ;
+
+      } else if ( this.state.WebpartWidth > 400 ) {
+          messages.push( <div><span><b>{ 'info ->' }</b></span></div> ) ;
+      }
+
       let earlyAccess = 
       <div style={{ paddingBottom: 10 }}>
         <EarlyAccess 
             image = { "https://autoliv.sharepoint.com/sites/crs/PublishingImages/Early%20Access%20Image.png" }
-            messages = { [ <div><span><b>Welcome to ALV Webpart Early Access!!!</b></span></div>, "Get more info here -->"] }
-            links = { [ links.gitRepoTrackMyTime.wiki, links.gitRepoTrackMyTime.issues ]}
-            email = { 'mailto:General - WebPart Dev <0313a49d.Autoliv.onmicrosoft.com@amer.teams.ms>?subject=Track My Time Webpart Feedback&body=Enter your message here :)  \nScreenshots help!' }
+            messages = { messages }
+            links = { [ this.state.WebpartWidth > 450 ? links.gitRepoTrackMyTime.wiki : null, 
+                this.state.WebpartWidth > 600 ? links.gitRepoTrackMyTime.issues : null ]}
+            email = { 'mailto:General - WebPart Dev <0313a49d.Autoliv.onmicrosoft.com@amer.teams.ms>?subject=Drilldown Webpart Feedback&body=Enter your message here :)  \nScreenshots help!' }
             farRightIcons = { [ ] }
         ></EarlyAccess>
       </div>
@@ -2997,7 +3015,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
     let newProjectType = !this.state.projectType;
     let pivotHeader = newProjectType === false ? this.state.projectMasterPriorityChoice : this.state.projectUserPriorityChoice;  
     let trackedClick = 'ToggleType from ' +  this.state.projectType + ' to ' + newProjectType;
-    this.updateProjectSelection( pivotHeader , this.state.projectType,  trackedClick , null ) ;
+    this.updateProjectSelection( pivotHeader , newProjectType,  trackedClick , null ) ;
 
   } //End toggleType
 
@@ -3167,6 +3185,7 @@ public toggleTips = (item: any): void => {
         <PivotItem 
           headerText={pivT.headerText} 
           itemKey={pivT.itemKey}
+          itemIcon={pivT.icon}
         >
         </PivotItem>
       );

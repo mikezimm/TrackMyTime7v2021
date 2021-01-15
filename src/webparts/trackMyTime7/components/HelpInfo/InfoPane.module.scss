@@ -10,11 +10,13 @@
     .earlyAccess {
       opacity: .25;
       transition: all, .3s ease;
+      //max-height: 20px;
     }
 
     .earlyAccess:hover {
       opacity: 1;
       transition: all, .3s ease;
+      //max-height: 50px;
     }
 
     .innerShadow {

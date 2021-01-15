@@ -81,6 +81,7 @@ export interface IPivot {
     filter?: string;
     data?: string;
     lastIndex: number;
+    icon?: string;
   }
   
   export interface IMyPivots {

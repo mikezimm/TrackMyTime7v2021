@@ -1996,7 +1996,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
 
     console.log( "_getSelectedProject items:", items );
     let selectedProject: IProject = null;
-    let selectedStory : ISelectedStory = defStory;
+    let selectedStory : ISelectedStory = this.state.selectedStory;
 
     let e: any = event;
 

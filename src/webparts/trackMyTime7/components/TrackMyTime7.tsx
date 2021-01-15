@@ -2040,13 +2040,16 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
     }
 
     //get last index from pivot object... then set it to lastIndex here.
-
-    if ( filterStory && filterStory.length > 0 && filterStory !== "None" ) { thisFilter.push( filterStory ) ; }
+    let entryFilter : string[] = [];
+    if ( filterStory && filterStory.length > 0 && filterStory !== "None" ) { thisFilter.push( filterStory ) ; entryFilter.push( filterStory ) ; }
 
     let projects = this.state.projects;
     projects.lastFiltered = projects.newFiltered;
     let filterThese = this.state.projectType ? projects.user : projects.master ;
     projects.newFiltered = this.getTheseProjects(filterThese, thisFilter, 'asc', 'titleProject');
+
+    let stateEntries : IEntryInfo = this.state.entries;
+    stateEntries.newFiltered = this.getTheseEntries(stateEntries.all, entryFilter);
 
     /**
      * ^^^^^  This section copied from onLinkClick.... ^^^^^
@@ -2115,6 +2118,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
         filterStory: filterStory,
         selectedStory: selectedStory,
         projects: projects,
+        entries: stateEntries,
         pivots: statePivots,
         formEntry:formEntry, 
         blinkOnProject: this.state.blinkOnProject === 1 ? 2 : 1,
@@ -2755,12 +2759,13 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       thisFilter.push(thisFilterString);
     }
 
+    let entryFilter : string[] = [];
     if ( trackedClick.toLowerCase().indexOf('clear') === 0 ) {
       //If this contains clear, then do not push the story/status/whatever flag to filter items on.
       filterStory = "None";
       selectedStory = defStory;
     } else {
-      if ( filterStory && filterStory.length > 0 && filterStory !== 'None' ) { thisFilter.push( this.state.filterStory ) ; }
+      if ( filterStory && filterStory.length > 0 && filterStory !== 'None' ) { thisFilter.push( this.state.filterStory ) ; entryFilter.push( this.state.filterStory ) ; }
     }
 
 
@@ -2769,6 +2774,10 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
     let filterThese = newProjectType ? projects.user : projects.master ;
     projects.newFiltered = this.getTheseProjects(filterThese, thisFilter, 'asc', 'titleProject');
     //projects.lastFiltered = (searchType === 'all' ? this.state.projects.all : this.state.lastFilteredProjects );
+
+    
+    let stateEntries : IEntryInfo = this.state.entries;
+    stateEntries.newFiltered = this.getTheseEntries(stateEntries.all, entryFilter);
 
     let newProjectMasterPriorityChoice = !newProjectType ? thisFilter[0] : this.state.projectMasterPriorityChoice;
     let newProjectUserPriorityChoice = newProjectType ? thisFilter[0] : this.state.projectUserPriorityChoice;
@@ -2812,6 +2821,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       projectMasterPriorityChoice: newProjectMasterPriorityChoice,
       projectUserPriorityChoice: newProjectUserPriorityChoice,
       projects: projects,
+      entries: stateEntries,
       //searchCount: newFilteredProjects.length,
       searchType: '',
       searchWhere: ' in ' + filteredCategory,
@@ -2864,6 +2874,26 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
     return filteredProjects;
   }
   
+  
+  public getTheseEntries(startingProjects: ITimeEntry[], filterFlags : string[] ){
+
+    //console.log('getTheseProjects: filterFlags', filterFlags);
+
+    let filteredProjects: ITimeEntry[] = [];
+
+    if (filterFlags.length === 0) {
+      return startingProjects;
+    }
+
+    for (let thisItem of startingProjects) {
+      if (Utils.arrayContainsArray(thisItem.filterFlags,filterFlags)) {
+        filteredProjects.push(thisItem);
+      }
+    }
+
+    console.log('getTheseEntries: filteredEntries', filteredProjects);
+    return filteredProjects;
+  }
 
   /**
    * This builds unique string key based on properties passed in through this.props.projectKey
@@ -2903,6 +2933,9 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       everyone: timeTrackData.everyone, //Used to designate this option should be available to everyone.
       sortOrder: timeTrackData.sortOrder, //Used to prioritize in choices.... ones with number go first in order, followed by empty
       key: this.getProjectKey(timeTrackData),
+
+      story: timeTrackData.story,
+      chapter: timeTrackData.chapter,
 
       category1: timeTrackData.category1,
       category2: timeTrackData.category2,
@@ -3859,6 +3892,8 @@ public toggleTips = (item: any): void => {
           //2020-05-13:  Replace Active with StatusTMT  when Status = 9 then active = null, Status = 8 then active = false else true
           active: this.convertStatusToActive(item.StatusNumber),
 
+          status: item.StatusTMT,
+
           category1 : item.Category1 ,
           category2 : item.Category2 ,
 
@@ -4315,7 +4350,6 @@ public toggleTips = (item: any): void => {
       if (fromProject.teamIds.indexOf(userId) > -1 ) { team = true; } 
       if (fromProject.leaderId === userId ) { team = true; } 
       
-
       if (!yours  && team) { 
         fromProject.filterFlags.push('team');
         thisEntry.filterFlags.push('team');
@@ -4328,6 +4362,8 @@ public toggleTips = (item: any): void => {
         countThese = 'otherPeople';
       }
 
+      if ( fromProject.story != null ) { fromProject.filterFlags.push( fromProject.story ) ; thisEntry.filterFlags.push(fromProject.story); }
+      if ( fromProject.status != null ) { fromProject.filterFlags.push( fromProject.status ) ; thisEntry.filterFlags.push(fromProject.status); }
 
       //Build up options to search on
       thisEntry.searchStringPC = this.getEntrySearchString(thisEntry);

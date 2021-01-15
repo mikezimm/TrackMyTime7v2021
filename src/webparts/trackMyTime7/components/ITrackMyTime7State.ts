@@ -84,6 +84,7 @@ export interface ISaveEntry {
     ccList?: ILink; //Link to CC List to copy item
     ccEmail?: string; //Email to CC List to copy item 
   
+    status?: string;
     //Values specific to Time Entry
   
     userId?: number;

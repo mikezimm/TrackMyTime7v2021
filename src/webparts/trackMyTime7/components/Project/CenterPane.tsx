@@ -154,7 +154,8 @@ public constructor(props:ICenterPaneProps){
                         thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['category1','category2'] , false ) ; }
 
                     if ( field === 'task' ){
-                        thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['status','dueDate'] , false ) ; }
+                        thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['status','dueDate'] , false ) ;
+                        thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['completedBy.Title','completedDate'] , false ) ; }
 
                     if ( field === 'team' ){ 
                         thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['leader.Title'] , false ) ;
@@ -228,7 +229,7 @@ public constructor(props:ICenterPaneProps){
         addFields.map( field => { 
             let fieldVal = '';
             if ( field.indexOf('.') > 0 ) { 
-                fieldVal = item[ field.split('.')[0] ][ field.split('.')[1] ];
+                fieldVal = item[ field.split('.')[0] ] ? item[ field.split('.')[0] ][ field.split('.')[1] ] : '';
             } else { 
                 fieldVal = item[field] ;
                 if ( field.toLowerCase().indexOf('date') > -1 ) {

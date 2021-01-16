@@ -36,6 +36,7 @@ export interface IEntryInfo {
   team: ITimeEntry[]; //Current user's entries
   everyone: ITimeEntry[]; //Current user's entries
   other: ITimeEntry[]; //Current user's entries
+  special: ITimeEntry[]; //special entries such as current user's most recent activity
 
   session? :ITimeEntry[]; //Session (page in browser) user's entries
   today? : ITimeEntry[]; //Today's user's entries
@@ -80,6 +81,10 @@ export interface ISaveEntry {
     //Values that relate to project list item
     sourceProject?: ILink; //Link back to the source project list item.
     sourceProjectRef?: string;
+
+    sourceProjectId?: number;
+    xRefIndex?: number; //Index of this time entrie's Project reference in specialXProjects list
+
     activity?: ILink; //Link to the activity you worked on
     ccList?: ILink; //Link to CC List to copy item
     ccEmail?: string; //Email to CC List to copy item 
@@ -166,7 +171,6 @@ export interface ITimeEntry extends ISaveEntry {
     modifiedByUser?: boolean;
     createdByUser?: boolean;
 
-
 }
 
 export interface ISmartText {
@@ -191,6 +195,12 @@ export interface IProjectTarget {
   dailyStatus?: boolean;
   weeklyStatus?: boolean;
   totalStatus?: boolean;
+  dailyU?: number; //Maybe have function see if something like daily=4 means 4 hours per day?
+  weeklyU?: number; //Maybe have function see if something like weekly=8 means 8 hours per week?
+  totalU?: number; //Maybe have function see if something like total=40 means 40 hours total?
+  dailyStatusU?: boolean;
+  weeklyStatusU?: boolean;
+  totalStatusU?: boolean;
 }
 
 
@@ -258,12 +268,17 @@ export interface IProject {
   story?: string;
   chapter?: string;
 
+  daysOld: number; //Shows days since this was last used.
+
   filterFlags?: string[]; // what flags does this match?  yourRecent, allRecent etc...
 
   projectID1?: ISmartText;  //Example Project # - look for strings starting with * and ?
   projectID2?: ISmartText;  //Example Cost Center # - look for strings starting with * and ?
 
   timeTarget?: IProjectTarget;
+  yourHours?: string;
+  allHours?: string;
+
   projOptions?: IProjectOptions;
   defProjEditOptions?: string;
 
@@ -271,6 +286,7 @@ export interface IProject {
 
   //This might be computed at the time page loads
   lastEntry?: any;  //Should be a time entry
+  lastUsed?: ITheTime; //Last time it was used by you.
 
   //Values that relate to project list item
   sourceProject?: ILink; //Link back to the source project list item.
@@ -310,7 +326,10 @@ export interface IProjectInfo {
   lastFiltered: IProject[];
   lastProject: IProject[];
   newFiltered: IProject[];
-  
+  specialXref: ISpecialProject[]; //special entries such as current user's most recent activity
+  specialIds: number[]; //special project IDs (for faster x-checks)
+  special: IProject[];
+
 }
 /*  2020-12-14:  Moved to IReUsable but will need to adjust object labels
 export interface IMyPivots {
@@ -419,6 +438,15 @@ export interface IProjectColumns {
   optionsTMTCalc?: string;
   activtyURLCalc?: string;
 
+}
+
+export interface ISpecialProject {
+  projId: number;
+  age: number;
+  workAge: number;
+  lastUse: ITheTime;
+  filterFlags: string[];
+  timeTarget?: IProjectTarget;
 }
 
 export interface ITrackMyTime7State {

@@ -142,23 +142,32 @@ public constructor(props:ICenterPaneProps){
 
                 updateKey = selectedProject.titleProject;
 
+                thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['lastUsed.theTime'] , [] ,false ) ;
+                if ( selectedProject.yourHours === selectedProject.allHours ) {
+                    thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourHours' ] , ['Today ~ Week ~ All'] , false ) ;
+                } else {
+                    thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourHours', 'allHours'] , ['Today ~ Week ~ All','Today ~ Week ~ All'] , false ) ;
+                }
+
+                
                 this.props.parentProps.centerPaneFields.map( field => {
                     //description: 'coma separted: title,projectID,category,story,task,team',
+
                     if ( field === 'story' ){  
-                        thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['story','chapter'] , false ) ; }
+                        thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['story','chapter'] , [] , false ) ; }
 
                     if ( field === 'projectid' ){ 
-                        thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['projectID1','projectID2'] , false ) ; }
+                        thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['projectID1','projectID2'] , [] , false ) ; }
 
                     if ( field === 'category' ){  
-                        thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['category1','category2'] , false ) ; }
+                        thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['category1','category2'] , [] , false ) ; }
 
                     if ( field === 'task' ){
-                        thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['status','dueDate'] , false ) ;
-                        thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['completedBy.Title','completedDate'] , false ) ; }
+                        thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['status','dueDate'] , [] , false ) ;
+                        thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['completedBy.Title','completedDate'] , [] , false ) ; }
 
                     if ( field === 'team' ){ 
-                        thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['leader.Title'] , false ) ;
+                        thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['leader.Title'] , [] , false ) ;
 
                         let selectedTeam : string[] = selectedProject.team && selectedProject.team.length > 0 ? 
                             selectedProject.team.map( member => { return member.Title; } ) : [];
@@ -221,12 +230,13 @@ public constructor(props:ICenterPaneProps){
 
     }   //End Public Render
 
-    private buildPropPairs( item: any, elementArray: any[], addFields: string[], showEmpty: boolean ) {
+    private buildPropPairs( item: any, elementArray: any[], addFields: string[],  valueTitles: string[],showEmpty: boolean ) {
 
         let scHeading = [];
         let scValue = [];
+        let scValTitle = [];
 
-        addFields.map( field => { 
+        addFields.map( (field, index) => { 
             let fieldVal = '';
             if ( field.indexOf('.') > 0 ) { 
                 //First check if primary property exists before checking for subproperty
@@ -244,15 +254,17 @@ public constructor(props:ICenterPaneProps){
                 let fieldValue = fieldVal.length > 0 ? fieldVal : 'Empty' ;
                 scHeading.push( field.charAt(0).toUpperCase() + field.substr(1) );
                 scValue.push( fieldValue );
+                scValTitle.push( valueTitles[index] );
             }
         });
 
         let headingLabel = scHeading.join(' | ');
         let valueLabel = scValue.join(' | ');
+        let valueTitle = scValTitle.join(' | ');
 
         if ( scValue.length > 0 ) {
             elementArray.push( <div style={{fontSize: 'x-small'}} title={ headingLabel }> { headingLabel } </div> );
-            elementArray.push( <div style={{marginBottom: '13px'}} title= { valueLabel }> { valueLabel } </div>);
+            elementArray.push( <div style={{marginBottom: '13px'}} title= { valueTitle }> { valueLabel } </div>);
         }
 
         return elementArray;

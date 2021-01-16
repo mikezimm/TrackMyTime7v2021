@@ -35,8 +35,8 @@ import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { Web } from "@pnp/sp/presets/all";
 
 import { statusChoices, activityTMTChoices, MyCons, projActions} from '../TrackMyTime7';
-import { getAge, getBestTimeDelta } from '../../../../services/dateServices';
-import { getHelpfullError, } from '../../../../services/ErrorHandler';
+import { getAge, getBestTimeDelta } from '@mikezimm/npmfunctions/dist/dateServices';
+import { getHelpfullError, } from '@mikezimm/npmfunctions/dist/ErrorHandler';
 import { mergeStyles } from 'office-ui-fabric-react/lib/Styling';
 
 import { createIconButton, defCommandIconStyles } from '../createButtons/IconButton';

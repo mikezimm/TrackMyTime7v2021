@@ -19,9 +19,9 @@ import { sp } from '@pnp/sp';
 
 import { propertyPaneBuilder } from '../../services/propPane/PropPaneBuilder';
 import { saveTheTime, getTheCurrentTime, saveAnalytics } from '../../services/createAnalytics';
-import { makeTheTimeObject } from '../../services/dateServices';
+import { makeTheTimeObject } from '@mikezimm/npmfunctions/dist/dateServices';
 
-import { getHelpfullError, } from '../../services/ErrorHandler';
+import { getHelpfullError, } from '@mikezimm/npmfunctions/dist/ErrorHandler';
 
 import { PageContext } from '@microsoft/sp-page-context';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
@@ -108,6 +108,10 @@ export interface ITrackMyTime7WebPartProps {
   timeSliderMax: number; //max of time slider
 
   // 9 - Other web part options
+
+  centerPaneFields: string;
+  centerPaneStyles: string;
+
   webPartScenario: string; //Choice used to create mutiple versions of the webpart.
 
   advancedPivotStyles: boolean;
@@ -184,6 +188,15 @@ export default class TrackMyTime7WebPart extends BaseClientSideWebPart<ITrackMyT
       statusCol = this.properties.statusCol.toLowerCase().split(',');
     }
 
+    let centerPaneFields: string[] = [];
+    if ( this.properties.centerPaneFields && this.properties.centerPaneFields.length > 0 ) {
+      centerPaneFields = this.properties.centerPaneFields.toLowerCase().split(',');
+    } else {
+      centerPaneFields = ['title','category','project','story','task','team'];
+    }
+    let centerPaneStyles: any = this.properties.centerPaneStyles ? this.properties.centerPaneStyles : '';
+
+
     const element: React.ReactElement<ITrackMyTime7Props> = React.createElement(
       TrackMyTime7,
       {
@@ -254,6 +267,9 @@ export default class TrackMyTime7WebPart extends BaseClientSideWebPart<ITrackMyT
         // 9 - Other web part options
         webPartScenario: this.properties.webPartScenario, //Choice used to create mutiple versions of the webpart.
           
+        centerPaneFields: centerPaneFields,
+        centerPaneStyles: centerPaneStyles,
+
         pivotSize: this.properties.pivotSize,
         pivotFormat: this.properties.pivotFormat,
         pivotOptions: this.properties.pivotOptions,
@@ -389,9 +405,11 @@ private async UpdateTitles(): Promise<boolean> {
     /**
      * This section is used to determine when to refresh the pane options
      */
+
     let updateOnThese = [
       'setSize','setTab','otherTab','setTab','otherTab','setTab','otherTab','setTab','otherTab',
-      'projectListFieldTitles'
+      'projectListFieldTitles',
+      'centerPaneFields','centerPaneStyles',
     ];
     //alert('props updated');
     if (updateOnThese.indexOf(propertyPath) > -1 ) {

@@ -1,5 +1,5 @@
 import { string } from "prop-types";
-import { ITheTime } from '../../../services/dateServices';
+import { ITheTime }  from '@mikezimm/npmfunctions/dist/dateServices';
 import { PageContext } from '@microsoft/sp-page-context';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 
@@ -79,6 +79,9 @@ export interface ITrackMyTime7Props {
 
   // 9 - Other web part options
   webPartScenario: string; //Choice used to create mutiple versions of the webpart.
+
+  centerPaneFields: string[];
+  centerPaneStyles: any;
 
   pivotSize: string;
   pivotFormat: string;

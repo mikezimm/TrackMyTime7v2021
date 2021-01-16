@@ -110,7 +110,7 @@ export default class EarlyAccess extends React.Component<IEarlyAccessProps, IEar
         //styles.earlyAccess, styles.innerShadow
         
         let image = this.props.image == null || this.props.image == undefined ? null : 
-            <div style={{ paddingLeft: '20px' }}><Image 
+            <div style={{ paddingLeft: '20px', minHeight: 20 }} className={ '' }><Image 
                 className={[
                 styles.imgHoverZoom, 
                 ( this.state.imgHover === true  ? styles.imgHoverZoomHover : null )
@@ -119,7 +119,7 @@ export default class EarlyAccess extends React.Component<IEarlyAccessProps, IEar
                 shouldFadeIn={true} 
                 imageFit={ ImageFit.centerContain }
                 coverStyle={ ImageCoverStyle.landscape }      
-                width={ 100 } height={ 50 }
+                width={ 80 } height={ 40 }
             /></div>;
 
         let messages = this.props.messages == null || this.props.messages == undefined ? null : this.props.messages.map( mess => { return <div style={{whiteSpace: 'nowrap'}}> { mess } </div>; });
@@ -128,11 +128,10 @@ export default class EarlyAccess extends React.Component<IEarlyAccessProps, IEar
 
         let farRightIcons = this.props.farRightIcons == null || this.props.farRightIcons == undefined ? null : this.props.farRightIcons.map( icon => { return <div className={ farLinkHover }> { icon } </div>; });
 
-        let defBannerStyle = this.props.stylesBanner ? this.props.stylesBanner : { background: 'lightgray', color: 'black', width: '100%', verticalAlign: 'center' };
+        let defBannerStyle = this.props.stylesBanner ? this.props.stylesBanner : { background: 'lightgray', color: 'black', width: '100%', verticalAlign: 'center', height: '40px' };
 
         thisPage = <div className= { styles.infoPane } ><div className= { [ styles.earlyAccess, styles.innerShadow ].join(' ') } style={ defBannerStyle }>
             <Stack horizontal={true} wrap={true} horizontalAlign={"space-between"} verticalAlign={"center"} tokens={stackTokensBody}>
-
                 { image }
                 { messages }
                 { links }

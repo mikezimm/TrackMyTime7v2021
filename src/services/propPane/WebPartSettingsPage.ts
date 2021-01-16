@@ -186,6 +186,28 @@ import {
               
             ]}, // this group
 
+            { groupName: 'Center Pane',
+              isCollapsed: true ,
+  
+              groupFields: [
+
+                PropertyPaneTextField('centerPaneFields', {
+                  label: strings.FieldLabel_StatusColumn,
+                  description: 'coma separted: title,projectID,category,story,task,team',
+                }),
+  
+                PropertyPaneTextField('centerPaneStyles', {
+                  label: strings.FieldLabel_StatusColumn,
+                  description: 'size: small,medium,large',
+                }),
+  
+ 
+                //Projects = 0 History = 1
+
+                
+              ]}, // this group
+
+
           /** 5 - UI Defaults
             defaultProjectPicker: string; //Recent, Your Projects, All Projects etc...
             defaultTimePicker: string; //SinceLast, Slider, Manual???
@@ -198,6 +220,7 @@ import {
             PropertyPaneDropdown('defaultProjectPicker', <IPropertyPaneDropdownProps>{
               label: strings.FieldLabel_DefaultProjectPicker,
               options: trackTimeOptionsGroup.defaultProjectPickerChoices,
+              disabled: true,
             }),
 
             PropertyPaneDropdown('defaultTimePicker', <IPropertyPaneDropdownProps>{
@@ -282,8 +305,8 @@ import {
 
           PropertyPaneToggle('showTimeSlider', {
             label: strings.FieldLabel_ShowTimeSlider,
-            offText: strings.FieldLabel_ToggleTextOff,
-            onText: strings.FieldLabel_ToggleTextOn
+            offText: 'Locked',
+            onText: 'Unlock',
           }),
 
           PropertyPaneDropdown('timeSliderInc', <IPropertyPaneDropdownProps>{

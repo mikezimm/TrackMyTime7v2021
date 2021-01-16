@@ -12,7 +12,7 @@ import { Pivot, PivotItem, PivotLinkSize, PivotLinkFormat, IPivotStyles, IPivotS
 import { Label, ILabelStyles } from 'office-ui-fabric-react/lib/Label';
 import { IStyleSet } from 'office-ui-fabric-react/lib/Styling';
 
-import * as cStyles from '../../../services/styleReact';
+import * as cStyles from '@mikezimm/npmfunctions/dist/styleReact';
 
 import { IChoiceGroupOption } from 'office-ui-fabric-react/lib/ChoiceGroup';
 
@@ -35,7 +35,7 @@ import Utils from './utils';
 
 import { saveTheTime, saveAnalytics, getTheCurrentTime } from '../../../services/createAnalytics';
 import { getAge, getDayTimeToMinutes, getBestTimeDelta, getLocalMonths, getTimeSpan, getGreeting,
-          getNicks, makeTheTimeObject, getTimeDelta, monthStr3, monthStr, weekday3} from '../../../services/dateServices';
+          getNicks, makeTheTimeObject, getTimeDelta, monthStr3, monthStr, weekday3} from '@mikezimm/npmfunctions/dist/dateServices';
 
 //import { sortObjectArrayByStringKey, doesObjectExistInArray } from '../../../services/arrayServices';
 
@@ -52,11 +52,11 @@ import {IProject, ISmartText, ITimeEntry, IProjectTarget, IProjectInfo,
         IEntryInfo, IEntries, ITrackMyTime7State, ISaveEntry,
         IChartData, 
         IProjectOptions, IStory, IStories,
-        IPropsActivityURL, IProjectHistory, IProjectAction } from './ITrackMyTime7State';
+        IPropsActivityURL, IProjectHistory, IProjectAction, ISpecialProject } from './ITrackMyTime7State';
 
 import { pivotOptionsGroup, } from '../../../services/propPane';
-import { getHelpfullError, } from '../../../services/ErrorHandler';
-import { camelize, cleanEmptyElementsFromString } from '../../../services/stringServices';
+import { getHelpfullError, } from '@mikezimm/npmfunctions/dist/ErrorHandler';
+import { camelize, cleanEmptyElementsFromString } from '@mikezimm/npmfunctions/dist/stringServices';
 
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 
@@ -69,6 +69,8 @@ import { CompoundButton, Stack, IStackTokens, elementContains } from 'office-ui-
 
 import { ListCommandBar } from './CommandBar/ListCommandBar';
 
+import ReactAccordion from './AccordionReact/ReactAccordion';
+import { IReactAccordionProps } from './AccordionReact/IReactAccordionProps';
 
 import * as listBuilders from './ListView/ListView';
 import * as formBuilders from './fields/textFieldBuilder';
@@ -98,7 +100,7 @@ import * as links from './HelpInfo/AllLinks';
  * 
  */
 import { addTheseFields } from '../../../services/listServices/columnServices';
-import { TMTProjectFields } from './ListProvisioningTMT/columnsTMT';
+import { TMTProjectFields, ProjectID1 } from './ListProvisioningTMT/columnsTMT';
 
 import { defStatus, planStatus, processStatus, parkStatus, cancelStatus, completeStatus, } from './ListProvisioningTMT/columnsTMT';
 
@@ -287,6 +289,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
 
     let entryInfo = {} as IEntryInfo;
     entryInfo.all = []; //All Entries
+    entryInfo.special = []; //All special filtered entries
     entryInfo.user = []; //Current user's entries
     entryInfo.session = []; //Current user's entries
     entryInfo.today = []; //Current user's entries
@@ -486,6 +489,15 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       );
     }
 
+    pivots.heading1.push(
+      { headerText: "",
+      filter: "myRecent",
+      itemKey: "myRecent",
+      data: "Projects you recently used, most recent on top!",
+      icon: 'TemporaryUser',
+      lastIndex: null,
+    });
+
     return pivots;
 
   }
@@ -553,6 +565,15 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
     let daily: any = false;
     let weekly: any = false;
     let total: any = false;
+
+    let dailyU: any = false;
+    let weeklyU: any = false;
+    let totalU: any = false;
+
+    let dailyUC: any = false;
+    let weeklyUC: any = false;
+    let totalUC: any = false;
+
     let projListValue = pTimeTarget;
 
     if (pTimeTarget) {
@@ -578,6 +599,17 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       dailyStatus: daily ? true : false,
       weeklyStatus: weekly ? true : false,
       totalStatus: total ? true : false,
+      dailyU: dailyU ? dailyU : 0,
+      weeklyU: weeklyU ? weeklyU : 0,
+      totalU: totalU ? totalU : 0,
+      dailyStatusU: dailyU ? true : false,
+      weeklyStatusU: weeklyU ? true : false,
+      totalStatusU: totalU ? true : false,
+
+      dailyUC: dailyUC ? dailyUC : 0,
+      weeklyUC: weeklyUC ? weeklyUC : 0,
+      totalUC: totalUC ? totalUC : 0,
+
     };
 
     return targetInfo;
@@ -628,6 +660,8 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       team : null,
       teamIds: null,
 
+      daysOld: null,
+
       //Task Columns
       status : null,
       dueDate : null,
@@ -661,6 +695,9 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
     projectInfo.lastProject = [];
     projectInfo.all = [];
     projectInfo.newFiltered = []; //New filtered for search
+
+    projectInfo.specialXref = []; //New filtered for search
+    projectInfo.special = []; //New filtered for search
 
     return projectInfo;
 
@@ -1685,13 +1722,29 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
  *                                                                                                  
  */
 
+      let messages : any[] = [];
+      if ( this.state.WebpartWidth > 800 ) { 
+          messages.push( <div><span><b>{ 'Welcome to ALV Webpart Early Access!!!' }</b></span></div> ) ;
+          messages.push( <div><span><b>{ 'Get more info here -->' }</b></span></div> ) ;
+      }
+      else if ( this.state.WebpartWidth > 700 ) {
+          messages.push( <div><span><b>{ 'Webpart Early Access!' }</b></span></div> ) ;
+          messages.push( <div><span><b>{ 'More info ->' }</b></span></div> ) ;
+      } else if ( this.state.WebpartWidth > 600 ) {
+          messages.push( <div><span><b>{ 'info ->' }</b></span></div> ) ;
+
+      } else if ( this.state.WebpartWidth > 400 ) {
+          messages.push( <div><span><b>{ 'info ->' }</b></span></div> ) ;
+      }
+
       let earlyAccess = 
       <div style={{ paddingBottom: 10 }}>
         <EarlyAccess 
             image = { "https://autoliv.sharepoint.com/sites/crs/PublishingImages/Early%20Access%20Image.png" }
-            messages = { [ <div><span><b>Welcome to ALV Webpart Early Access!!!</b></span></div>, "Get more info here -->"] }
-            links = { [ links.gitRepoTrackMyTime.wiki, links.gitRepoTrackMyTime.issues ]}
-            email = { 'mailto:General - WebPart Dev <0313a49d.Autoliv.onmicrosoft.com@amer.teams.ms>?subject=Track My Time Webpart Feedback&body=Enter your message here :)  \nScreenshots help!' }
+            messages = { messages }
+            links = { [ this.state.WebpartWidth > 450 ? links.gitRepoTrackMyTime.wiki : null, 
+                this.state.WebpartWidth > 600 ? links.gitRepoTrackMyTime.issues : null ]}
+            email = { 'mailto:General - WebPart Dev <0313a49d.Autoliv.onmicrosoft.com@amer.teams.ms>?subject=Drilldown Webpart Feedback&body=Enter your message here :)  \nScreenshots help!' }
             farRightIcons = { [ ] }
         ></EarlyAccess>
       </div>
@@ -1994,7 +2047,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
 
     console.log( "_getSelectedProject items:", items );
     let selectedProject: IProject = null;
-    let selectedStory : ISelectedStory = defStory;
+    let selectedStory : ISelectedStory = this.state.selectedStory;
 
     let e: any = event;
 
@@ -2038,13 +2091,18 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
     }
 
     //get last index from pivot object... then set it to lastIndex here.
-
-    if ( filterStory && filterStory.length > 0 && filterStory !== "None" ) { thisFilter.push( filterStory ) ; }
+    let entryFilter : string[] = [];
+    if ( filterStory && filterStory.length > 0 && filterStory !== "None" ) { thisFilter.push( filterStory ) ; entryFilter.push( filterStory ) ; }
 
     let projects = this.state.projects;
     projects.lastFiltered = projects.newFiltered;
     let filterThese = this.state.projectType ? projects.user : projects.master ;
-    projects.newFiltered = this.getTheseProjects(filterThese, thisFilter, 'asc', 'titleProject');
+    let maxCount = 1000;
+    if ( this.state.filteredCategory === 'myRecent' ) { filterThese = projects.special ; maxCount = 22 ; }
+    projects.newFiltered = this.getTheseProjects(filterThese, thisFilter, this.state.filteredCategory !== 'myRecent' ? 'asc' : null , 'titleProject', maxCount );
+
+    let stateEntries : IEntryInfo = this.state.entries;
+    stateEntries.newFiltered = this.getTheseEntries(stateEntries.all, entryFilter);
 
     /**
      * ^^^^^  This section copied from onLinkClick.... ^^^^^
@@ -2113,6 +2171,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
         filterStory: filterStory,
         selectedStory: selectedStory,
         projects: projects,
+        entries: stateEntries,
         pivots: statePivots,
         formEntry:formEntry, 
         blinkOnProject: this.state.blinkOnProject === 1 ? 2 : 1,
@@ -2722,7 +2781,8 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
 
     } else {
 
-      this.updateProjectSelection( item.props.headerText , this.state.projectType,  'Pivot: ' + item.props.headerText , null ) ;
+      let filterText = item.props.headerText && item.props.headerText != '' ? item.props.headerText : item.props.itemKey;
+      this.updateProjectSelection( filterText , this.state.projectType,  'Pivot: ' + filterText , null ) ;
 
     }
 
@@ -2753,20 +2813,25 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       thisFilter.push(thisFilterString);
     }
 
+    let entryFilter : string[] = [];
     if ( trackedClick.toLowerCase().indexOf('clear') === 0 ) {
       //If this contains clear, then do not push the story/status/whatever flag to filter items on.
       filterStory = "None";
       selectedStory = defStory;
     } else {
-      if ( filterStory && filterStory.length > 0 && filterStory !== 'None' ) { thisFilter.push( this.state.filterStory ) ; }
+      if ( filterStory && filterStory.length > 0 && filterStory !== 'None' ) { thisFilter.push( this.state.filterStory ) ; entryFilter.push( this.state.filterStory ) ; }
     }
-
 
     let projects = this.state.projects;
     projects.lastFiltered = projects.newFiltered;
     let filterThese = newProjectType ? projects.user : projects.master ;
-    projects.newFiltered = this.getTheseProjects(filterThese, thisFilter, 'asc', 'titleProject');
+    let maxCount = 1000;
+    if ( filteredCategory === 'myRecent' ) { filterThese = projects.special ; maxCount = 22 ; }
+    projects.newFiltered = this.getTheseProjects(filterThese, thisFilter, filteredCategory !== 'myRecent' ? 'asc' : null , 'titleProject', maxCount );
     //projects.lastFiltered = (searchType === 'all' ? this.state.projects.all : this.state.lastFilteredProjects );
+    
+    let stateEntries : IEntryInfo = this.state.entries;
+    stateEntries.newFiltered = this.getTheseEntries(stateEntries.all, entryFilter);
 
     let newProjectMasterPriorityChoice = !newProjectType ? thisFilter[0] : this.state.projectMasterPriorityChoice;
     let newProjectUserPriorityChoice = newProjectType ? thisFilter[0] : this.state.projectUserPriorityChoice;
@@ -2810,6 +2875,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       projectMasterPriorityChoice: newProjectMasterPriorityChoice,
       projectUserPriorityChoice: newProjectUserPriorityChoice,
       projects: projects,
+      entries: stateEntries,
       //searchCount: newFilteredProjects.length,
       searchType: '',
       searchWhere: ' in ' + filteredCategory,
@@ -2838,7 +2904,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
  *                                                                                                                      
  */
 
-  public getTheseProjects(startingProjects: IProject[], filterFlags : string[], sortOrder: 'asc' | 'dec', sortProp: string){
+  public getTheseProjects(startingProjects: IProject[], filterFlags : string[], sortOrder: 'asc' | 'dec', sortProp: string, max: number = 100 ){
 
     //console.log('getTheseProjects: filterFlags', filterFlags);
 
@@ -2849,8 +2915,10 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
     }
 
     for (let thisItem of startingProjects) {
-      if (Utils.arrayContainsArray(thisItem.filterFlags,filterFlags)) {
-        filteredProjects.push(thisItem);
+      if ( filteredProjects.length < max ) {
+        if (Utils.arrayContainsArray(thisItem.filterFlags,filterFlags)) {
+          filteredProjects.push(thisItem);
+        }
       }
     }
 
@@ -2862,6 +2930,26 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
     return filteredProjects;
   }
   
+  
+  public getTheseEntries(startingProjects: ITimeEntry[], filterFlags : string[] ){
+
+    //console.log('getTheseProjects: filterFlags', filterFlags);
+
+    let filteredProjects: ITimeEntry[] = [];
+
+    if (filterFlags.length === 0) {
+      return startingProjects;
+    }
+
+    for (let thisItem of startingProjects) {
+      if (Utils.arrayContainsArray(thisItem.filterFlags,filterFlags)) {
+        filteredProjects.push(thisItem);
+      }
+    }
+
+    console.log('getTheseEntries: filteredEntries', filteredProjects);
+    return filteredProjects;
+  }
 
   /**
    * This builds unique string key based on properties passed in through this.props.projectKey
@@ -2901,6 +2989,11 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       everyone: timeTrackData.everyone, //Used to designate this option should be available to everyone.
       sortOrder: timeTrackData.sortOrder, //Used to prioritize in choices.... ones with number go first in order, followed by empty
       key: this.getProjectKey(timeTrackData),
+
+      daysOld: timeTrackData.thisTimeObj.daysAgo,
+
+      story: timeTrackData.story,
+      chapter: timeTrackData.chapter,
 
       category1: timeTrackData.category1,
       category2: timeTrackData.category2,
@@ -2962,7 +3055,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
     let newProjectType = !this.state.projectType;
     let pivotHeader = newProjectType === false ? this.state.projectMasterPriorityChoice : this.state.projectUserPriorityChoice;  
     let trackedClick = 'ToggleType from ' +  this.state.projectType + ' to ' + newProjectType;
-    this.updateProjectSelection( pivotHeader , this.state.projectType,  trackedClick , null ) ;
+    this.updateProjectSelection( pivotHeader , newProjectType,  trackedClick , null ) ;
 
   } //End toggleType
 
@@ -3132,6 +3225,7 @@ public toggleTips = (item: any): void => {
         <PivotItem 
           headerText={pivT.headerText} 
           itemKey={pivT.itemKey}
+          itemIcon={pivT.icon}
         >
         </PivotItem>
       );
@@ -3702,6 +3796,8 @@ public toggleTips = (item: any): void => {
           everyone: p.Everyone,
           sortOrder: p.SortOrder,
 
+          daysOld: null,
+
           category1: p.Category1,
           category2: p.Category2,
 
@@ -3720,6 +3816,10 @@ public toggleTips = (item: any): void => {
           projectID2: this.buildSmartText(p.ProjectID2, origProjectID2),
 
           timeTarget: targetInfo,
+
+          allHours: '',
+          yourHours: '',
+
           projOptions: projOptions,
           ccEmail: p.CCEmail,
           ccList: p.CCList,
@@ -3823,6 +3923,11 @@ public toggleTips = (item: any): void => {
           listProjects += item.ProjectID2 + ' ';
         }   
 
+        let temp = [];
+        if ( item.Story !== null ) { temp.push( item.Story ) ; }
+        if ( item.Chapter !== null ) { temp.push( item.Chapter ) ; }
+        let listStoryChapter = temp.join(' | ');
+
         let keyChanges = [];
         let keyChange = 'No change';
         
@@ -3840,11 +3945,18 @@ public toggleTips = (item: any): void => {
           }
         }
 
-
         let listComments = item.Comments ? item.Comments : "";
 
         //Split this out for when creating test data and user may not have title.
         let userInitials = item.User.Title == null ? 'TBD' : item.User.Title.split(" ").map((n)=>n[0]).join("");
+
+        let sourceProjectId = null;
+        if ( item.SourceProjectRef ) { 
+          let sourceId = item.SourceProjectRef.split(' || ')[2];
+          if ( sourceId ) {
+            sourceProjectId = parseInt(sourceId);
+        }}
+
 
         let timeEntry : ITimeEntry = {
 
@@ -3856,6 +3968,8 @@ public toggleTips = (item: any): void => {
           
           //2020-05-13:  Replace Active with StatusTMT  when Status = 9 then active = null, Status = 8 then active = false else true
           active: this.convertStatusToActive(item.StatusNumber),
+
+          status: item.StatusTMT,
 
           category1 : item.Category1 ,
           category2 : item.Category2 ,
@@ -3876,6 +3990,9 @@ public toggleTips = (item: any): void => {
           //Values that relate to project list item
           sourceProject : item.SourceProject , //Link back to the source project list item.
           sourceProjectRef : item.SourceProjectRef , //Link back to the source project list item.
+
+          sourceProjectId: sourceProjectId,
+
           activity: item.Activity ,  //Link to the activity you worked on
 
           //Values specific to Time Entry
@@ -3902,6 +4019,7 @@ public toggleTips = (item: any): void => {
           listCategory: listCategory,
           listTimeSpan: getTimeSpan(item.StartTime, item.EndTime),
           listProjects: listProjects,
+          listStoryChapter: listStoryChapter,
           listTracking: '',
           listComments: listComments,
 
@@ -4205,6 +4323,9 @@ public toggleTips = (item: any): void => {
     } else { //alert("NOT found: " );
     }
 
+    let specialXref: ISpecialProject[] = []; //special entries such as current user's most recent activity
+    let specialIds: number[] = []; //special project IDs (for faster x-checks)
+
     let lastEndTime = makeTheTimeObject(new Date(2007,0,1).toUTCString());
     let firstStarTime = makeTheTimeObject(new Date(2030,0,1).toUTCString());
     //dateRange?: string[];
@@ -4223,10 +4344,51 @@ public toggleTips = (item: any): void => {
     for (let i = 0; i < timeTrackData.length; i++ ) {
       let thisEntry : ITimeEntry = timeTrackData[i];
       let countThese = "all";
-      let fromProject = this.convertToProject(thisEntry);
       let yours, team, today, week, month, quarter, recent :boolean = false;
       let thisEndTime = makeTheTimeObject(thisEntry.endTime); 
       thisEntry.thisTimeObj = makeTheTimeObject(thisEntry.startTime); 
+
+      //This builds index of ProjectIDs first use
+      let xRefIndex = specialIds.indexOf( thisEntry.sourceProjectId );
+      let thisSpecialXref : ISpecialProject = null;
+      if ( xRefIndex < 0 ) {
+        //Add this project... it's new
+        specialIds.push( thisEntry.sourceProjectId );
+        specialXref.push ({
+            filterFlags: [],
+            lastUse: thisEntry.thisTimeObj,
+            projId: thisEntry.sourceProjectId,
+            age: thisEntry.thisTimeObj.daysAgo,
+            workAge: thisEntry.thisTimeObj.daysAgo,
+            timeTarget: {
+              projListValue: null,
+              value: null,
+              daily: 0,
+              weekly: 0,
+              total: 0,
+              dailyStatus: false,
+              weeklyStatus:false,
+              totalStatus: false,
+              dailyU: 0,
+              weeklyU: 0,
+              totalU: 0,
+              dailyStatusU: false,
+              weeklyStatusU:false,
+              totalStatusU: false,
+              dailyUC: 0,
+              weeklyUC: 0,
+              totalUC: 0,
+            },
+          });
+
+          thisEntry.xRefIndex = specialIds.length -1;
+
+      } else { thisEntry.xRefIndex = xRefIndex ; }
+
+      thisSpecialXref = specialXref[ thisEntry.xRefIndex ];
+
+      let fromProject = this.convertToProject(thisEntry);
+
       //alert(thisEndTime);
       //Check if timeTrackData is tagged to you
       if (thisEntry.userId === userId ) { yours = true; } 
@@ -4313,7 +4475,6 @@ public toggleTips = (item: any): void => {
       if (fromProject.teamIds.indexOf(userId) > -1 ) { team = true; } 
       if (fromProject.leaderId === userId ) { team = true; } 
       
-
       if (!yours  && team) { 
         fromProject.filterFlags.push('team');
         thisEntry.filterFlags.push('team');
@@ -4326,6 +4487,8 @@ public toggleTips = (item: any): void => {
         countThese = 'otherPeople';
       }
 
+      if ( fromProject.story != null ) { fromProject.filterFlags.push( fromProject.story ) ; thisEntry.filterFlags.push(fromProject.story); }
+      if ( fromProject.status != null ) { fromProject.filterFlags.push( fromProject.status ) ; thisEntry.filterFlags.push(fromProject.status); }
 
       //Build up options to search on
       thisEntry.searchStringPC = this.getEntrySearchString(thisEntry);
@@ -4388,7 +4551,6 @@ public toggleTips = (item: any): void => {
         thisEntry.timeGroup = '5. Ended Who knows when :)';
         counts[countThese].recent ++ ;
        }
-                  
       if (userKeys.indexOf(fromProject.key) < 0) { 
         //This is a new project, add
         user.push(fromProject);
@@ -4414,6 +4576,29 @@ public toggleTips = (item: any): void => {
         everyoneEntries.push(thisEntry);
       } 
 
+      /**
+       * Add all current item flags to this project
+       */
+      thisEntry.filterFlags.map( flag => {
+        if ( thisSpecialXref.filterFlags.indexOf(flag) < 0 ) { thisSpecialXref.filterFlags.push( flag ) ; } 
+      });
+
+      //thisSpecialXref.timeTarget
+      let currentFlags = thisEntry.filterFlags;
+
+      if ( thisSpecialXref.projId === 167 ) {
+        console.log('This is 167');
+      }
+
+      if ( currentFlags.indexOf('your') > - 1 ) {
+        if ( currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.dailyU += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.dailyUC ++ ; }
+        if ( currentFlags.indexOf('week') > - 1 || currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.weeklyU += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.weeklyUC ++ ; }
+        thisSpecialXref.timeTarget.totalU += Number(thisEntry.duration) ;
+        thisSpecialXref.timeTarget.totalUC ++;
+      }
+      if ( currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.daily += Number(thisEntry.duration) ; }
+      if ( currentFlags.indexOf('week') > - 1 || currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.weekly += Number(thisEntry.duration) ; }
+      thisSpecialXref.timeTarget.total += Number(thisEntry.duration) ;
 
     }
 
@@ -4445,6 +4630,39 @@ public toggleTips = (item: any): void => {
     stateEntries.lastFiltered = allEntries;  
     stateEntries.dateRange = dateRange;
     stateEntries.firstItem = firstItem;
+    
+    /**
+     * Update     let specialXref: ISpecialProject[] = []; //special entries such as current user's most recent activity
+     * let specialIds: number[] = []; //special project IDs (for faster x-checks)
+     */
+    stateProjects.specialIds = specialIds;
+    stateProjects.specialXref = specialXref;
+    
+    if ( this.state.projectsLoadStatus === 'Complete' === true ) {
+      stateProjects.special = this.getSpecialProjects( stateProjects.master, stateProjects.specialIds );
+      stateProjects.specialXref.map( (xProj, index) => {
+        let thisStateProject = stateProjects.special[index];
+        if ( thisStateProject ) { //There was one out of 71 that was not found in the projects list.  Maybe was "Not a real project"
+          thisStateProject.lastUsed = xProj.lastUse;
+          thisStateProject.timeTarget = xProj.timeTarget;
+          thisStateProject.allHours = [ xProj.timeTarget.daily.toFixed(1), xProj.timeTarget.weekly.toFixed(1), xProj.timeTarget.total.toFixed(1)].join(' ~ ');
+          thisStateProject.yourHours = [ xProj.timeTarget.dailyU.toFixed(1), xProj.timeTarget.weeklyU.toFixed(1), xProj.timeTarget.totalU.toFixed(1)].join(' ~ ');
+          thisStateProject.yourCount = [ xProj.timeTarget.dailyUC, xProj.timeTarget.weeklyUC, xProj.timeTarget.totalUC ].join(' ~ ');          
+          //myRecent
+          if ( xProj.filterFlags.indexOf('your') > -1 ) {
+            if ( xProj.filterFlags.indexOf('today') > -1 || xProj.filterFlags.indexOf('week') > -1  || xProj.filterFlags.indexOf('month') > -1 ) {
+              xProj.filterFlags.push('myRecent');
+              thisStateProject.filterFlags = xProj.filterFlags;
+              //Add user generated flags to the Project Flags
+              xProj.filterFlags.map( flag => {
+                if ( thisStateProject.filterFlags.indexOf(flag) < 0 ) { thisStateProject.filterFlags.push( flag ) ; } 
+              });
+            }
+          }
+        }
+
+      });
+    }
 
     //Change from sinceLast if the time is longer than x- hours ago.
     let hoursSinceLastTime = this.state.currentTimePicker === 'sinceLast' && getTimeDelta( lastEndTime.theTime, new Date() , 'hours');
@@ -4478,6 +4696,24 @@ public toggleTips = (item: any): void => {
 
   }
 
+  /**
+   * This will get an array of all the projects where specialIds match the project
+   * @param all
+   * @param specialIds 
+   */
+
+  private getSpecialProjects( sourceProjects : IProject[], specialIds : number[] ) {
+
+    let special: IProject[] = [];
+    specialIds.map( checkId => {
+      let sourceIdx : any = doesObjectExistInArray( sourceProjects, 'id' , checkId, true );
+      if ( sourceIdx === false ) { sourceIdx = -1 ; } else { sourceIdx = parseInt( sourceIdx ) ; }
+      if ( sourceIdx > -1 ) { special.push( sourceProjects[ sourceIdx ] ) ; }
+    });
+
+    return special;
+
+  }
 
   private getEntrySearchString(thisEntry: ITimeEntry){
 

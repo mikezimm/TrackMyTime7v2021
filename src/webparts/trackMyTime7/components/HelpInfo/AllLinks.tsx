@@ -46,7 +46,7 @@ export const gitRepoSPFxContReact = createLink( baseGitContReact,'_blank', 'cont
  *  My repos
  */
 export const baseMyRepos = 'https://github.com/mikezimm/';
-export const gitRepoTrackMyTime = createRepoLinks( baseMyRepos + 'TrackMyTime7', '_blank', 'TrackMyTime7' );
+export const gitRepoTrackMyTime = createRepoLinks( baseMyRepos + 'TrackMyTime7v2021', '_blank', 'TrackMyTime7' );
 export const gitRepoPivotTiles = createRepoLinks( baseMyRepos + 'Pivot-Tiles','_blank', 'Pivot-Tiles' );
 export const gitRepoSocialiis = createRepoLinks( baseMyRepos + 'Social-iis-7','_blank', 'Social-iis-7' );
 
@@ -55,9 +55,9 @@ export const gitRepoSocialiis = createRepoLinks( baseMyRepos + 'Social-iis-7','_
  * Track My Time links
  */
 
-export const gitTMTActivityTypeWiki = createLink( baseMyRepos + 'TrackMyTime7/wiki/ActivityURL%5E-calculated-column-example' , '_blank', 'ActivityType examples' );
-export const gitTMTActivityURLWiki = createLink( baseMyRepos + 'TrackMyTime7/wiki/ActivityURL%5E-calculated-column-example' , '_blank', 'ActivityURL^ Formula examples' );
-export const gitTMTOptionsWiki = createLink( baseMyRepos + 'TrackMyTime7/wiki/Options%5E-calculated-column-example' , '_blank', 'Options^ Formula examples' );
+export const gitTMTActivityTypeWiki = createLink( baseMyRepos + 'TrackMyTime7v2021/wiki/ActivityURL%5E-calculated-column-example' , '_blank', 'ActivityType examples' );
+export const gitTMTActivityURLWiki = createLink( baseMyRepos + 'TrackMyTime7v2021/wiki/ActivityURL%5E-calculated-column-example' , '_blank', 'ActivityURL^ Formula examples' );
+export const gitTMTOptionsWiki = createLink( baseMyRepos + 'TrackMyTime7v2021/wiki/Options%5E-calculated-column-example' , '_blank', 'Options^ Formula examples' );
 
 /**
  *  Github Samples

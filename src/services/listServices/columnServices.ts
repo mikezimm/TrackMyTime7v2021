@@ -20,7 +20,7 @@ import { doesObjectExistInArray } from '@mikezimm/npmfunctions/dist/arrayService
 
 import { IListInfo, IMyListInfo, IServiceLog, notify } from './listTypes';
 
-import { getHelpfullError } from '../ErrorHandler';
+import { getHelpfullError } from '@mikezimm/npmfunctions/dist/ErrorHandler';
 
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";

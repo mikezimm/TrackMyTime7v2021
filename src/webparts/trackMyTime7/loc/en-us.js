@@ -65,7 +65,7 @@ define([], function() {
 
     // 7 - Slider Options
     "PropPaneGroupLabel_SliderOptions": "Start-End Slider Options",
-    "FieldLabel_ShowTimeSlider": "Show Time Slider",
+    "FieldLabel_ShowTimeSlider": "Change Time Slider settings",
     "FieldLabel_TimeSliderInc": "Incriment of time slider (minutes)",
     "FieldLabel_TimeSliderMax": "Max of time slider (hours)",
 

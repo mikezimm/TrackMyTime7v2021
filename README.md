@@ -54,8 +54,9 @@ npm installs
 npm install webpack-bundle-analyzer --save-dev
 npm install @pnp/sp
 npm install @pnp/spfx-controls-react --save --save-exact
-npm install @mikezimm/npmfunctions@0.0.3
+npm install @mikezimm/npmfunctions@0.0.4
 npm install @pnp/spfx-property-controls
+npm install react-accessible-accordion
 
 ```
 

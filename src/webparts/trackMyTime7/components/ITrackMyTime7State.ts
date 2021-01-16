@@ -201,6 +201,9 @@ export interface IProjectTarget {
   dailyStatusU?: boolean;
   weeklyStatusU?: boolean;
   totalStatusU?: boolean;
+  dailyUC?: number;
+  weeklyUC?: number;
+  totalUC?: number;
 }
 
 
@@ -278,6 +281,9 @@ export interface IProject {
   timeTarget?: IProjectTarget;
   yourHours?: string;
   allHours?: string;
+
+  yourCount?: string;
+  allCount?: string;
 
   projOptions?: IProjectOptions;
   defProjEditOptions?: string;

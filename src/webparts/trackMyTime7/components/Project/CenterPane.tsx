@@ -148,7 +148,7 @@ public constructor(props:ICenterPaneProps){
                 } else {
                     thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourHours', 'allHours'] , ['Today ~ Week ~ All','Today ~ Week ~ All'] , false ) ;
                 }
-
+                thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourCount'] , [] ,false ) ;
                 
                 this.props.parentProps.centerPaneFields.map( field => {
                     //description: 'coma separted: title,projectID,category,story,task,team',

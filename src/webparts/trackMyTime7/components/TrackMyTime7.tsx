@@ -570,6 +570,10 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
     let weeklyU: any = false;
     let totalU: any = false;
 
+    let dailyUC: any = false;
+    let weeklyUC: any = false;
+    let totalUC: any = false;
+
     let projListValue = pTimeTarget;
 
     if (pTimeTarget) {
@@ -601,6 +605,11 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       dailyStatusU: dailyU ? true : false,
       weeklyStatusU: weeklyU ? true : false,
       totalStatusU: totalU ? true : false,
+
+      dailyUC: dailyUC ? dailyUC : 0,
+      weeklyUC: weeklyUC ? weeklyUC : 0,
+      totalUC: totalUC ? totalUC : 0,
+
     };
 
     return targetInfo;
@@ -4366,6 +4375,9 @@ public toggleTips = (item: any): void => {
               dailyStatusU: false,
               weeklyStatusU:false,
               totalStatusU: false,
+              dailyUC: 0,
+              weeklyUC: 0,
+              totalUC: 0,
             },
           });
 
@@ -4579,9 +4591,10 @@ public toggleTips = (item: any): void => {
       }
 
       if ( currentFlags.indexOf('your') > - 1 ) {
-        if ( currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.dailyU += Number(thisEntry.duration) ; }
-        if ( currentFlags.indexOf('week') > - 1 || currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.weeklyU += Number(thisEntry.duration) ; }
+        if ( currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.dailyU += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.dailyUC ++ ; }
+        if ( currentFlags.indexOf('week') > - 1 || currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.weeklyU += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.weeklyUC ++ ; }
         thisSpecialXref.timeTarget.totalU += Number(thisEntry.duration) ;
+        thisSpecialXref.timeTarget.totalUC ++;
       }
       if ( currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.daily += Number(thisEntry.duration) ; }
       if ( currentFlags.indexOf('week') > - 1 || currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.weekly += Number(thisEntry.duration) ; }
@@ -4634,6 +4647,7 @@ public toggleTips = (item: any): void => {
           thisStateProject.timeTarget = xProj.timeTarget;
           thisStateProject.allHours = [ xProj.timeTarget.daily.toFixed(1), xProj.timeTarget.weekly.toFixed(1), xProj.timeTarget.total.toFixed(1)].join(' ~ ');
           thisStateProject.yourHours = [ xProj.timeTarget.dailyU.toFixed(1), xProj.timeTarget.weeklyU.toFixed(1), xProj.timeTarget.totalU.toFixed(1)].join(' ~ ');
+          thisStateProject.yourCount = [ xProj.timeTarget.dailyUC, xProj.timeTarget.weeklyUC, xProj.timeTarget.totalUC ].join(' ~ ');          
           //myRecent
           if ( xProj.filterFlags.indexOf('your') > -1 ) {
             if ( xProj.filterFlags.indexOf('today') > -1 || xProj.filterFlags.indexOf('week') > -1  || xProj.filterFlags.indexOf('month') > -1 ) {

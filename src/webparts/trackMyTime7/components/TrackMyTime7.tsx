@@ -574,7 +574,6 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
     let weeklyUC: any = false;
     let totalUC: any = false;
 
-
     let dailyIds: number[] = [];
     let weeklyIds: number[] = [];
     let totalIds: number[] = [];
@@ -4398,6 +4397,14 @@ public toggleTips = (item: any): void => {
               dailyUC: 0,
               weeklyUC: 0,
               totalUC: 0,
+
+              dailyIds: [],
+              weeklyIds: [],
+              totalIds: [],
+              dailyUIds: [],
+              weeklyUIds: [],
+              totalUIds: [],
+
             },
           });
 
@@ -4609,17 +4616,17 @@ public toggleTips = (item: any): void => {
       if ( thisSpecialXref.projId === 167 ) {
         console.log('This is 167');
       }
-
       if ( currentFlags.indexOf('your') > - 1 ) {
-        if ( currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.dailyU += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.dailyUC ++ ; }
-        if ( currentFlags.indexOf('week') > - 1 || currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.weeklyU += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.weeklyUC ++ ; }
+        if ( currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.dailyU += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.dailyUC ++ ; thisSpecialXref.timeTarget.dailyUIds.push( thisEntry.id ) ; }
+        if ( currentFlags.indexOf('week') > - 1 || currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.weeklyU += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.weeklyUC ++ ; thisSpecialXref.timeTarget.weeklyUIds.push( thisEntry.id ) ; }
         thisSpecialXref.timeTarget.totalU += Number(thisEntry.duration) ;
         thisSpecialXref.timeTarget.totalUC ++;
+        thisSpecialXref.timeTarget.totalUIds.push( thisEntry.id ) ;
       }
-      if ( currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.daily += Number(thisEntry.duration) ; }
-      if ( currentFlags.indexOf('week') > - 1 || currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.weekly += Number(thisEntry.duration) ; }
+      if ( currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.daily += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.dailyIds.push( thisEntry.id ) ;  }
+      if ( currentFlags.indexOf('week') > - 1 || currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.weekly += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.weeklyIds.push( thisEntry.id ) ;  }
       thisSpecialXref.timeTarget.total += Number(thisEntry.duration) ;
-
+      thisSpecialXref.timeTarget.totalIds.push( thisEntry.id ) ;
     }
 
     //console.log('nowEndTime', JSON.stringify(nowEndTime));
@@ -4667,7 +4674,13 @@ public toggleTips = (item: any): void => {
           thisStateProject.timeTarget = xProj.timeTarget;
           thisStateProject.allHours = [ xProj.timeTarget.daily.toFixed(1), xProj.timeTarget.weekly.toFixed(1), xProj.timeTarget.total.toFixed(1)].join(' ~ ');
           thisStateProject.yourHours = [ xProj.timeTarget.dailyU.toFixed(1), xProj.timeTarget.weeklyU.toFixed(1), xProj.timeTarget.totalU.toFixed(1)].join(' ~ ');
-          thisStateProject.yourCount = [ xProj.timeTarget.dailyUC, xProj.timeTarget.weeklyUC, xProj.timeTarget.totalUC ].join(' ~ ');
+
+          thisStateProject.yourCounts = [ xProj.timeTarget.dailyUC, xProj.timeTarget.weeklyUC, xProj.timeTarget.totalUC ].join(' ~ ');
+//          thisStateProject.allCounts = [ xProj.timeTarget.allCounts, xProj.timeTarget.weeklyUC, xProj.timeTarget.totalUC ].join(' ~ ');
+
+          thisStateProject.yourIds = [ xProj.timeTarget.dailyUIds.join(','), xProj.timeTarget.weeklyUIds.join(','), xProj.timeTarget.totalUIds.join(',') ].join(' ~ ');
+          thisStateProject.allIds = [ xProj.timeTarget.dailyIds.join(','), xProj.timeTarget.weeklyIds.join(','), xProj.timeTarget.totalIds.join(',') ].join(' ~ ');
+
           //myRecent
           if ( xProj.filterFlags.indexOf('your') > -1 ) {
             if ( xProj.filterFlags.indexOf('today') > -1 || xProj.filterFlags.indexOf('week') > -1  || xProj.filterFlags.indexOf('month') > -1 ) {

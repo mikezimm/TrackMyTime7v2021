@@ -3976,7 +3976,6 @@ public toggleTips = (item: any): void => {
             sourceProjectId = parseInt(sourceId);
         }}
 
-
         let timeEntry : ITimeEntry = {
 
             //Values that would come from Project item
@@ -4419,7 +4418,7 @@ public toggleTips = (item: any): void => {
       //alert(thisEndTime);
       //Check if timeTrackData is tagged to you
       if (thisEntry.userId === userId ) { yours = true; } 
-      if (yours) { 
+      if ( yours === true ) { 
         fromProject.filterFlags.push('your');
         thisEntry.filterFlags.push('your');
         countThese = 'your'; 
@@ -4502,7 +4501,7 @@ public toggleTips = (item: any): void => {
       if (fromProject.teamIds.indexOf(userId) > -1 ) { team = true; } 
       if (fromProject.leaderId === userId ) { team = true; } 
       
-      if (!yours  && team) { 
+      if (!yours && team) { 
         fromProject.filterFlags.push('team');
         thisEntry.filterFlags.push('team');
         countThese = 'team'; 
@@ -4603,19 +4602,27 @@ public toggleTips = (item: any): void => {
         everyoneEntries.push(thisEntry);
       } 
 
+
+
+      if ( thisSpecialXref.projId === 52 ) {
+        console.log('This is 52');
+      }
       /**
        * Add all current item flags to this project
        */
-      thisEntry.filterFlags.map( flag => {
-        if ( thisSpecialXref.filterFlags.indexOf(flag) < 0 ) { thisSpecialXref.filterFlags.push( flag ) ; } 
-      });
+
+      if (yours === true && thisSpecialXref.filterFlags.indexOf( 'hasYourItem' ) < 0) { thisSpecialXref.filterFlags.push( 'hasYourItem' ) ; } 
 
       //thisSpecialXref.timeTarget
       let currentFlags = thisEntry.filterFlags;
+      if (currentFlags.indexOf('today') > - 1 && thisSpecialXref.filterFlags.indexOf('today') < 0 ) { thisSpecialXref.filterFlags.push( 'today' ) ; }
+      if (currentFlags.indexOf('week') > - 1 && thisSpecialXref.filterFlags.indexOf('week') < 0 ) { thisSpecialXref.filterFlags.push( 'week' ) ; } 
+      if (currentFlags.indexOf('month') > - 1 && thisSpecialXref.filterFlags.indexOf('month') < 0 ) { thisSpecialXref.filterFlags.push( 'month' ) ; }
 
-      if ( thisSpecialXref.projId === 167 ) {
-        console.log('This is 167');
-      }
+      if (currentFlags.indexOf('team') > - 1 && thisSpecialXref.filterFlags.indexOf('team') < 0 ) { thisSpecialXref.filterFlags.push( 'team' ) ; }
+      if (currentFlags.indexOf('everyone') > - 1 && thisSpecialXref.filterFlags.indexOf('everyone') < 0 ) { thisSpecialXref.filterFlags.push( 'everyone' ) ; }
+      if (currentFlags.indexOf('otherPeople') > - 1 && thisSpecialXref.filterFlags.indexOf('otherPeople') < 0 ) { thisSpecialXref.filterFlags.push( 'otherPeople' ) ; }
+
       if ( currentFlags.indexOf('your') > - 1 ) {
         if ( currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.dailyU += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.dailyUC ++ ; thisSpecialXref.timeTarget.dailyUIds.push( thisEntry.id ) ; }
         if ( currentFlags.indexOf('week') > - 1 || currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.weeklyU += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.weeklyUC ++ ; thisSpecialXref.timeTarget.weeklyUIds.push( thisEntry.id ) ; }
@@ -4682,10 +4689,10 @@ public toggleTips = (item: any): void => {
           thisStateProject.allIds = [ xProj.timeTarget.dailyIds.join(','), xProj.timeTarget.weeklyIds.join(','), xProj.timeTarget.totalIds.join(',') ].join(' ~ ');
 
           //myRecent
-          if ( xProj.filterFlags.indexOf('your') > -1 ) {
+          if ( xProj.filterFlags.indexOf('hasYourItem') > -1 ) {
             if ( xProj.filterFlags.indexOf('today') > -1 || xProj.filterFlags.indexOf('week') > -1  || xProj.filterFlags.indexOf('month') > -1 ) {
               xProj.filterFlags.push('myRecent');
-              thisStateProject.filterFlags = xProj.filterFlags;
+              //thisStateProject.filterFlags = xProj.filterFlags;
               //Add user generated flags to the Project Flags
               xProj.filterFlags.map( flag => {
                 if ( thisStateProject.filterFlags.indexOf(flag) < 0 ) { thisStateProject.filterFlags.push( flag ) ; } 

@@ -204,6 +204,14 @@ export interface IProjectTarget {
   dailyUC?: number;
   weeklyUC?: number;
   totalUC?: number;
+
+  dailyIds?: number[];
+  weeklyIds?: number[];
+  totalIds?: number[];
+  dailyUIds?: number[];
+  weeklyUIds?: number[];
+  totalUIds?: number[];
+
 }
 
 
@@ -282,8 +290,11 @@ export interface IProject {
   yourHours?: string;
   allHours?: string;
 
-  yourCount?: string;
-  allCount?: string;
+  yourCounts?: string;
+  allCounts?: string;
+
+  yourIds?: string;
+  allIds?: string;
 
   projOptions?: IProjectOptions;
   defProjEditOptions?: string;

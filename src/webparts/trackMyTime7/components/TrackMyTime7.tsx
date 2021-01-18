@@ -574,6 +574,14 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
     let weeklyUC: any = false;
     let totalUC: any = false;
 
+
+    let dailyIds: number[] = [];
+    let weeklyIds: number[] = [];
+    let totalIds: number[] = [];
+    let dailyUIds: number[] = [];
+    let weeklyUIds: number[] = [];
+    let totalUIds: number[] = [];
+
     let projListValue = pTimeTarget;
 
     if (pTimeTarget) {
@@ -610,6 +618,12 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       weeklyUC: weeklyUC ? weeklyUC : 0,
       totalUC: totalUC ? totalUC : 0,
 
+      dailyIds: dailyIds ? dailyIds : [],
+      weeklyIds: weeklyIds ? weeklyIds : [],
+      totalIds: totalIds ? totalIds : [],
+      dailyUIds: dailyUIds ? dailyUIds : [],
+      weeklyUIds: weeklyUIds ? weeklyUIds : [],
+      totalUIds: totalUIds ? totalUIds : [],
     };
 
     return targetInfo;
@@ -3820,6 +3834,12 @@ public toggleTips = (item: any): void => {
           allHours: '',
           yourHours: '',
 
+          allCounts: '',
+          yourCounts: '',
+
+          allIds: '',
+          yourIds: '',
+
           projOptions: projOptions,
           ccEmail: p.CCEmail,
           ccList: p.CCList,
@@ -4647,7 +4667,7 @@ public toggleTips = (item: any): void => {
           thisStateProject.timeTarget = xProj.timeTarget;
           thisStateProject.allHours = [ xProj.timeTarget.daily.toFixed(1), xProj.timeTarget.weekly.toFixed(1), xProj.timeTarget.total.toFixed(1)].join(' ~ ');
           thisStateProject.yourHours = [ xProj.timeTarget.dailyU.toFixed(1), xProj.timeTarget.weeklyU.toFixed(1), xProj.timeTarget.totalU.toFixed(1)].join(' ~ ');
-          thisStateProject.yourCount = [ xProj.timeTarget.dailyUC, xProj.timeTarget.weeklyUC, xProj.timeTarget.totalUC ].join(' ~ ');          
+          thisStateProject.yourCount = [ xProj.timeTarget.dailyUC, xProj.timeTarget.weeklyUC, xProj.timeTarget.totalUC ].join(' ~ ');
           //myRecent
           if ( xProj.filterFlags.indexOf('your') > -1 ) {
             if ( xProj.filterFlags.indexOf('today') > -1 || xProj.filterFlags.indexOf('week') > -1  || xProj.filterFlags.indexOf('month') > -1 ) {

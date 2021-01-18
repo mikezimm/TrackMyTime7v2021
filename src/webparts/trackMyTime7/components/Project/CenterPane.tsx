@@ -196,7 +196,7 @@ public constructor(props:ICenterPaneProps){
                                 selectedTeamTitles.push( member.Title );
                             });
                             thisProjectElement.push( <div style={{fontSize: 'x-small'}} title={ 'Team' }> { 'Team' } </div> );
-                            thisProjectElement.push( < div title='Team Members'> { selectedTeamTitles.join( ', ' ) } </div> );
+                            thisProjectElement.push( < div style={{marginBottom: '13px'}} title='Team Members'> { selectedTeamTitles.join( ', ' ) } </div> );
                         }
                     }
                 });

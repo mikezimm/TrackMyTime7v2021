@@ -143,12 +143,7 @@ public constructor(props:ICenterPaneProps){
                 updateKey = selectedProject.titleProject;
 
                 thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['lastUsed.theTime'] , [] ,false ) ;
-                if ( selectedProject.yourHours === selectedProject.allHours ) {
-                    thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourHours' ] , ['Today ~ Week ~ All'] , false ) ;
-                } else {
-                    thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourHours', 'allHours'] , ['Today ~ Week ~ All','Today ~ Week ~ All'] , false ) ;
-                }
-                thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourCount'] , [] ,false ) ;
+
                 
                 this.props.parentProps.centerPaneFields.map( field => {
                     //description: 'coma separted: title,projectID,category,story,task,team',
@@ -166,6 +161,27 @@ public constructor(props:ICenterPaneProps){
                         thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['status','dueDate'] , [] , false ) ;
                         thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['completedBy.Title','completedDate'] , [] , false ) ; }
 
+                    if ( field === 'hours' ){                       
+                        if ( selectedProject.yourHours === selectedProject.allHours ) {
+                            thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourHours' ] , ['Today ~ Week ~ All'] , false ) ;
+                        } else {
+                            thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourHours', 'allHours'] , ['Today ~ Week ~ All','Today ~ Week ~ All'] , false ) ;
+                        }
+                    }
+                    if ( field === 'counts' ){
+                        if ( selectedProject.yourCount === selectedProject.allCount ) {
+                            thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourCount' ] , ['Today ~ Week ~ All'] , false ) ;
+                        } else {
+                            thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourCount', 'allCount'] , ['Today ~ Week ~ All','Today ~ Week ~ All'] , false ) ;
+                        }
+                    }
+                    if ( field === 'ids' ){
+                        if ( selectedProject.yourCount === selectedProject.allCount ) {
+                            //thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourCount' ] , ['Today ~ Week ~ All'] , false ) ;
+                        } else {
+                            //thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourCount', 'allCount'] , ['Today ~ Week ~ All','Today ~ Week ~ All'] , false ) ;
+                        }
+                    }
                     if ( field === 'team' ){ 
                         thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['leader.Title'] , [] , false ) ;
 

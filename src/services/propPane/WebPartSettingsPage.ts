@@ -193,7 +193,7 @@ import {
 
                 PropertyPaneTextField('centerPaneFields', {
                   label: strings.FieldLabel_StatusColumn,
-                  description: 'coma separted: title,projectID,category,story,task,team',
+                  description: 'coma separted: title,projectID,category,story,task,team,hours,counts,ids',
                 }),
   
                 PropertyPaneTextField('centerPaneStyles', {

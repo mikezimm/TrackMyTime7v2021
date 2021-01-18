@@ -192,7 +192,7 @@ export default class TrackMyTime7WebPart extends BaseClientSideWebPart<ITrackMyT
     if ( this.properties.centerPaneFields && this.properties.centerPaneFields.length > 0 ) {
       centerPaneFields = this.properties.centerPaneFields.toLowerCase().split(',');
     } else {
-      centerPaneFields = ['title','category','project','story','task','team'];
+      centerPaneFields = ['title','category','project','story','task','team','hours','counts','ids'];
     }
     let centerPaneStyles: any = this.properties.centerPaneStyles ? this.properties.centerPaneStyles : '';
 

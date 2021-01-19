@@ -130,7 +130,7 @@ public constructor(props:IInfoAboutMeProps){
                 {/* 3 files to update version number:  package-solution.json, package-lock.json, package.json*/}
                 <table className={styles.infoTable}>
                     <tr><th>Date</th><th>Version</th><th>Focus</th><th>Notes</th></tr>
-                    <tr><td>2020-08-14</td><td>{'X.x.x.x'}</td><td>SPFx v1.11 Rebuild</td><td>Story filtering, improvements, bugfixes</td></tr>
+                    <tr><td>2020-08-14</td><td>{'2.2.0.0'}</td><td>SPFx v1.11 Rebuild</td><td>Story filtering, Center Project pane, improvements, bugfixes</td></tr>
                     <tr><td>2020-08-14</td><td>{'1.1.0.1'}</td><td>Early Access Banner, others</td><td>Add Early Access banner, fix save timeTarget and optionString</td></tr>
                     <tr><td>2020-08-14</td><td>{'1.0.0.17'}</td><td>Bug fix</td><td>Styling bug fixes.</td></tr>
                     <tr><td>2020-06-17</td><td>{'1.0.0.15'}</td><td>Project Edit</td><td>Add Project Edit screen, Project quick actions, requires 2 ne Project List columns.</td></tr>

@@ -69,7 +69,8 @@ export default class ReactAccordion extends React.Component<
                   dangerouslySetExpanded={ this.props.dangerouslyExpandIndex === index ? true : null }>
                   <AccordionItemHeading>
                     <AccordionItemButton
-                      title={item[this.props.accordianTitleProp]}
+                      style={ this.props.buttonStyle && this.props.buttonStyle.length ? item[this.props.buttonStyle] : null }
+                      title={item[ this.props.accordianTitleHover && this.props.accordianTitleHover.length > 0 ? this.props.accordianTitleHover : this.props.accordianTitleProp ]}
                     >
                       {  item[this.props.accordianTitleProp]  }
                       </AccordionItemButton>

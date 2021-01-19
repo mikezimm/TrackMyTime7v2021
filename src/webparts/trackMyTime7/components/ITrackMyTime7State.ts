@@ -117,6 +117,7 @@ export interface ITimeEntry extends ISaveEntry {
 
 
     //Values that would come from Project item
+    pid?: any; //Project ID of selected item
     id?: any; //Item ID on list
     editLink? : ILink; //Link to view/edit item link
 

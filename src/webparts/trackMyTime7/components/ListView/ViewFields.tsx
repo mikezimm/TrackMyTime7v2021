@@ -25,6 +25,15 @@ export const  id : IViewField = {
   maxWidth: 30
 };
 
+export const  pid : IViewField = {
+  name: "pid",
+  displayName: "PID",
+  isResizable: true,
+  sorting: true,
+  minWidth: 10,
+  maxWidth: 30
+};
+
 export const  timeSpan : IViewField = {
   name: "listTimeSpan",
   displayName: "Timespan",
@@ -124,6 +133,9 @@ export function viewFieldsFull( focusStory : boolean ) {
 
     
     viewFields.push(id);
+
+    viewFields.push(pid);
+
     viewFields.push(initials);
     viewFields.push(timeSpan);
 

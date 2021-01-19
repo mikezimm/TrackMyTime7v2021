@@ -4414,6 +4414,7 @@ public toggleTips = (item: any): void => {
       thisSpecialXref = specialXref[ thisEntry.xRefIndex ];
 
       let fromProject = this.convertToProject(thisEntry);
+      thisEntry.pid = thisSpecialXref.projId;
 
       //alert(thisEndTime);
       //Check if timeTrackData is tagged to you

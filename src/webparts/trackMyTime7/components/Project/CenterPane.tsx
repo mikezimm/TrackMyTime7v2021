@@ -211,6 +211,8 @@ public constructor(props:ICenterPaneProps){
             let accordionItems = [];
             accordionItems[0] = 
                 {   title: updateKey,
+                    hoverTitle: selectedProject ? selectedProject.titleProject + ' (' + selectedProject.id +' )' : '',
+                    buttonStyle: { backgroundColor: 'yellow' },
                     element: projectItemElement };
 
             console.log('Making Center Pane:' , accordionItems );
@@ -221,8 +223,10 @@ public constructor(props:ICenterPaneProps){
                     updateKey = { updateKey }
                     items={ accordionItems }
                     accordionTitle={''}
+                    accordianTitleHover={ 'hoverTitle' }
                     accordianTitleProp={'title'}
                     accordianContentProp={'element'}
+                    buttonStyle={ 'buttonStyle' }
                     allowMultipleExpanded={ false }
                     allowZeroExpanded={ true }
                 ></ReactAccordion> : null ;

@@ -142,9 +142,16 @@ public constructor(props:ICenterPaneProps){
             if ( this.props.parentProps.centerPaneFields.length > 0 && hasProject === true ) {
 
                 updateKey = selectedProject.titleProject;
+                let warnLabelStyle: any = {fontWeight: 'bolder', paddingRight: '5px' };
+                let warnDivMargin: any = { marginBottom: '15px' };
 
-                if ( selectedProject.isLate === true ) {
-                    thisProjectElementHeader = <div>WARNING... ITEM IS LATE</div>
+                if ( selectedProject.dueInfo.isLate === true ) {
+                    thisProjectElementHeader = <div><div><span style={ warnLabelStyle } >WARNING:</span> { selectedProject.dueInfo.warnLabel.replace('Warning:', '') }</div>
+                            <div style={ warnDivMargin }><span style={{fontWeight: 'bolder' }} >Due Date:</span>{ selectedProject.dueInfo.detailLabel.replace('Due Date:', '') }</div></div> ;
+
+                } else if ( selectedProject.dueInfo.isDue === true ) {
+                    thisProjectElementHeader = <div><div><span style={ warnLabelStyle } >WARNING</span> { selectedProject.dueInfo.warnLabel.replace('Warning:', '') } </div>
+                            <div style={ warnDivMargin }><span style={ warnLabelStyle } >Due Date:</span>{ selectedProject.dueInfo.detailLabel.replace('Due Date:', '') }</div></div> ;
                 }
 
                 thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['lastUsed.theTime'] , [] ,false ) ;
@@ -213,11 +220,12 @@ public constructor(props:ICenterPaneProps){
                     { thisProjectElement }
                 </Stack>;
 
+            let backgroundColor = selectedProject.dueInfo.isLate === true ? '#fec4c4' : selectedProject.dueInfo.isDue === true ? 'Khaki' : null;
             let accordionItems = [];
             accordionItems[0] = 
                 {   title: updateKey,
                     hoverTitle: selectedProject ? selectedProject.titleProject + ' (' + selectedProject.id +' )' : '',
-                    buttonStyle: { backgroundColor: 'yellow' },
+                    buttonStyle: backgroundColor ? { backgroundColor: backgroundColor } : null,
                     element: projectItemElement };
 
             console.log('Making Center Pane:' , accordionItems );

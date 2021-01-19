@@ -681,7 +681,14 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       completedDate : null,
       completedBy : null,
       completedById: null,
-      isLate: null,
+
+      dueInfo: {
+        isLate: null,
+        isDue: null,
+        dueInXDays: null,
+        detailLabel: null,
+        warnLabel: null,
+      },
 
       //Advanced Columns
       ccEmail : null,
@@ -3005,7 +3012,14 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       key: this.getProjectKey(timeTrackData),
 
       daysOld: timeTrackData.thisTimeObj.daysAgo,
-      isLate: null,
+
+      dueInfo: {
+        isLate: null,
+        isDue: null,
+        dueInXDays: null,
+        detailLabel: null,
+        warnLabel: null,
+      },
 
       story: timeTrackData.story,
       chapter: timeTrackData.chapter,
@@ -3799,14 +3813,29 @@ public toggleTips = (item: any): void => {
         };
 
         let isLate = null;
-        
+        let isDue = null;
+        let dueInXDays = getAge(p.DueDateTMT,"hours");
+        let detailLabel = '';
+        let warnLabel = '';
+
+        if ( dueInXDays ) { dueInXDays = Number(( -1 * dueInXDays / 24 ).toFixed(1)) ; }
+
         if (  p.StatusNumber !== '9' && p.StatusNumber !== '8' ) {
-          let dueAge = getAge(p.DueDateTMT,"days");
-          console.log('Project Age:', p.DueDateTMT, dueAge );
-          if ( p.DueDateTMT !== null && dueAge > 0 ) {
+          console.log('Project Age:', p.DueDateTMT, dueInXDays );
+          let dueDate = dueInXDays ? new Date( p.DueDateTMT ).toLocaleDateString() : null ;
+
+          if ( p.DueDateTMT !== null && dueInXDays < 0 ) {
             isLate = true;
+            warnLabel = `Warning: DUE ${ - dueInXDays } days ago!`;
+            detailLabel = `Due Date: ${ dueDate }`;
+
+          } else if ( p.DueDateTMT !== null && dueInXDays < 7 ) {
+            isDue = true;
+            warnLabel = `Warning: DUE in ${ dueInXDays } days!`;
+            detailLabel = `Due Date: ${ dueDate }`;
           }
         }
+
         let project : IProject = {
           projectType: 'Master',
           id: p.Id,
@@ -3861,7 +3890,14 @@ public toggleTips = (item: any): void => {
           completedBy: p.CompletedByTMT == null ? null : p.CompletedByTMT, // BE SURE TO ADD PEOPLE COLUMNS TO EXPANDED COLUMNS FIRST!
           completedById: p.CompletedByTMT == null ? null : p.CompletedByTMTId, // BE SURE TO ADD PEOPLE COLUMNS TO EXPANDED COLUMNS FIRST!
           
-          isLate: isLate,
+          dueInfo: {
+            isLate: isLate,
+            isDue: isDue,
+            dueInXDays: dueInXDays,
+            detailLabel: detailLabel,
+            warnLabel: warnLabel,
+          },
+
 
           history: p.HistoryTMT,
           //Values that relate to project list item

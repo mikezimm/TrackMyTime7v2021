@@ -264,6 +264,17 @@ export interface IProjectHistory extends IProjectAction {
   timeStamp?: string;
 }
 
+export interface IProjectDueInfo {
+
+  isLate: boolean;
+  isDue: boolean;
+  dueInXDays: number;
+
+  warnLabel: string;
+  detailLabel: string;
+
+}
+
 export interface IProject {
   //Values that would come from Project item
   projectType?: string; //master or user
@@ -271,10 +282,11 @@ export interface IProject {
   editLink? : ILink; //Link to view/edit item link
   titleProject?: string;
 
-  isLate: boolean;
-  
   comments?: ISmartText; // syntax similar to ProjID?
   active?: boolean;  //Used to indicate inactive projects
+
+  dueInfo: IProjectDueInfo;
+
   everyone?: boolean; //Used to designate this option should be available to everyone.
   sortOrder?: number; //Used to prioritize in choices.... ones with number go first in order, followed by empty
   key?: string;

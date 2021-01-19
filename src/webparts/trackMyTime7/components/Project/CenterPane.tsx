@@ -143,12 +143,7 @@ public constructor(props:ICenterPaneProps){
                 updateKey = selectedProject.titleProject;
 
                 thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['lastUsed.theTime'] , [] ,false ) ;
-                if ( selectedProject.yourHours === selectedProject.allHours ) {
-                    thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourHours' ] , ['Today ~ Week ~ All'] , false ) ;
-                } else {
-                    thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourHours', 'allHours'] , ['Today ~ Week ~ All','Today ~ Week ~ All'] , false ) ;
-                }
-                thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourCount'] , [] ,false ) ;
+
                 
                 this.props.parentProps.centerPaneFields.map( field => {
                     //description: 'coma separted: title,projectID,category,story,task,team',
@@ -166,6 +161,28 @@ public constructor(props:ICenterPaneProps){
                         thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['status','dueDate'] , [] , false ) ;
                         thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['completedBy.Title','completedDate'] , [] , false ) ; }
 
+                    if ( field === 'hours' ){
+                        if ( selectedProject.yourHours === selectedProject.allHours ) {
+                            thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourHours' ] , ['Today ~ Week ~ All'] , false ) ;
+                        } else {
+                            thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourHours', 'allHours'] , ['Today ~ Week ~ All','Today ~ Week ~ All'] , false ) ;
+                        }
+                    }
+                    if ( field === 'counts' ){
+                        if ( selectedProject.yourCounts === selectedProject.allCounts ) {
+                            thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourCounts' ] , ['Today ~ Week ~ All'] , false ) ;
+                        } else {
+                            thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourCounts', 'allCounts'] , ['Today ~ Week ~ All','Today ~ Week ~ All'] , false ) ;
+                        }
+                    }
+                    if ( field === 'ids' ){
+                        if ( selectedProject.yourIds === selectedProject.allIds ) {
+                            thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourIds' ] , ['Today ~ Week ~ All'] , false, 30 ) ;
+
+                        } else {
+                            thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourIds', 'allIds'] , ['Today ~ Week ~ All','Today ~ Week ~ All'] , false, 30 ) ;
+                        }
+                    }
                     if ( field === 'team' ){ 
                         thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['leader.Title'] , [] , false ) ;
 
@@ -179,7 +196,7 @@ public constructor(props:ICenterPaneProps){
                                 selectedTeamTitles.push( member.Title );
                             });
                             thisProjectElement.push( <div style={{fontSize: 'x-small'}} title={ 'Team' }> { 'Team' } </div> );
-                            thisProjectElement.push( < div title='Team Members'> { selectedTeamTitles.join( ', ' ) } </div> );
+                            thisProjectElement.push( < div style={{marginBottom: '13px'}} title='Team Members'> { selectedTeamTitles.join( ', ' ) } </div> );
                         }
                     }
                 });
@@ -230,7 +247,7 @@ public constructor(props:ICenterPaneProps){
 
     }   //End Public Render
 
-    private buildPropPairs( item: any, elementArray: any[], addFields: string[],  valueTitles: string[],showEmpty: boolean ) {
+    private buildPropPairs( item: any, elementArray: any[], addFields: string[],  valueTitles: string[],showEmpty: boolean, maxSize: number = 50 ) {
 
         let scHeading = [];
         let scValue = [];
@@ -264,7 +281,14 @@ public constructor(props:ICenterPaneProps){
 
         if ( scValue.length > 0 ) {
             elementArray.push( <div style={{fontSize: 'x-small'}} title={ headingLabel }> { headingLabel } </div> );
-            elementArray.push( <div style={{marginBottom: '13px'}} title= { valueTitle }> { valueLabel } </div>);
+
+            if ( valueLabel.length > maxSize ) {
+                //set default message, maybe add button to see full list.
+                elementArray.push( <div style={{marginBottom: '13px'}} title= { valueLabel }> { 'There are to many to list :)' } </div>);
+            } else {
+                elementArray.push( <div style={{marginBottom: '13px'}} title= { valueTitle }> { valueLabel } </div>);
+            }
+
         }
 
         return elementArray;

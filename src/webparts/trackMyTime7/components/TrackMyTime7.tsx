@@ -574,6 +574,13 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
     let weeklyUC: any = false;
     let totalUC: any = false;
 
+    let dailyIds: number[] = [];
+    let weeklyIds: number[] = [];
+    let totalIds: number[] = [];
+    let dailyUIds: number[] = [];
+    let weeklyUIds: number[] = [];
+    let totalUIds: number[] = [];
+
     let projListValue = pTimeTarget;
 
     if (pTimeTarget) {
@@ -610,6 +617,12 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       weeklyUC: weeklyUC ? weeklyUC : 0,
       totalUC: totalUC ? totalUC : 0,
 
+      dailyIds: dailyIds ? dailyIds : [],
+      weeklyIds: weeklyIds ? weeklyIds : [],
+      totalIds: totalIds ? totalIds : [],
+      dailyUIds: dailyUIds ? dailyUIds : [],
+      weeklyUIds: weeklyUIds ? weeklyUIds : [],
+      totalUIds: totalUIds ? totalUIds : [],
     };
 
     return targetInfo;
@@ -3820,6 +3833,12 @@ public toggleTips = (item: any): void => {
           allHours: '',
           yourHours: '',
 
+          allCounts: '',
+          yourCounts: '',
+
+          allIds: '',
+          yourIds: '',
+
           projOptions: projOptions,
           ccEmail: p.CCEmail,
           ccList: p.CCList,
@@ -3956,7 +3975,6 @@ public toggleTips = (item: any): void => {
           if ( sourceId ) {
             sourceProjectId = parseInt(sourceId);
         }}
-
 
         let timeEntry : ITimeEntry = {
 
@@ -4344,7 +4362,7 @@ public toggleTips = (item: any): void => {
     for (let i = 0; i < timeTrackData.length; i++ ) {
       let thisEntry : ITimeEntry = timeTrackData[i];
       let countThese = "all";
-      let yours, team, today, week, month, quarter, recent :boolean = false;
+      let yours, team, today, week, month, quarter, longTime, year, recent :boolean = false;
       let thisEndTime = makeTheTimeObject(thisEntry.endTime); 
       thisEntry.thisTimeObj = makeTheTimeObject(thisEntry.startTime); 
 
@@ -4378,6 +4396,14 @@ public toggleTips = (item: any): void => {
               dailyUC: 0,
               weeklyUC: 0,
               totalUC: 0,
+
+              dailyIds: [],
+              weeklyIds: [],
+              totalIds: [],
+              dailyUIds: [],
+              weeklyUIds: [],
+              totalUIds: [],
+
             },
           });
 
@@ -4392,7 +4418,7 @@ public toggleTips = (item: any): void => {
       //alert(thisEndTime);
       //Check if timeTrackData is tagged to you
       if (thisEntry.userId === userId ) { yours = true; } 
-      if (yours) { 
+      if ( yours === true ) { 
         fromProject.filterFlags.push('your');
         thisEntry.filterFlags.push('your');
         countThese = 'your'; 
@@ -4475,7 +4501,7 @@ public toggleTips = (item: any): void => {
       if (fromProject.teamIds.indexOf(userId) > -1 ) { team = true; } 
       if (fromProject.leaderId === userId ) { team = true; } 
       
-      if (!yours  && team) { 
+      if (!yours && team) { 
         fromProject.filterFlags.push('team');
         thisEntry.filterFlags.push('team');
         countThese = 'team'; 
@@ -4527,21 +4553,21 @@ public toggleTips = (item: any): void => {
         thisEntry.timeGroup = '3. Ended Past Month';
         counts[countThese].month ++ ; }
 
-      else if ( daysSince <= 91 ) { month = true;
+      else if ( daysSince <= 91 ) { quarter = true;
         fromProject.filterFlags.push('quarter') ;
         thisEntry.filterFlags.push('quarter') ;
         thisEntry.timeGroup = '4. Ended Past Quarter';
         counts[countThese].quarter ++ ; }
 
-      else if ( daysSince <= 365 ) { month = true;
-        fromProject.filterFlags.push('quarter') ;
-        thisEntry.filterFlags.push('quarter') ;
+      else if ( daysSince <= 365 ) { year = true;
+        fromProject.filterFlags.push('year') ;
+        thisEntry.filterFlags.push('year') ;
         thisEntry.timeGroup = '5. Ended Past Year';
         counts[countThese].quarter ++ ; }
 
-      else if ( daysSince <= 730*4 ) { month = true;
-        fromProject.filterFlags.push('quarter') ;
-        thisEntry.filterFlags.push('quarter') ;
+      else if ( daysSince <= 730*4 ) { longTime = true;
+        fromProject.filterFlags.push('longTime') ;
+        thisEntry.filterFlags.push('longTime') ;
         thisEntry.timeGroup = '6. Ended a LONG time ago';
         counts[countThese].quarter ++ ; }
 
@@ -4576,30 +4602,40 @@ public toggleTips = (item: any): void => {
         everyoneEntries.push(thisEntry);
       } 
 
+
+
+      if ( thisSpecialXref.projId === 52 ) {
+        console.log('This is 52');
+      }
       /**
        * Add all current item flags to this project
        */
-      thisEntry.filterFlags.map( flag => {
-        if ( thisSpecialXref.filterFlags.indexOf(flag) < 0 ) { thisSpecialXref.filterFlags.push( flag ) ; } 
-      });
+
+      if (yours === true && thisSpecialXref.filterFlags.indexOf( 'hasYourItem' ) < 0) { thisSpecialXref.filterFlags.push( 'hasYourItem' ) ; } 
 
       //thisSpecialXref.timeTarget
       let currentFlags = thisEntry.filterFlags;
+      if (currentFlags.indexOf('today') > - 1 && thisSpecialXref.filterFlags.indexOf('today') < 0 ) { thisSpecialXref.filterFlags.push( 'today' ) ; }
+      if (currentFlags.indexOf('week') > - 1 && thisSpecialXref.filterFlags.indexOf('week') < 0 ) { thisSpecialXref.filterFlags.push( 'week' ) ; } 
+      if (currentFlags.indexOf('month') > - 1 && thisSpecialXref.filterFlags.indexOf('month') < 0 ) { thisSpecialXref.filterFlags.push( 'month' ) ; }
+      if (currentFlags.indexOf('quarter') > - 1 && thisSpecialXref.filterFlags.indexOf('quarter') < 0 ) { thisSpecialXref.filterFlags.push( 'quarter' ) ; }
+      if (currentFlags.indexOf('year') > - 1 && thisSpecialXref.filterFlags.indexOf('year') < 0 ) { thisSpecialXref.filterFlags.push( 'year' ) ; }
 
-      if ( thisSpecialXref.projId === 167 ) {
-        console.log('This is 167');
-      }
+//      if (currentFlags.indexOf('team') > - 1 && thisSpecialXref.filterFlags.indexOf('team') < 0 ) { thisSpecialXref.filterFlags.push( 'team' ) ; }
+//      if (currentFlags.indexOf('everyone') > - 1 && thisSpecialXref.filterFlags.indexOf('everyone') < 0 ) { thisSpecialXref.filterFlags.push( 'everyone' ) ; }
+//      if (currentFlags.indexOf('otherPeople') > - 1 && thisSpecialXref.filterFlags.indexOf('otherPeople') < 0 ) { thisSpecialXref.filterFlags.push( 'otherPeople' ) ; }
 
       if ( currentFlags.indexOf('your') > - 1 ) {
-        if ( currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.dailyU += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.dailyUC ++ ; }
-        if ( currentFlags.indexOf('week') > - 1 || currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.weeklyU += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.weeklyUC ++ ; }
+        if ( currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.dailyU += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.dailyUC ++ ; thisSpecialXref.timeTarget.dailyUIds.push( thisEntry.id ) ; }
+        if ( currentFlags.indexOf('week') > - 1 || currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.weeklyU += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.weeklyUC ++ ; thisSpecialXref.timeTarget.weeklyUIds.push( thisEntry.id ) ; }
         thisSpecialXref.timeTarget.totalU += Number(thisEntry.duration) ;
         thisSpecialXref.timeTarget.totalUC ++;
+        thisSpecialXref.timeTarget.totalUIds.push( thisEntry.id ) ;
       }
-      if ( currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.daily += Number(thisEntry.duration) ; }
-      if ( currentFlags.indexOf('week') > - 1 || currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.weekly += Number(thisEntry.duration) ; }
+      if ( currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.daily += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.dailyIds.push( thisEntry.id ) ;  }
+      if ( currentFlags.indexOf('week') > - 1 || currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.weekly += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.weeklyIds.push( thisEntry.id ) ;  }
       thisSpecialXref.timeTarget.total += Number(thisEntry.duration) ;
-
+      thisSpecialXref.timeTarget.totalIds.push( thisEntry.id ) ;
     }
 
     //console.log('nowEndTime', JSON.stringify(nowEndTime));
@@ -4647,12 +4683,18 @@ public toggleTips = (item: any): void => {
           thisStateProject.timeTarget = xProj.timeTarget;
           thisStateProject.allHours = [ xProj.timeTarget.daily.toFixed(1), xProj.timeTarget.weekly.toFixed(1), xProj.timeTarget.total.toFixed(1)].join(' ~ ');
           thisStateProject.yourHours = [ xProj.timeTarget.dailyU.toFixed(1), xProj.timeTarget.weeklyU.toFixed(1), xProj.timeTarget.totalU.toFixed(1)].join(' ~ ');
-          thisStateProject.yourCount = [ xProj.timeTarget.dailyUC, xProj.timeTarget.weeklyUC, xProj.timeTarget.totalUC ].join(' ~ ');          
+
+          thisStateProject.yourCounts = [ xProj.timeTarget.dailyUC, xProj.timeTarget.weeklyUC, xProj.timeTarget.totalUC ].join(' ~ ');
+//          thisStateProject.allCounts = [ xProj.timeTarget.allCounts, xProj.timeTarget.weeklyUC, xProj.timeTarget.totalUC ].join(' ~ ');
+
+          thisStateProject.yourIds = [ xProj.timeTarget.dailyUIds.join(','), xProj.timeTarget.weeklyUIds.join(','), xProj.timeTarget.totalUIds.join(',') ].join(' ~ ');
+          thisStateProject.allIds = [ xProj.timeTarget.dailyIds.join(','), xProj.timeTarget.weeklyIds.join(','), xProj.timeTarget.totalIds.join(',') ].join(' ~ ');
+
           //myRecent
-          if ( xProj.filterFlags.indexOf('your') > -1 ) {
-            if ( xProj.filterFlags.indexOf('today') > -1 || xProj.filterFlags.indexOf('week') > -1  || xProj.filterFlags.indexOf('month') > -1 ) {
+          if ( xProj.filterFlags.indexOf('hasYourItem') > -1 ) {
+            if ( xProj.filterFlags.indexOf('today') > -1 || xProj.filterFlags.indexOf('week') > -1  || xProj.filterFlags.indexOf('month') > -1 || xProj.filterFlags.indexOf('quarter') > -1 || xProj.filterFlags.indexOf('year') > -1) {
               xProj.filterFlags.push('myRecent');
-              thisStateProject.filterFlags = xProj.filterFlags;
+              //thisStateProject.filterFlags = xProj.filterFlags;
               //Add user generated flags to the Project Flags
               xProj.filterFlags.map( flag => {
                 if ( thisStateProject.filterFlags.indexOf(flag) < 0 ) { thisStateProject.filterFlags.push( flag ) ; } 

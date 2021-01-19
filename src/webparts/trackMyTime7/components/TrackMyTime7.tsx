@@ -681,7 +681,8 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       completedDate : null,
       completedBy : null,
       completedById: null,
-      
+      isLate: null,
+
       //Advanced Columns
       ccEmail : null,
       ccList : null,
@@ -3004,6 +3005,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
       key: this.getProjectKey(timeTrackData),
 
       daysOld: timeTrackData.thisTimeObj.daysAgo,
+      isLate: null,
 
       story: timeTrackData.story,
       chapter: timeTrackData.chapter,
@@ -3796,6 +3798,15 @@ public toggleTips = (item: any): void => {
           remoteID: null,
         };
 
+        let isLate = null;
+        
+        if (  p.StatusNumber !== '9' && p.StatusNumber !== '8' ) {
+          let dueAge = getAge(p.DueDateTMT,"days");
+          console.log('Project Age:', p.DueDateTMT, dueAge );
+          if ( p.DueDateTMT !== null && dueAge > 0 ) {
+            isLate = true;
+          }
+        }
         let project : IProject = {
           projectType: 'Master',
           id: p.Id,
@@ -3849,6 +3860,8 @@ public toggleTips = (item: any): void => {
           completedDate: p.CompletedDateTMT,
           completedBy: p.CompletedByTMT == null ? null : p.CompletedByTMT, // BE SURE TO ADD PEOPLE COLUMNS TO EXPANDED COLUMNS FIRST!
           completedById: p.CompletedByTMT == null ? null : p.CompletedByTMTId, // BE SURE TO ADD PEOPLE COLUMNS TO EXPANDED COLUMNS FIRST!
+          
+          isLate: isLate,
 
           history: p.HistoryTMT,
           //Values that relate to project list item

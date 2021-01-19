@@ -137,14 +137,18 @@ public constructor(props:ICenterPaneProps){
             if ( projOptions.activity.length === 0 ) { dangerouslyExpandIndex = 0; }
 
             let thisProjectElement : any[] = [];
+            let thisProjectElementHeader : any = null;
 
             if ( this.props.parentProps.centerPaneFields.length > 0 && hasProject === true ) {
 
                 updateKey = selectedProject.titleProject;
 
+                if ( selectedProject.isLate === true ) {
+                    thisProjectElementHeader = <div>WARNING... ITEM IS LATE</div>
+                }
+
                 thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['lastUsed.theTime'] , [] ,false ) ;
 
-                
                 this.props.parentProps.centerPaneFields.map( field => {
                     //description: 'coma separted: title,projectID,category,story,task,team',
 
@@ -205,6 +209,7 @@ public constructor(props:ICenterPaneProps){
             const stackButtonTokensFields: IStackTokens = { childrenGap: 0 };
 
             let projectItemElement = <Stack padding={20} horizontal={false} horizontalAlign={"space-between"} tokens={stackButtonTokensFields}> {/* Stack for Projects and body */}
+                    { thisProjectElementHeader }
                     { thisProjectElement }
                 </Stack>;
 

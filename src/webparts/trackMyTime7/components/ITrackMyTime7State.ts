@@ -270,6 +270,9 @@ export interface IProject {
   id?: any; //Item ID on list
   editLink? : ILink; //Link to view/edit item link
   titleProject?: string;
+
+  isLate: boolean;
+  
   comments?: ISmartText; // syntax similar to ProjID?
   active?: boolean;  //Used to indicate inactive projects
   everyone?: boolean; //Used to designate this option should be available to everyone.

@@ -336,7 +336,7 @@ export const projectStatus : IViewField = {
     if ( lineHeight === 'xx-large') { lineHeight = '20px' ; }
     if ( lineHeight === 'large') { lineHeight = '18px' ; }
 
-    if ( iconName && iconName.length ) { thisStyle['line-height'] = lineHeight; }
+    if ( iconName && iconName.length > 0 ) { thisStyle['line-height'] = lineHeight; } else { iconName = 'Remove'; thisStyle['line-height'] = lineHeight; } 
     thisStyle['padding-right'] = '3px';
     const icon: any = iconName && iconName.length > 0 ? <Icon iconName={iconName} styles = {iconStyles}/> : null;
 
@@ -355,8 +355,8 @@ export const projectStatus : IViewField = {
           else if ( c === 'full' ) { statusString+= statusFull ; }
           //    const element: any = React.createElement("span", { style: { color: _color, background : _bgColor } }, item.titleProject);
           const element: any = React.createElement("span", { style: thisStyle }, statusString );
-          elements.push( element );
-        } else if ( c === 'icon' ) {
+          if ( ['null','undefined',''].indexOf( statusString ) === -1 ) { elements.push( element ); } 
+        } else if ( c === 'icon' && icon !== null ) {
           elements.push( icon );
         }
       });

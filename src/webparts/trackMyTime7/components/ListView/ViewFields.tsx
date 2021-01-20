@@ -308,6 +308,7 @@ export const projectStatus : IViewField = {
 
     if (bgColor && bgColor.length > 0) { thisStyle['background'] = bgColor; }
 
+
     let iconColor = item['projOptions.icon.color'];
     let iconSize = item['projOptions.icon.size'];
     let iconWeight = item['projOptions.icon.weight'];
@@ -367,6 +368,62 @@ export const projectStatus : IViewField = {
     return fullElement;
   }
 };
+
+export const projectDueWarn : IViewField = {
+  name: "warn",
+  displayName: "Warn",
+  isResizable: true,
+  sorting: true,
+  minWidth: 40,
+  maxWidth: 40,
+  //render: null,
+  render: (item: any) => {
+    //console.log('projectWide:', item);
+
+    let iconColor = item['dueInfo.isLate'] === true ? 'red' : item['dueInfo.isDue'] === true ? 'DarkOrange' : null ;
+
+    let iconSize = item['projOptions.icon.size'];
+
+    //    iconSize = iconSize == null ? Math.floor(parseInt(fSize) * 1.5) : iconSize;
+    iconSize = iconSize == null ? 'large' : iconSize;
+
+    let iconWeight = 'bolder';
+
+//root: {padding:'10px !important', height: 32},//color: 'green' works here
+    let iconStyles: any = { root: {
+      //top: '10px !important',
+      fontSize: iconSize,
+      fontWeight: iconWeight,
+      color: iconColor,
+      paddingRight: '10px',
+      //...(cardSectionOrItemStyles.root as object)
+    }};
+
+    let lineHeight = iconSize;
+    if ( lineHeight === 'x-large') { lineHeight = '20px' ; }
+    if ( lineHeight === 'xx-large') { lineHeight = '20px' ; }
+    if ( lineHeight === 'large') { lineHeight = '18px' ; }
+
+    let elements = [];
+    let statusFull = item['dueInfo.warnLabel'];
+
+    let warnIconStyles = JSON.parse(JSON.stringify(iconStyles));
+    if ( item['dueInfo.isLate'] === true ) {
+      warnIconStyles.fontSize = 'smaller';
+      elements.push( <Icon iconName={'Warning'} styles = {warnIconStyles}/> );
+
+    } else if ( item['dueInfo.isDue'] === true ) {
+      warnIconStyles.fontSize = 'smaller';
+      elements.push( <Icon iconName={'EventDateMissed12'} styles = {warnIconStyles}/> );
+    }
+
+
+    let fullElement: any = <div title={ statusFull }> { elements } </div>;
+    //let fullElement: any = <div title={ statusFull }> { element } </div>;  
+    return fullElement;
+  }
+};
+
 
 export function viewFieldsProject() {
 

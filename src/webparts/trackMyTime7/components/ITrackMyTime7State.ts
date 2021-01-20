@@ -286,6 +286,7 @@ export interface IProject {
   active?: boolean;  //Used to indicate inactive projects
 
   dueInfo: IProjectDueInfo;
+  warn: any; //Top level field for project list sumarizing dueInfo Warning
 
   everyone?: boolean; //Used to designate this option should be available to everyone.
   sortOrder?: number; //Used to prioritize in choices.... ones with number go first in order, followed by empty

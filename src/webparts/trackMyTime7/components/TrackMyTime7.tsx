@@ -690,6 +690,7 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
         warnLabel: null,
       },
 
+      warn: '',
       //Advanced Columns
       ccEmail : null,
       ccList : null,
@@ -1575,7 +1576,18 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
             viewFields = [ fields.projectWide2, fields.projectStatus ];
           } else {
             viewFields = [ fields.projectStatus, fields.projectWide2 ];
-          }        
+          }
+
+          let addWarningCol : any = false;
+          this.state.projects.newFiltered.map( p => {
+            if ( p.dueInfo.isDue === true || p.dueInfo.isLate === true ) { addWarningCol = true; return; }
+          });
+
+          if ( addWarningCol === true ) {
+            viewFields.push( fields.projectDueWarn );
+          }
+
+
         } 
 
         let clearProjFilter = createIconButton('ClearFilter','Clear filter',this.clearProjectFlagFilter.bind(this), null, null, false );
@@ -3021,6 +3033,8 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
         warnLabel: null,
       },
 
+      warn: '',
+
       story: timeTrackData.story,
       chapter: timeTrackData.chapter,
 
@@ -3814,6 +3828,7 @@ public toggleTips = (item: any): void => {
 
         let isLate = null;
         let isDue = null;
+        let warn = null;
         let dueInXDays = getAge(p.DueDateTMT,"hours");
         let detailLabel = '';
         let warnLabel = '';
@@ -3828,11 +3843,13 @@ public toggleTips = (item: any): void => {
             isLate = true;
             warnLabel = `Warning: DUE ${ - dueInXDays } days ago!`;
             detailLabel = `Due Date: ${ dueDate }`;
+            warn= dueInXDays;
 
           } else if ( p.DueDateTMT !== null && dueInXDays < 7 ) {
             isDue = true;
             warnLabel = `Warning: DUE in ${ dueInXDays } days!`;
             detailLabel = `Due Date: ${ dueDate }`;
+            warn= dueInXDays;
           }
         }
 
@@ -3898,6 +3915,7 @@ public toggleTips = (item: any): void => {
             warnLabel: warnLabel,
           },
 
+          warn: warn,
 
           history: p.HistoryTMT,
           //Values that relate to project list item

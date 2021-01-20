@@ -3826,6 +3826,9 @@ public toggleTips = (item: any): void => {
           remoteID: null,
         };
 
+        if ( p.Id === 76 ) {
+          console.log('Project Id: 76');
+        }
         let isLate = null;
         let isDue = null;
         let warn = null;
@@ -3835,7 +3838,9 @@ public toggleTips = (item: any): void => {
 
         if ( dueInXDays ) { dueInXDays = Number(( -1 * dueInXDays / 24 ).toFixed(1)) ; }
 
-        if (  p.StatusNumber !== '9' && p.StatusNumber !== '8' ) {
+        let StatusNumber = p.StatusNumber && p.StatusNumber.length > 0 ? p.StatusNumber.substr(0,1) : '';
+
+        if (  StatusNumber != '9' && StatusNumber != '8' ) {
           console.log('Project Age:', p.DueDateTMT, dueInXDays );
           let dueDate = dueInXDays ? new Date( p.DueDateTMT ).toLocaleDateString() : null ;
 

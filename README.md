@@ -1,4 +1,4 @@
-# track-my-time-v-7
+# track-my-time-7
 
 ## Summary
 

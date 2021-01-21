@@ -2,6 +2,6 @@
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/deploy-azure-storage.schema.json",
   "workingDir": "./temp/deploy/",
   "account": "<!-- STORAGE ACCOUNT NAME -->",
-  "container": "track-my-time-v-7",
+  "container": "track-my-time-7",
   "accessKey": "<!-- ACCESS KEY -->"
 }

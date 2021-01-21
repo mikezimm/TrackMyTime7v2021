@@ -194,6 +194,11 @@ export interface IProjectTarget {
   weekly?: number; //Maybe have function see if something like weekly=8 means 8 hours per week?
   total?: number; //Maybe have function see if something like total=40 means 40 hours total?
   
+  dailyC?: number;
+  weeklyC?: number;
+  monthlyC?: number;
+  totalC?: number;
+
   dailyStatus?: boolean;
   weeklyStatus?: boolean;
   totalStatus?: boolean;

@@ -4456,6 +4456,12 @@ public toggleTips = (item: any): void => {
               daily: 0,
               weekly: 0,
               total: 0,
+              totalC: 0,
+
+              dailyC: 0,
+              weeklyC: 0,
+              monthlyC: 0,
+
               dailyStatus: false,
               weeklyStatus:false,
               totalStatus: false,
@@ -4705,9 +4711,10 @@ public toggleTips = (item: any): void => {
         thisSpecialXref.timeTarget.totalUC ++;
         thisSpecialXref.timeTarget.totalUIds.push( thisEntry.id ) ;
       }
-      if ( currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.daily += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.dailyIds.push( thisEntry.id ) ;  }
-      if ( currentFlags.indexOf('week') > - 1 || currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.weekly += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.weeklyIds.push( thisEntry.id ) ;  }
+      if ( currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.daily += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.dailyIds.push( thisEntry.id ) ;  thisSpecialXref.timeTarget.dailyC ++ ;}
+      if ( currentFlags.indexOf('week') > - 1 || currentFlags.indexOf('today') > - 1 ) { thisSpecialXref.timeTarget.weekly += Number(thisEntry.duration) ; thisSpecialXref.timeTarget.weeklyIds.push( thisEntry.id ) ; thisSpecialXref.timeTarget.weeklyC ++ ;  }
       thisSpecialXref.timeTarget.total += Number(thisEntry.duration) ;
+      thisSpecialXref.timeTarget.totalC ++ ;
       thisSpecialXref.timeTarget.totalIds.push( thisEntry.id ) ;
     }
 
@@ -4758,7 +4765,7 @@ public toggleTips = (item: any): void => {
           thisStateProject.yourHours = [ xProj.timeTarget.dailyU.toFixed(1), xProj.timeTarget.weeklyU.toFixed(1), xProj.timeTarget.totalU.toFixed(1)].join(' ~ ');
 
           thisStateProject.yourCounts = [ xProj.timeTarget.dailyUC, xProj.timeTarget.weeklyUC, xProj.timeTarget.totalUC ].join(' ~ ');
-//          thisStateProject.allCounts = [ xProj.timeTarget.allCounts, xProj.timeTarget.weeklyUC, xProj.timeTarget.totalUC ].join(' ~ ');
+          thisStateProject.allCounts = [ xProj.timeTarget.dailyC, xProj.timeTarget.weeklyC, xProj.timeTarget.totalC ].join(' ~ ');
 
           thisStateProject.yourIds = [ xProj.timeTarget.dailyUIds.join(','), xProj.timeTarget.weeklyUIds.join(','), xProj.timeTarget.totalUIds.join(',') ].join(' ~ ');
           thisStateProject.allIds = [ xProj.timeTarget.dailyIds.join(','), xProj.timeTarget.weeklyIds.join(','), xProj.timeTarget.totalIds.join(',') ].join(' ~ ');

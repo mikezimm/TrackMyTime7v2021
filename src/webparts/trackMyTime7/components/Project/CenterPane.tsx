@@ -174,14 +174,14 @@ public constructor(props:ICenterPaneProps){
 
                     if ( field === 'hours' ){
                         if ( selectedProject.yourHours === selectedProject.allHours ) {
-                            thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourHours' ] , ['Today ~ Week ~ All'] , false ) ;
+                            thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, [selectedProject.yourHours === '0.0 ~ 0.0 ~ 0.0' ? 'allHours' : 'yourHours' ] , ['Today ~ Week ~ All'] , false ) ;
                         } else {
                             thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourHours', 'allHours'] , ['Today ~ Week ~ All','Today ~ Week ~ All'] , false ) ;
                         }
                     }
                     if ( field === 'counts' ){
                         if ( selectedProject.yourCounts === selectedProject.allCounts ) {
-                            thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourCounts' ] , ['Today ~ Week ~ All'] , false ) ;
+                            thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, [ selectedProject.yourCounts === '0 ~ 0 ~ 0' ? 'allCounts' : 'yourCounts' ] , ['Today ~ Week ~ All'] , false ) ;
                         } else {
                             thisProjectElement = this.buildPropPairs( selectedProject, thisProjectElement, ['yourCounts', 'allCounts'] , ['Today ~ Week ~ All','Today ~ Week ~ All'] , false ) ;
                         }

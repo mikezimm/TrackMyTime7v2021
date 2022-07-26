@@ -131,7 +131,6 @@ export function viewFieldsFull( focusStory : boolean ) {
 
     let viewFields: IViewField[]=[];
 
-    
     viewFields.push(id);
 
     viewFields.push(pid);

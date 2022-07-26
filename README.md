@@ -83,3 +83,10 @@ npm install --save office-ui-fabric-react
 npm install webpack-bundle-analyzer --save-dev  (2020-02-04:  To analyze web pack size)
 npm install @mikezimm/npmfunctions@0.0.3
 ```
+
+Installing on new machine - No issues!
+```bash
+nvm use 10.24.1 (in cmd run as admin)
+npm install
+gulp serve --nobrowser
+```

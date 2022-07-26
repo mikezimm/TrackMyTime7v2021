@@ -3428,7 +3428,7 @@ public toggleTips = (item: any): void => {
 //    let projectRestFilter: string = "Team eq '" + 20 + "'";
 //    let trackTimeRestFilter: string = "User eq '" + 20 + "'";
 
-    let projectRestFilter: string = "";
+    let projectRestFilter: string = "Active eq 1";
     let trackTimeRestFilter: string = "";
 
     let selectCols: string = "*";
@@ -3841,7 +3841,7 @@ public toggleTips = (item: any): void => {
         let StatusNumber = p.StatusNumber && p.StatusNumber.length > 0 ? p.StatusNumber.substr(0,1) : '';
 
         if (  StatusNumber != '9' && StatusNumber != '8' ) {
-          console.log('Project Age:', p.DueDateTMT, dueInXDays );
+          // console.log('Project Age:', p.DueDateTMT, dueInXDays );
           let dueDate = dueInXDays ? new Date( p.DueDateTMT ).toLocaleDateString() : null ;
 
           if ( p.DueDateTMT !== null && dueInXDays < 0 ) {
@@ -4304,7 +4304,10 @@ public toggleTips = (item: any): void => {
      let filterThese = this.state.projectType ? stateProjects.user : stateProjects.master ;
 
      let setPivot = !this.state.projectType ? this.state.projectMasterPriorityChoice :this.state.projectUserPriorityChoice ;
-     stateProjects.newFiltered = this.getTheseProjects(filterThese, [setPivot], 'asc', 'titleProject');
+
+     let maxCount = 1000;
+     if ( this.state.filteredCategory === 'myRecent' ) { maxCount = 22 ; }
+     stateProjects.newFiltered = this.getTheseProjects(filterThese, [setPivot], 'asc', 'titleProject', maxCount );
      stateProjects.lastFiltered = this.state.projectType === false ? master : stateProjects.user ;
 
      let masterPriority: IProject[] = [];
@@ -4729,7 +4732,10 @@ public toggleTips = (item: any): void => {
 
    let filterThese = this.state.projectType ? stateProjects.user : stateProjects.master ;
    let setPivot = !this.state.projectType ? this.state.projectMasterPriorityChoice :this.state.projectUserPriorityChoice ;
-   stateProjects.newFiltered = this.getTheseProjects(filterThese, [setPivot], 'asc', 'titleProject');
+
+   let maxCount = 1000;
+   if ( this.state.filteredCategory === 'myRecent' ) { maxCount = 22 ; }
+   stateProjects.newFiltered = this.getTheseProjects(filterThese, [setPivot], 'asc', 'titleProject', maxCount );
    stateProjects.lastFiltered = stateProjects.newFiltered ;
 
    stateProjects.userKeys = userKeys;

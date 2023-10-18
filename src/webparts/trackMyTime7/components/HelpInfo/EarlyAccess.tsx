@@ -1,4 +1,4 @@
-//https://autoliv.sharepoint.com/sites/crs/PublishingImages/Early%20Access%20Image.png
+//https://tenant.sharepoint.com/sites/crs/PublishingImages/Early%20Access%20Image.png
 
 import * as React from 'react';
 

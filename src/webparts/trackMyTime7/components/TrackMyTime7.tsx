@@ -1770,14 +1770,15 @@ export default class TrackMyTime7 extends React.Component<ITrackMyTime7Props, IT
           messages.push( <div><span><b>{ 'info ->' }</b></span></div> ) ;
       }
 
+      
       let earlyAccess = 
       <div style={{ paddingBottom: 10 }}>
         <EarlyAccess 
-            image = { "https://autoliv.sharepoint.com/sites/crs/PublishingImages/Early%20Access%20Image.png" }
+            image = { `https://${window.location.hostname}.sharepoint.com/sites/crs/PublishingImages/Early%20Access%20Image.png` }
             messages = { messages }
             links = { [ this.state.WebpartWidth > 450 ? links.gitRepoTrackMyTime.wiki : null, 
                 this.state.WebpartWidth > 600 ? links.gitRepoTrackMyTime.issues : null ]}
-            email = { 'mailto:General - WebPart Dev <0313a49d.Autoliv.onmicrosoft.com@amer.teams.ms>?subject=Drilldown Webpart Feedback&body=Enter your message here :)  \nScreenshots help!' }
+            email = { `mailto:General - WebPart Dev <0313a49d.${window.location.hostname}.onmicrosoft.com@amer.teams.ms>?subject=Drilldown Webpart Feedback&body=Enter your message here :)  \nScreenshots help!` }
             farRightIcons = { [ ] }
         ></EarlyAccess>
       </div>

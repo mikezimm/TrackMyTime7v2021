@@ -28,7 +28,8 @@ export interface ITrackMyTime7Props {
 
   timeTrackListTitle: string;
   timeTrackListWeb: string;
-
+  itemItemsCount: number;
+  
   // 3 - General how accurate do you want this to be
   roundTime: string; //Up 5 minutes, Down 5 minutes, No Rounding;
   forceCurrentUser: boolean; //false allows you to put in data for someone else

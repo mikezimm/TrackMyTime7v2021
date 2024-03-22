@@ -1175,7 +1175,10 @@ private _updateChoice(ev: React.FormEvent<HTMLInputElement>, option: IChoiceGrou
           console.log('problem with this item: ', item);
         }
 
-        let thisUser = item.user.Title + ' ( ' + item.user.ID + ' )';
+        // let thisUser = item.user.Title + ' ( ' + item.user.ID + ' )';
+        let thisUserId = !item.user || item.user.Title == null ? null : item.user.ID;
+        let thisUserTitle = !item.user || item.user.Title == null ? 'Unknown User' : item.user.Title;
+        let thisUser = !item.user || item.user.Title == null ? 'Unknown User' : item.user.Title + ' ( ' + thisUserId + ' )';
         let userIndex = chartPreData.users.indexOf( thisUser );
         //Create UserSummary
         if ( userIndex < 0 ) { 
@@ -1183,12 +1186,12 @@ private _updateChoice(ev: React.FormEvent<HTMLInputElement>, option: IChoiceGrou
           userIndex = chartPreData.users.length -1 ;
           chartPreData.usersSummary.push( 
             {
-              Id: item.user.ID,
+              Id: thisUserId,
               count: 0,
               hours: 0,
               normal: 0,
               percent: null,
-              title: item.user.Title,
+              title: thisUserTitle,
               stories: [],
               lastEntry: null,
               lastEntryText: null,

@@ -130,6 +130,8 @@ public constructor(props:IInfoAboutMeProps){
                 {/* 3 files to update version number:  package-solution.json, package-lock.json, package.json*/}
                 <table className={styles.infoTable}>
                     <tr><th>Date</th><th>Version</th><th>Focus</th><th>Notes</th></tr>
+                    <tr><td>2020-08-14</td><td>{'2.3.0.0'}</td><td>FPT Upgrade</td><td>#33, #34, #35, #36: bugfixes, improvements for new tenant and migrated data</td></tr>
+                    <tr><td>V</td><td>V</td><td></td><td>Welcome to your new home on FPT!</td></tr>
                     <tr><td>2020-08-14</td><td>{'2.2.0.0'}</td><td>SPFx v1.11 Rebuild</td><td>Story filtering, Center Project pane, improvements, bugfixes</td></tr>
                     <tr><td>2020-08-14</td><td>{'1.1.0.1'}</td><td>Early Access Banner, others</td><td>Add Early Access banner, fix save timeTarget and optionString</td></tr>
                     <tr><td>2020-08-14</td><td>{'1.0.0.17'}</td><td>Bug fix</td><td>Styling bug fixes.</td></tr>

@@ -67,6 +67,7 @@ export interface ITrackMyTime7WebPartProps {
   timeTrackListWeb: string;
   timeTrackListConfirmed: boolean;
   projectListFieldTitles: string;
+  itemItemsCount: number;
 
   // 3 - General how accurate do you want this to be
   roundTime: string; //Up 5 minutes, Down 5 minutes, No Rounding;
@@ -225,6 +226,7 @@ export default class TrackMyTime7WebPart extends BaseClientSideWebPart<ITrackMyT
       
         timeTrackListTitle: this.properties.timeTrackListTitle,
         timeTrackListWeb: this.properties.timeTrackListWeb,
+        itemItemsCount: this.properties.itemItemsCount,
       
         // 3 - General how accurate do you want this to be
         roundTime: this.properties.roundTime, //Up 5 minutes, Down 5 minutes, No Rounding,

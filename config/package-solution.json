@@ -4,7 +4,7 @@
     "name": "Track My Time 7",
     //"id": "9d626ff2-3cb0-4b3e-a8f8-8164ac4dc60b", - Solution ID for original v2021.
     "id": "d2b78ee9-71d1-4588-b4f4-4c88f4fdd936", //Original solution ID for TMT7
-    "version": "2.2.0.2",
+    "version": "2.3.0.0",
     "includeClientSideAssets": true,
     "isDomainIsolated": false,
     "developer": {

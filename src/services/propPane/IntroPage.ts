@@ -1,5 +1,5 @@
 import { BaseClientSideWebPart,  } from "@microsoft/sp-webpart-base";
-import { IPropertyPanePage, PropertyPaneLabel, IPropertyPaneLabelProps, 
+import { IPropertyPanePage, PropertyPaneLabel, IPropertyPaneLabelProps, PropertyPaneSlider,
   PropertyPaneHorizontalRule, PropertyPaneTextField, IPropertyPaneTextFieldProps, 
   PropertyPaneLink, IPropertyPaneLinkProps, PropertyPaneDropdown, 
   IPropertyPaneDropdownProps, IPropertyPaneDropdownOption, PropertyPaneToggle, 
@@ -170,6 +170,14 @@ export class IntroPage {
           PropertyPaneTextField('timeTrackListTitle', {
             label: strings.FieldLabel_TimeTrackListTitle
           }),
+
+          PropertyPaneSlider('itemItemsCount', {
+            label: `Time history to load by default`,
+            min: 200,
+            max: 1000,
+            step: 100,
+          }),
+
         ]}, // this group
 /* */
         

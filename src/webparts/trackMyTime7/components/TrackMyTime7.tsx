@@ -3407,10 +3407,10 @@ public toggleTips = (item: any): void => {
 
   private _getMoreItems() {
     let currentCount = this.state.allEntries.length;
-    this._getListItems(currentCount + 200);
+    this._getListItems(currentCount + 1000 );
   }
   //    private async loadListItems(): Promise<IPivotTileItemProps[]> {
-  private _getListItems(timeItems = 200): void {
+  private _getListItems(timeItems = this.props.itemItemsCount ? this.props.itemItemsCount : 250 ): void {
 
     let useTrackMyTimeList: string = strings.DefaultTrackMyTimeListTitle;
     if ( this.props.timeTrackListTitle ) {
@@ -4037,9 +4037,9 @@ public toggleTips = (item: any): void => {
         }
 
         let listComments = item.Comments ? item.Comments : "";
-
+        let userTitle = !item.User || item.User.Title == null ? 'Unknown User' : item.User.Title;
         //Split this out for when creating test data and user may not have title.
-        let userInitials = item.User.Title == null ? 'TBD' : item.User.Title.split(" ").map((n)=>n[0]).join("");
+        let userInitials = userTitle.split(" ").map((n)=>n[0]).join("");
 
         let sourceProjectId = null;
         if ( item.SourceProjectRef ) { 
@@ -4088,7 +4088,7 @@ public toggleTips = (item: any): void => {
           //Values specific to Time Entry
           user : item.User ,  //Single person column
           userId : item.UserId ,  //Single person column
-          userTitle : item.User.Title ,  //Single person column
+          userTitle : userTitle ,  //Single person column
           startTime : item.StartTime , //Time stamp
           endTime : item.EndTime , // Time stamp
           duration : item.Hours , //Number  -- May not be needed based on current testing with start and end dates.
